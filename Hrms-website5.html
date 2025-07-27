@@ -2110,6 +2110,11 @@
       .services-section::-webkit-scrollbar {
         display: none;
       }
+      [data-theme="dark"] .logo-text {
+        /* background: var(--light); */
+        color: white;
+        /* box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); */
+      }
     </style>
   </head>
   <body>
@@ -3080,7 +3085,7 @@
     </div>
 
     <!-- Theme Toggle -->
-    <button class="theme-toggle" id="themeToggle" style="display: none">
+    <button class="theme-toggle" id="themeToggle">
       <i class="fas fa-moon"></i>
     </button>
 
@@ -3247,8 +3252,28 @@
       }
 
       // Apply height adjustment to all iframes
+      //   document.querySelectorAll("iframe").forEach((iframe) => {
+      //     setIframeHeight(iframe);
+      //   });
+      // In the HRMS website's JavaScript where you handle iframes
       document.querySelectorAll("iframe").forEach((iframe) => {
-        setIframeHeight(iframe);
+        iframe.addEventListener("load", function () {
+          try {
+            // Send the current scroll position to the iframe
+            window.addEventListener("scroll", function () {
+              iframe.contentWindow.postMessage(
+                {
+                  type: "scrollPosition",
+                  y: window.scrollY,
+                },
+                "*"
+              );
+            });
+          } catch (e) {
+            console.log("Could not communicate with iframe");
+          }
+        });
+        
       });
 
       // CTA Button Handlers
@@ -3460,23 +3485,24 @@
 
         if (isDark) {
           html.removeAttribute("data-theme");
-          updateIframeThemes(false);
+          themeIcon.className = "fas fa-moon";
         } else {
           html.setAttribute("data-theme", "dark");
-          updateIframeThemes(true);
+          themeIcon.className = "fas fa-sun";
         }
 
-        // Apply dark mode to all iframes
+        // Send theme to all iframes
         document.querySelectorAll("iframe").forEach((iframe) => {
           try {
-            if (iframe.contentDocument) {
-              iframe.contentDocument.documentElement.setAttribute(
-                "data-theme",
-                isDark ? "" : "dark"
-              );
-            }
+            iframe.contentWindow.postMessage(
+              {
+                type: "setTheme",
+                theme: isDark ? "" : "dark",
+              },
+              "*"
+            );
           } catch (e) {
-            console.log("Cannot access iframe document - different domain");
+            console.log("Cannot access iframe - different domain");
           }
         });
       });

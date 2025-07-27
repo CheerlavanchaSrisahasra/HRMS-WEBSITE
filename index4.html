@@ -808,6 +808,78 @@
             .tech-tag { padding: 10px 20px; font-size: 14px; }
             .client-testimonial-section blockquote { font-size: 18px; }
         }
+        [data-theme="dark"] {
+        --primary-blue: #818cf8;
+        --light-blue: #1e293b;
+        --text-color: #f8fafc;
+        --light-gray: #0f172a;
+        --white: #000000;
+        --modal-card-bg: #000000;
+      }
+      [data-theme="dark"] .section {
+        filter: invert(1) brightness(1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      [data-theme="dark"] section {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] body {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .container {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .container {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .section {
+        filter: invert(1) brightness(1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .card {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .metric-card {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .tech-tag {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .header-section,
+      .filter-controls button,
+      .modal-content {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .modal-content {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .achievement-item {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+         [data-theme="dark"] .solution-key-point-card{
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
     </style>
 </head>
 <body>
@@ -837,7 +909,7 @@
 
                 </div>
                 <div class="challenge-image-container animate-image-on-scroll">
-                    <img src="techimage4.jpeg" alt="A complex network diagram showing data migration between old and new systems.">
+                    <img src="./Assests/techimage4.jpg" alt="A complex network diagram showing data migration between old and new systems.">
                 </div>
             </div>
         </div>
@@ -1258,6 +1330,22 @@
             }
 
         });
+        
+        
+             window.addEventListener("message", function(event) {
+  if (event.data.type === "setTheme") {
+    document.documentElement.setAttribute("data-theme", event.data.theme);
+  }
+});
+
+// Request current theme when loaded
+window.addEventListener("load", function() {
+  try {
+    window.parent.postMessage({ type: "getTheme" }, "*");
+  } catch (e) {
+    console.log("Could not communicate with parent:", e);
+  }
+});
     </script>
 
 </body>

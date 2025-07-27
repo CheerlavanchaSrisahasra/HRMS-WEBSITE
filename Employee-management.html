@@ -25,6 +25,14 @@
         --modal-border-radius: 12px;
         --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
       }
+      [data-theme="dark"] {
+        --primary-blue: #818cf8;
+        --light-blue: #1e293b;
+        --text-color: #f8fafc;
+        --light-gray: #0f172a;
+        --white: #000000;
+        --modal-card-bg: #000000;
+      }
 
       /* Basic Reset and Body Styling */
       * {
@@ -298,7 +306,6 @@
         color: #666;
       }
 
-      /* Demo Modal Styles */
       .demo-request-modal-overlay {
         position: fixed;
         top: 0;
@@ -309,7 +316,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000;
+        z-index: 9999; /* Increase z-index */
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -320,23 +327,26 @@
         visibility: visible;
       }
 
-      /* Update the modal styles in your CSS section */
       .demo-request-modal-content {
+        position: relative;
         background-color: var(--modal-card-bg);
         border-radius: var(--modal-border-radius);
         box-shadow: var(--modal-shadow);
         padding: 40px;
         max-width: 600px;
         width: 90%;
-        position: relative;
         transform: translateY(20px);
         transition: transform 0.3s ease;
-        max-height: 600px; /* Set maximum height */
-        height: 90vh; /* Fallback for smaller screens */
-        overflow-y: auto; /* Enable vertical scrolling */
+        max-height: 600px;
+        height: 90vh;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
       }
+      .demo-request-modal-overlay::-webkit-scrollbar {
+        display: none;
+      }
+
       .demo-request-modal-content::-webkit-scrollbar {
         display: none;
       }
@@ -346,6 +356,9 @@
         flex: 1;
         overflow-y: auto;
         padding-right: 10px; /* Prevent content from touching scrollbar */
+      }
+      #demoRequestForm::-webkit-scrollbar {
+        display: none;
       }
 
       .demo-request-modal-overlay.show .demo-request-modal-content {
@@ -464,6 +477,30 @@
       .stat-number.animated {
         transform: scale(1.1);
         color: #001f52;
+      }
+      [data-theme="dark"] body {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] section {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .form-group input {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .form-group select {
+        /* background: black; */
+        filter: invert(1) brightness(1);
+        /* background-color: white; */
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .form-group textarea {
+        /* background: black; */
+        filter: invert(1) brightness(1);
+        /* background-color: white; */
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       }
     </style>
   </head>
@@ -1137,8 +1174,48 @@
           document.documentElement.setAttribute("data-theme", event.data.theme);
         }
       });
+      // In the Employee Management page's JavaScript
+      function positionModalCorrectly() {
+        const modal = document.getElementById("demoRequestModal");
+        if (window.self !== window.top) {
+          // We're in an iframe
+          modal.style.position = "absolute";
+          modal.style.top = `${window.scrollY}px`;
+        }
+      }
+
+      // Call this when opening the modal
+      document
+        .querySelector("#openDemoModalBtn")
+        .addEventListener("click", function () {
+          document.getElementById("demoRequestModal").classList.add("show");
+          positionModalCorrectly();
+        });
+
+      // Also handle window scroll events
+      window.addEventListener("scroll", function () {
+        if (
+          document.getElementById("demoRequestModal").classList.contains("show")
+        ) {
+          positionModalCorrectly();
+        }
+      });
 
       // Request current theme from parent when loaded
+      window.addEventListener("load", function () {
+        try {
+          window.parent.postMessage({ type: "getTheme" }, "*");
+        } catch (e) {
+          console.log("Could not communicate with parent:", e);
+        }
+      });
+      window.addEventListener("message", function (event) {
+        if (event.data.type === "setTheme") {
+          document.documentElement.setAttribute("data-theme", event.data.theme);
+        }
+      });
+
+      // Request current theme when loaded
       window.addEventListener("load", function () {
         try {
           window.parent.postMessage({ type: "getTheme" }, "*");

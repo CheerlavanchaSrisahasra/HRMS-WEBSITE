@@ -32,6 +32,14 @@
         --calendar-day-selected: #d0e8f2; /* Light blue for selected days */
         --calendar-current-day: #a0d8ed; /* Slightly darker blue for current day */
       }
+      [data-theme="dark"] {
+        --primary-blue: #818cf8;
+        --light-blue: #1e293b;
+        --text-color: #f8fafc;
+        --light-gray: #0f172a;
+        --white: #000000;
+        --modal-card-bg: #000000;
+      }
 
       /* Basic Reset and Body Styling */
       * {
@@ -49,12 +57,20 @@
         ); /* Apply the new theme background */
         overflow-x: hidden; /* Prevent horizontal scroll */
       }
+      [data-theme="dark"] body {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
 
       /* Utility Container for content width */
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
+      }
+      [data-theme="dark"] .container {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       }
 
       /* Section Styling */
@@ -70,6 +86,14 @@
       /* Override previous alternating background if needed, now all sections are the same theme color */
       section:nth-of-type(odd) {
         background-color: var(--astrolite-blue);
+      }
+      [data-theme="dark"] .section {
+        filter: invert(1) brightness(1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] section:nth-of-type(odd) {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       }
 
       /* Typography */
@@ -971,6 +995,18 @@
           font-size: 1.4em;
         }
       }
+      [data-theme="dark"] .section-why-choose {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] section {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .form-group input {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
     </style>
   </head>
   <body>
@@ -1787,6 +1823,20 @@
             generateNewHireChecklist();
           }
         });
+      });
+      window.addEventListener("message", function (event) {
+        if (event.data.type === "setTheme") {
+          document.documentElement.setAttribute("data-theme", event.data.theme);
+        }
+      });
+
+      // Request current theme when loaded
+      window.addEventListener("load", function () {
+        try {
+          window.parent.postMessage({ type: "getTheme" }, "*");
+        } catch (e) {
+          console.log("Could not communicate with parent:", e);
+        }
       });
     </script>
   </body>

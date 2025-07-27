@@ -302,6 +302,11 @@
           max-width: 260px;
         }
       }
+      [data-theme="dark"] .profile-img-top {
+        background: black;
+        filter: invert(1) brightness(2);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
     </style>
   </head>
   <body>
@@ -545,6 +550,20 @@
             testimonialList.scrollBy({ left: cardWidth, behavior: "smooth" });
           }
         }, 5000);
+      });
+      window.addEventListener("message", function (event) {
+        if (event.data.type === "setTheme") {
+          document.documentElement.setAttribute("data-theme", event.data.theme);
+        }
+      });
+
+      // Request current theme when loaded
+      window.addEventListener("load", function () {
+        try {
+          window.parent.postMessage({ type: "getTheme" }, "*");
+        } catch (e) {
+          console.log("Could not communicate with parent:", e);
+        }
       });
     </script>
   </body>

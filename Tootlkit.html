@@ -423,6 +423,73 @@
           font-size: 0.9rem;
         }
       }
+      [data-theme="dark"] {
+        --primary-blue: #818cf8;
+        --light-blue: #1e293b;
+        --text-color: #f8fafc;
+        --light-gray: #0f172a;
+        --white: #000000;
+        --modal-card-bg: #000000;
+      }
+      [data-theme="dark"] .section {
+        filter: invert(1) brightness(1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      [data-theme="dark"] section {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] body {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .container {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      [data-theme="dark"] .container {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .section {
+        filter: invert(1) brightness(1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .card {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .main-content-wrapper {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .header-section,
+      .grid-resource-card,
+      .modal-content {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .modal-content {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .grid-resource-card:hover {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .alert-popup {
+        background: black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
     </style>
   </head>
   <body class="bg-gray-100">
@@ -845,6 +912,20 @@
         scrollAnimatedElements.forEach((element) => {
           observer.observe(element);
         });
+      });
+      window.addEventListener("message", function (event) {
+        if (event.data.type === "setTheme") {
+          document.documentElement.setAttribute("data-theme", event.data.theme);
+        }
+      });
+
+      // Request current theme when loaded
+      window.addEventListener("load", function () {
+        try {
+          window.parent.postMessage({ type: "getTheme" }, "*");
+        } catch (e) {
+          console.log("Could not communicate with parent:", e);
+        }
       });
     </script>
   </body>
