@@ -503,6 +503,9 @@
       .dashboard-container:hover {
         transform: perspective(1000px) rotateY(0deg);
       }
+      .dashboard-container::-webkit-scrollbar {
+        display: none;
+      }
 
       .dashboard-image {
         position: absolute;
@@ -757,6 +760,9 @@
 
       [data-theme="dark"] .iframe-section {
         background: #000000 !important; /* Black background */
+      }
+      .iframe-section::-webkit-scrollbar {
+        display: none;
       }
 
       /* Powerful Features Section - Dark Mode Fix */
@@ -1627,7 +1633,8 @@
 
       /* Custom scrollbar for demo content */
       .demo-content::-webkit-scrollbar {
-        width: 8px;
+        /* width: 8px; */
+        display: none;
       }
 
       .demo-content::-webkit-scrollbar-track {
@@ -1753,6 +1760,7 @@
 
       /* Theme Toggle */
       .theme-toggle {
+        display: none;
         position: fixed;
         bottom: 2rem;
         left: 2rem;
@@ -2099,6 +2107,9 @@
       .trusted-section::-webkit-scrollbar {
         display: none;
       }
+      .services-section::-webkit-scrollbar {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -2189,7 +2200,7 @@
                     <a
                       href="./Expenses.html"
                       class="nav-link"
-                      data-iframe="./Expenses"
+                      data-iframe="payslips"
                       ><i class="fas fa-receipt"></i> Expenses</a
                     >
                   </li>
@@ -3051,9 +3062,9 @@
     </div>
 
     <!-- Theme Toggle -->
-    <!-- <button class="theme-toggle" id="themeToggle">
+    <button class="theme-toggle" id="themeToggle" style="display: none">
       <i class="fas fa-moon"></i>
-    </button> -->
+    </button>
 
     <!-- Flatpickr JS for calendar -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
