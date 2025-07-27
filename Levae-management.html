@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astrolite Leave Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for consistent styling */
+      :root {
+        --primary-green: #38b44a;
+        --light-green: #e6f6e8;
+        --dark-blue: #1a237e;
+        --light-blue: #e0f2f7; /* Used for main background now */
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --white: #fff;
+        --border-radius: 8px;
+        --shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* For general cards */
+        --astrolite-blue: #e0f2f7; /* Main background color from the new screenshot */
+        --astrolite-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow for cards */
+        --astrolite-text-blue: #1a237e; /* Darker text color for headings */
+        --modal-bg: rgba(0, 0, 0, 0.5); /* Overlay for modal */
+        --modal-card-bg: #fff;
+        --modal-border-radius: 12px;
+        --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        --calendar-border-color: #e0e0e0;
+        --calendar-day-hover: #f0f0f0;
+        --calendar-day-selected: #d0e8f2; /* Light blue for selected days */
+        --calendar-current-day: #a0d8ed; /* Slightly darker blue for current day */
+      }
+
+      /* Basic Reset and Body Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(
+          --astrolite-blue
+        ); /* Apply the new theme background */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      /* Utility Container for content width */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Section Styling */
+      section {
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+        background-color: var(
+          --astrolite-blue
+        ); /* Ensure all sections have the theme background */
+      }
+
+      /* Override previous alternating background if needed, now all sections are the same theme color */
+      section:nth-of-type(odd) {
+        background-color: var(--astrolite-blue);
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3 {
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(
+          --astrolite-text-blue
+        ); /* Headings use the theme's dark blue */
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      h3 {
+        font-size: 1.8em;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      /* Button Styling */
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-primary:hover {
+        background-color: #151a5c;
+        border-color: #151a5c;
+      }
+
+      /* Disabled state for buttons */
+      .btn-primary:disabled {
+        background-color: #cccccc;
+        border-color: #cccccc;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .btn-primary:disabled:hover {
+        background-color: #cccccc; /* Keep same on hover when disabled */
+        border-color: #cccccc;
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--dark-blue);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-blue);
+      }
+
+      .btn-success {
+        background-color: var(--primary-green);
+        color: var(--white);
+        border: 1px solid var(--primary-green);
+      }
+
+      .btn-success:hover {
+        background-color: #319d40;
+        border-color: #319d40;
+      }
+
+      /* Flexbox Layout for content rows */
+      .flex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 40px; /* Space between flex items */
+      }
+
+      .flex-row > div {
+        flex: 1; /* Allow items to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+      }
+
+      /* Image Mockup Styling - General for any image that needs a mockup container */
+      .image-mockup {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        background-color: transparent; /* Ensure no default background */
+        padding: 0; /* Remove padding if image fills entirely */
+      }
+      .image-mockup img {
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove extra space below image */
+        border-radius: var(
+          --border-radius
+        ); /* Apply border-radius to the image itself */
+      }
+
+      /* Specific adjustments for hero section image */
+      .section-hero .hero-image {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--border-radius);
+        box-shadow: none; /* No shadow for this specific image */
+      }
+
+      /* Adjustments for images that are now direct children of flex-row */
+      .section-hr-management .direct-image,
+      .section-dashboard .direct-image {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--border-radius);
+        box-shadow: none; /* Remove shadow if it was inherited from image-mockup */
+        flex: 1; /* Allow image to take up flex space */
+        min-width: 300px; /* Ensure it doesn't get too small */
+        object-fit: contain; /* Ensure image scales properly */
+        align-self: center; /* Center the image vertically in the flex container */
+      }
+
+      /* Content areas that should be white like cards */
+      .content-card {
+        background-color: var(--white);
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: var(
+          --astrolite-card-shadow
+        ); /* Apply lighter card shadow */
+      }
+
+      /* Specific section styles */
+
+      /* Hero Section: Leave Management */
+      .section-hero {
+        background-color: var(--astrolite-blue); /* Matches page background */
+        text-align: center;
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+
+      .section-hero .flex-row {
+        justify-content: center;
+        align-items: flex-start;
+        gap: 60px;
+      }
+
+      .section-hero .content {
+        flex: 1.2;
+        max-width: 550px;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+      .section-hero .content h2 {
+        text-align: left;
+        font-size: 3em;
+        margin-bottom: 15px;
+      }
+      .section-hero .content p {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .section-hero .hero-image {
+        width: 100%;
+        height: 450px;
+        object-fit: contain;
+        flex: 1;
+      }
+
+      .section-hero .buttons {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Section: Leave Balance Tracking & Analytics */
+      .section-dashboard .content {
+        flex: 1.5;
+        padding-right: 40px;
+      }
+
+      .section-dashboard .direct-image {
+        /* Increased height */
+        height: 480px; /* Increased from 400px */
+      }
+
+      .feature-list {
+        list-style: none;
+        margin-top: 30px;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer;
+      }
+
+      .feature-list li::before {
+        content: "+";
+        color: var(--primary-green);
+        font-weight: 700;
+        margin-right: 10px;
+        font-size: 1.2em;
+      }
+      .feature-list li.highlight::before {
+        content: "–";
+      }
+
+      /* Styling for the toggled description */
+      .feature-description {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        margin-left: 20px;
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .feature-description.show {
+        display: block;
+        max-height: 100px;
+        opacity: 1;
+      }
+
+      /* Section: Automated Leave Workflows */
+      .section-hr-management .content {
+        flex: 1.5;
+        padding-left: 40px;
+        order: 2;
+      }
+      .section-hr-management .direct-image {
+        /* Increased height */
+        height: 480px; /* Increased from 400px */
+      }
+
+      /* Section: Why choose Astrolite */
+      .section-why-choose {
+        text-align: center;
+      }
+
+      .section-why-choose h2 {
+        margin-bottom: 50px;
+      }
+
+      .reason-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .reason-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--astrolite-card-shadow);
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        max-width: 280px;
+        transition: transform 0.3s ease;
+      }
+
+      .reason-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .reason-card img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+
+      .reason-card h3 {
+        font-size: 1.4em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .reason-card p {
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .flex-row {
+          flex-direction: column;
+          text-align: center;
+        }
+        .flex-row > div {
+          min-width: unset;
+          width: 100%;
+        }
+        .section-dashboard .content,
+        .section-hr-management .content {
+          padding-right: 0;
+          padding-left: 0;
+          order: unset;
+        }
+        .section-dashboard .direct-image,
+        .section-hr-management .direct-image {
+          margin-top: 40px;
+          /* Increased height for smaller screens */
+          height: 350px; /* Increased from 300px */
+        }
+
+        .reason-card {
+          max-width: 45%;
+        }
+        .content-card {
+          padding: 30px;
+        }
+        .section-hero .content {
+          padding: 0;
+          text-align: center;
+        }
+        .section-hero .content h2 {
+          text-align: center;
+          font-size: 2.5em;
+        }
+        .section-hero .buttons {
+          justify-content: center;
+        }
+        .section-hero .hero-image {
+          height: 300px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 2em;
+        }
+        h3 {
+          font-size: 1.5em;
+        }
+        section {
+          padding: 60px 0;
+        }
+        .reason-cards {
+          flex-direction: column;
+          align-items: center;
+        }
+        .reason-card {
+          max-width: 90%;
+        }
+        .btn {
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          width: 100%;
+        }
+      }
+
+      /* New Demo Request Modal Styles (based on image_c5ea3b.jpg) */
+      .demo-request-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .demo-request-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .demo-request-modal-content {
+        background-color: #e0f2f7; /* Changed to light blue as sidebar is removed */
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        display: flex;
+        max-width: 600px; /* Reduced max-width as requested */
+        width: 90%;
+        max-height: 700px; /* Set maximum height */
+        height: 98vh; /* Fallback for smaller screens */
+        overflow-y: auto; /* Enable vertical scrolling */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        flex-direction: column; /* Ensure content stacks vertically */
+      }
+
+      .demo-request-modal-overlay.show .demo-request-modal-content {
+        transform: translateY(0);
+      }
+
+      .demo-request-modal-left {
+        display: none; /* Hide the left sidebar content */
+      }
+
+      .demo-request-modal-right {
+        flex: 1;
+        padding: 40px;
+        background-color: #e0f2f7; /* Light blue background */
+        border-radius: var(
+          --modal-border-radius
+        ); /* Apply radius to all corners */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: unset; /* Allow it to shrink */
+        width: 100%; /* Take full width of its parent */
+        position: relative; /* For positioning close button */
+      }
+
+      .demo-request-modal-right .modal-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .demo-request-modal-right .modal-header-top h3 {
+        color: var(--astrolite-text-blue);
+        margin-bottom: 0;
+        font-size: 2em;
+      }
+
+      .demo-request-modal-right .form-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .demo-request-modal-right .form-group {
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 0;
+      }
+
+      .demo-request-modal-right input[type="text"],
+      .demo-request-modal-right input[type="email"],
+      .demo-request-modal-right input[type="tel"],
+      .demo-request-modal-right select,
+      .demo-request-modal-right textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95em;
+        background-color: var(--white);
+        color: var(--text-color);
+      }
+
+      .demo-request-modal-right input[type="text"]:focus,
+      .demo-request-modal-right input[type="email"]:focus,
+      .demo-request-modal-right input[type="tel"]:focus,
+      .demo-request-modal-right select:focus,
+      .demo-request-modal-right textarea:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 2px rgba(56, 180, 74, 0.2);
+      }
+
+      .demo-request-modal-right textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .demo-request-modal-right .btn-schedule-demo {
+        width: 100%;
+        padding: 15px;
+        margin-top: 10px;
+        font-size: 1.1em;
+        font-weight: 600;
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .demo-request-modal-right .btn-schedule-demo:hover {
+        background-color: #151a5c;
+      }
+
+      /* Close button for new modal */
+      .demo-request-close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2em;
+        color: var(--astrolite-text-blue); /* Visible color for close button */
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s ease;
+      }
+      .demo-request-close-btn:hover {
+        color: #555;
+      }
+
+      /* Responsive adjustments for new modal */
+      @media (max-width: 850px) {
+        .demo-request-modal-content {
+          flex-direction: column;
+          width: 95%;
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+        .demo-request-modal-left {
+          display: none;
+        }
+        .demo-request-modal-right {
+          min-width: unset;
+          width: 100%;
+          padding: 30px;
+          border-radius: var(--modal-border-radius);
+        }
+        .demo-request-modal-right .modal-header-top {
+          border-bottom: none;
+          margin-bottom: 15px;
+        }
+        .demo-request-close-btn {
+          top: 10px;
+          right: 10px;
+          font-size: 1.8em;
+          color: var(--astrolite-text-blue);
+        }
+      }
+
+      @media (max-width: 500px) {
+        .demo-request-modal-right {
+          padding: 20px;
+        }
+        .demo-request-modal-right .modal-header-top h3 {
+          font-size: 1.6em;
+        }
+        .demo-request-modal-right .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+        .demo-request-modal-right .form-group {
+          min-width: unset;
+          width: 100%;
+        }
+      }
+
+      /* Styles for the Leave Policy Lookup Modal */
+      .policy-lookup-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .policy-lookup-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .policy-lookup-modal-content {
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow); /* Keep existing shadow */
+        padding: 40px;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border: 1px solid var(--calendar-border-color); /* Added subtle border */
+        /* Enhanced styling for the card itself */
+        background: linear-gradient(
+          145deg,
+          #ffffff,
+          #f0f0f0
+        ); /* Subtle gradient */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15),
+          0 3px 6px rgba(0, 0, 0, 0.1); /* Stronger, more defined shadow */
+        padding: 50px; /* Increased padding */
+        gap: 25px; /* Increased gap */
+      }
+
+      .policy-lookup-modal-overlay.show .policy-lookup-modal-content {
+        transform: translateY(0);
+      }
+
+      .policy-lookup-modal-content h3 {
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+        font-size: 2em; /* Slightly larger heading */
+        /* Removed text-align: center; */
+      }
+
+      .policy-lookup-modal-content p {
+        /* Removed text-align: center; */
+        color: #666;
+        margin-bottom: 25px; /* More space below paragraph */
+      }
+
+      .policy-lookup-modal-content .form-group {
+        margin-bottom: 20px; /* Standard margin for form groups */
+      }
+
+      .policy-lookup-modal-content input[type="text"] {
+        width: 100%;
+        padding: 12px; /* Increased padding */
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 1em; /* Slightly larger font */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08); /* Inner shadow for input */
+      }
+
+      /* Styling for the Lookup Policy button to match btn-primary */
+      .policy-lookup-modal-content #lookupPolicyBtn {
+        /* Targeted by ID for specific styling */
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: 1px solid var(--dark-blue);
+        padding: 12px 25px; /* Match btn-primary padding */
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block; /* Ensure it behaves like a button */
+        /* Removed width: 100%; to keep it inline-block and not full width */
+        font-size: 1.1em; /* Match demo button font size */
+      }
+
+      .policy-lookup-modal-content #lookupPolicyBtn:hover {
+        background-color: #151a5c;
+        border-color: #151a5c;
+      }
+
+      .policy-output {
+        background-color: var(--light-gray);
+        padding: 20px; /* Increased padding */
+        border-radius: var(--border-radius);
+        min-height: 180px; /* Increased height further */
+        font-size: 0.95em; /* Slightly larger font */
+        color: #444;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        text-align: left;
+        border: 1px solid #e0e0e0; /* Subtle border for output area */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Inner shadow */
+      }
+      .policy-output.empty-state {
+        color: #888;
+        font-style: italic;
+        text-align: center;
+        display: flex; /* Use flex to center text vertically */
+        align-items: center;
+        justify-content: center;
+      }
+
+      .policy-output ul {
+        list-style-type: disc;
+        margin-left: 25px; /* Adjusted margin */
+      }
+      .policy-output li {
+        margin-bottom: 8px; /* More space between list items */
+      }
+
+      /* Close button for policy lookup modal */
+      .policy-lookup-close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2.2em; /* Slightly larger close button */
+        color: #888; /* Visible color */
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s ease;
+      }
+      .policy-lookup-close-btn:hover {
+        color: var(--dark-blue);
+      }
+
+      @media (max-width: 500px) {
+        .policy-lookup-modal-content {
+          padding: 20px;
+        }
+        .policy-lookup-modal-content h3 {
+          font-size: 1.6em;
+        }
+      }
+
+      /* Success Message Container - Updated for bottom right card */
+      .success-message {
+        position: fixed;
+        bottom: 30px; /* Position from bottom */
+        right: 30px; /* Position from right */
+        background-color: var(--primary-green);
+        color: var(--white);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        transform: translateY(
+          20px
+        ); /* Start slightly below for slide-up effect */
+        min-width: 250px; /* Ensure it's a decent size */
+        justify-content: center; /* Center content horizontally */
+      }
+
+      .success-message.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0); /* Slide up to final position */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section: Leave Management -->
+    <section class="section-hero">
+      <div class="container flex-row">
+        <div class="content">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Employee Leave System
+          </p>
+          <h2>Simplify Leave Management for Employees & HR</h2>
+          <p>
+            Automate leave requests, approvals, and balance tracking. Ensure
+            transparency and compliance with ease, giving employees more control
+            and HR less administrative burden.
+          </p>
+          <div class="buttons">
+            <a href="#" id="openDemoRequestModalBtn" class="btn btn-primary"
+              >Get a Personalized Demo</a
+            >
+          </div>
+        </div>
+        <img
+          class="hero-image"
+          src="https://www.pockethrms.com/wp-content/uploads/2025/05/Simplified-Leave-Management-System-1024x831.webp"
+          alt="Leave Management Dashboard"
+        />
+      </div>
+    </section>
+
+    <!-- Section: Automated Leave Workflows -->
+    <section class="section-hr-management">
+      <div class="container flex-row">
+        <img
+          class="direct-image"
+          src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Comprehensive-Leave-Management-qxo3iwu10g5ickypyscjkvxa5a7the7flggwk8f5cw.webp"
+          alt="Digital Leave Application"
+        />
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Streamlined Leave Solution
+          </p>
+          <h2>Automated Leave Request & Approval Workflows</h2>
+          <p>
+            Digitize the entire leave application process, from submission to
+            approval, ensuring quick and transparent handling of all leave
+            types.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Digital Leave Application
+              <div class="feature-description">
+                Employees can easily apply for various leave types (sick,
+                vacation, personal) through a user-friendly portal.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Automated Approval Workflows
+              <div class="feature-description">
+                Set up multi-level approval hierarchies to ensure requests are
+                routed to the correct managers for timely decisions.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Customizable Leave Policies
+              <div class="feature-description">
+                Configure different leave policies based on employee roles,
+                tenure, or department, ensuring compliance with company rules.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Leave Balance Tracking & Analytics -->
+    <section class="section-dashboard">
+      <div class="container flex-row">
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Real-time Leave Insights
+          </p>
+          <h2>Leave Balance Tracking & Analytics for Better Planning</h2>
+          <p>
+            Gain real-time visibility into employee leave balances, track
+            absence trends, and generate reports for better workforce planning
+            and resource allocation.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Real-time Leave Balances Dashboard
+              <div class="feature-description">
+                Employees and managers can view up-to-date leave accruals, taken
+                leave, and remaining balances at a glance.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Leave Trend Analysis
+              <div class="feature-description">
+                Analyze historical leave data to identify patterns, peak absence
+                periods, and potential impacts on productivity.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Holiday & Absence Calendar
+              <div class="feature-description">
+                Maintain a centralized calendar showing company holidays and
+                approved employee absences to avoid scheduling conflicts.
+              </div>
+            </li>
+          </ul>
+          <div class="buttons" style="margin-top: 30px">
+            <button id="openPolicyLookupBtn" class="btn btn-secondary">
+              Lookup Leave Policy 📖
+            </button>
+          </div>
+        </div>
+        <img
+          class="direct-image"
+          src="https://www.pockethrms.com/wp-content/uploads/2025/05/Employee-leave-management-software-1024x872.webp"
+          alt="Leave Analytics Dashboard"
+        />
+      </div>
+    </section>
+
+    <!-- Section: Why choose Astrolite -->
+    <section class="section-why-choose">
+      <div class="container">
+        <h2>Why Choose Astrolite Leave Management Software?</h2>
+        <div class="reason-cards">
+          <div class="reason-card">
+            <img
+              src=" https://www.pockethrms.com/wp-content/uploads/2025/04/Hourly-Leaves-with-Reliever.svg"
+              alt="Easy Application Icon"
+            />
+            <h3>Easy Leave Application</h3>
+            <p>
+              Intuitive interface for employees to request leave quickly,
+              reducing errors and saving time.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/04/In-depth-Custom-Reporting.svg"
+              alt="Accurate Tracking Icon"
+            />
+            <h3>Accurate Leave Tracking</h3>
+            <p>
+              Automated accrual and deduction ensures precise tracking of all
+              leave types and balances.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src=" https://www.pockethrms.com/wp-content/uploads/2025/04/Simplified-Leave-Approvals.svg"
+              alt="Reduced Admin Icon"
+            />
+            <h3>Reduced Admin Burden</h3>
+            <p>
+              Minimize manual work for HR, freeing up time for strategic
+              initiatives rather than paperwork.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/04/Rule-based-Leave-Automation.svg"
+              alt="Compliance Icon"
+            />
+            <h3>Compliance with Policies</h3>
+            <p>
+              Ensure adherence to internal company policies and external labor
+              laws with built-in rules and alerts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Request Modal (New, based on provided image) -->
+    <div id="demoRequestModal" class="demo-request-modal-overlay">
+      <div class="demo-request-modal-content">
+        <!-- Close button moved inside demo-request-modal-right for better positioning -->
+        <div class="demo-request-modal-right">
+          <button class="demo-request-close-btn" aria-label="Close Modal">
+            &times;
+          </button>
+          <div class="modal-header-top">
+            <h3>Let's Talk!</h3>
+          </div>
+          <!-- Removed demo-request-modal-left content, replaced by header -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" id="firstName" placeholder="" />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name*</label>
+              <input type="text" id="lastName" placeholder="" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone*</label>
+              <input type="tel" id="phone" placeholder="" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email*</label>
+              <input type="email" id="email" placeholder="" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="companyName">Company Name*</label>
+              <input type="text" id="companyName" placeholder="" />
+            </div>
+            <div class="form-group">
+              <label for="employeeCount">Employee Count*</label>
+              <select id="employeeCount">
+                <option value="">Select</option>
+                <option value="1-10">1-10</option>
+                <option value="11-50">11-50</option>
+                <option value="51-200">51-200</option>
+                <option value="201-500">201-500</option>
+                <option value="500+">500+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder=""></textarea>
+          </div>
+          <!-- Removed reCAPTCHA placeholder as requested -->
+          <button id="scheduleDemoBtn" class="btn-schedule-demo">
+            Schedule a Demo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leave Policy Lookup Modal -->
+    <div id="policyLookupModal" class="policy-lookup-modal-overlay">
+      <div class="policy-lookup-modal-content">
+        <button
+          class="policy-lookup-close-btn"
+          aria-label="Close Modal"
+          id="closePolicyLookupModalBtn"
+        >
+          &times;
+        </button>
+        <h3>Lookup Leave Policy</h3>
+        <p>
+          Enter the type of leave (e.g., "sick leave", "vacation", "maternity")
+          to view its policy details.
+        </p>
+
+        <div class="form-group">
+          <label for="leaveTypeInput">Leave Type</label>
+          <input
+            type="text"
+            id="leaveTypeInput"
+            placeholder="e.g., Sick Leave, Vacation, Personal Leave"
+          />
+        </div>
+
+        <button id="lookupPolicyBtn" class="btn-primary">
+          <!-- Changed class to btn-primary -->
+          Lookup Policy
+        </button>
+        <div id="policyOutput" class="policy-output empty-state">
+          Policy details will appear here.
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message Container -->
+    <div id="successMessage" class="success-message">
+      <!-- Removed SVG icon as requested -->
+      <span>Demo scheduled successfully!</span>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const openDemoRequestModalBtn = document.getElementById(
+          "openDemoRequestModalBtn"
+        );
+        const demoRequestModal = document.getElementById("demoRequestModal");
+        const demoRequestCloseBtn = document.querySelector(
+          ".demo-request-close-btn"
+        );
+        const scheduleDemoBtn = document.getElementById("scheduleDemoBtn");
+        const successMessage = document.getElementById("successMessage");
+        const toggleFeatureItems = document.querySelectorAll(".toggle-feature");
+
+        // Elements for the Leave Policy Lookup feature
+        const openPolicyLookupBtn = document.getElementById(
+          "openPolicyLookupBtn"
+        );
+        const policyLookupModal = document.getElementById("policyLookupModal");
+        const closePolicyLookupModalBtn = document.getElementById(
+          "closePolicyLookupModalBtn"
+        );
+        const leaveTypeInput = document.getElementById("leaveTypeInput");
+        const lookupPolicyBtn = document.getElementById("lookupPolicyBtn");
+        const policyOutput = document.getElementById("policyOutput");
+
+        // New demo request form inputs
+        const firstNameInput = document.getElementById("firstName");
+        const lastNameInput = document.getElementById("lastName");
+        const phoneInput = document.getElementById("phone");
+        const emailInput = document.getElementById("email");
+        const companyNameInput = document.getElementById("companyName");
+        const employeeCountSelect = document.getElementById("employeeCount");
+        const messageTextarea = document.getElementById("message");
+
+        // Function to show the success message
+        function showSuccessMessage(message) {
+          successMessage.querySelector("span").textContent = message;
+          successMessage.classList.add("show");
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 3000); // Hide after 3 seconds
+        }
+
+        // Show Demo Request Modal
+        openDemoRequestModalBtn.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default link behavior
+          demoRequestModal.classList.add("show");
+          // Optionally reset form fields when opening
+          firstNameInput.value = "";
+          lastNameInput.value = "";
+          phoneInput.value = "";
+          emailInput.value = "";
+          companyNameInput.value = "";
+          employeeCountSelect.value = "";
+          messageTextarea.value = "";
+        });
+
+        // Hide Demo Request Modal
+        demoRequestCloseBtn.addEventListener("click", () => {
+          demoRequestModal.classList.remove("show");
+        });
+
+        // Hide Demo Request Modal if clicking outside the content
+        demoRequestModal.addEventListener("click", (e) => {
+          if (e.target === demoRequestModal) {
+            demoRequestModal.classList.remove("show");
+          }
+        });
+
+        // Handle Schedule Demo button click
+        scheduleDemoBtn.addEventListener("click", () => {
+          // Basic validation (can be expanded)
+          const firstName = firstNameInput.value.trim();
+          const lastName = lastNameInput.value.trim();
+          const phone = phoneInput.value.trim();
+          const email = emailInput.value.trim();
+          const companyName = companyNameInput.value.trim();
+          const employeeCount = employeeCountSelect.value;
+
+          if (
+            !firstName ||
+            !lastName ||
+            !phone ||
+            !email ||
+            !companyName ||
+            !employeeCount
+          ) {
+            showSuccessMessage("Please fill in all required fields."); // Reusing success message for error
+            return;
+          }
+
+          // Simulate form submission
+          console.log("Demo Request Details:", {
+            firstName,
+            lastName,
+            phone,
+            email,
+            companyName,
+            employeeCount,
+            message: messageTextarea.value.trim(),
+          });
+
+          showSuccessMessage("Demo scheduled successfully!"); // Updated success message
+          demoRequestModal.classList.remove("show"); // Close modal after submission
+        });
+
+        // Toggle functionality for feature list items
+        toggleFeatureItems.forEach((item) => {
+          item.addEventListener("click", (event) => {
+            // Prevent click on the description itself from toggling the parent
+            if (event.target.classList.contains("feature-description")) {
+              return;
+            }
+            const description = item.querySelector(".feature-description");
+            if (description) {
+              description.classList.toggle("show");
+            }
+          });
+        });
+
+        // --- Leave Policy Lookup Feature ---
+
+        // Define some sample leave policies
+        const leavePolicies = {
+          "sick leave": {
+            title: "Sick Leave Policy",
+            details: [
+              "Employees are eligible for 10 days of paid sick leave per year.",
+              "A doctor's note is required for absences exceeding 3 consecutive days.",
+              "Sick leave can be used for personal illness or caring for an immediate family member.",
+              "Unused sick leave does not roll over to the next year.",
+            ],
+          },
+          vacation: {
+            title: "Vacation Policy",
+            details: [
+              "Employees accrue 1.5 days of vacation leave per month, up to a maximum of 20 days per year.",
+              "Vacation requests must be submitted at least 2 weeks in advance.",
+              "Managers must approve all vacation requests, considering team workload.",
+              "Up to 5 unused vacation days can be carried over to the next year.",
+            ],
+          },
+          "personal leave": {
+            title: "Personal Leave Policy",
+            details: [
+              "Employees are eligible for 3 days of paid personal leave per year.",
+              "Personal leave can be used for personal appointments, emergencies, or other non-sick related needs.",
+              "Requests should be submitted as soon as possible, ideally 1 week in advance.",
+              "Unused personal leave does not roll over to the next year.",
+            ],
+          },
+          "maternity leave": {
+            title: "Maternity Leave Policy",
+            details: [
+              "Eligible employees receive 12 weeks of paid maternity leave.",
+              "Leave can begin up to 2 weeks before the expected due date.",
+              "Employees must provide a doctor's certificate and notify HR at least 30 days in advance.",
+              "Additional unpaid leave may be granted upon request and approval.",
+            ],
+          },
+          "paternity leave": {
+            title: "Paternity Leave Policy",
+            details: [
+              "Eligible employees receive 2 weeks of paid paternity leave.",
+              "Leave can be taken within 6 months of the child's birth or adoption.",
+              "Employees must notify HR at least 30 days in advance.",
+              "Can be taken consecutively or in two separate one-week blocks.",
+            ],
+          },
+          "bereavement leave": {
+            title: "Bereavement Leave Policy",
+            details: [
+              "Employees are eligible for 3 days of paid bereavement leave for immediate family members.",
+              "Immediate family includes spouse, child, parent, sibling, grandparent, or grandchild.",
+              "Additional unpaid leave may be granted in special circumstances.",
+              "Proof of relationship may be required.",
+            ],
+          },
+          default: {
+            title: "General Leave Policy Information",
+            details: [
+              "Please enter a specific leave type (e.g., 'sick leave', 'vacation', 'maternity leave') to get detailed policy information.",
+              "For any other leave types or specific queries, please contact your HR department.",
+            ],
+          },
+        };
+
+        // Function to generate the policy output
+        function lookupLeavePolicy() {
+          const leaveType = leaveTypeInput.value.trim().toLowerCase();
+          let policy = leavePolicies[leaveType] || leavePolicies["default"];
+
+          let outputHtml = `<h4>${policy.title}</h4><ul>`;
+          policy.details.forEach((item) => {
+            outputHtml += `<li>${item}</li>`;
+          });
+          outputHtml += `</ul>`;
+
+          policyOutput.innerHTML = outputHtml;
+          policyOutput.classList.remove("empty-state");
+        }
+
+        // Show Leave Policy Lookup Modal
+        openPolicyLookupBtn.addEventListener("click", () => {
+          policyLookupModal.classList.add("show");
+          // Reset input and output when opening
+          leaveTypeInput.value = "";
+          policyOutput.innerHTML = "Policy details will appear here.";
+          policyOutput.classList.add("empty-state");
+        });
+
+        // Hide Leave Policy Lookup Modal
+        closePolicyLookupModalBtn.addEventListener("click", () => {
+          policyLookupModal.classList.remove("show");
+        });
+
+        // Hide Leave Policy Lookup Modal if clicking outside the content
+        policyLookupModal.addEventListener("click", (e) => {
+          if (e.target === policyLookupModal) {
+            policyLookupModal.classList.remove("show");
+          }
+        });
+
+        // Event listener for looking up policy
+        lookupPolicyBtn.addEventListener("click", lookupLeavePolicy);
+
+        // Optional: Lookup policy on Enter key press in the input field
+        leaveTypeInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            lookupLeavePolicy();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

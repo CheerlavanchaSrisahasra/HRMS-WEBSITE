@@ -1,0 +1,1340 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Careers Section </title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      padding: 100px 40px;
+      text-align: center;
+      color: #fff;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("https://smallbusiness-staging.s3.amazonaws.com/uploads/2017/07/Employee-26717-1568x708.jpeg");
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      line-height: 1.4;
+    }
+
+    .hero h1 span {
+      color: #ffdd57;
+    }
+
+    .hero p {
+      margin: 20px auto;
+      max-width: 700px;
+      font-size: 18px;
+    }
+
+    .hero .btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 16px;
+      background-color: #ffdd57;
+      border: none;
+      color: #000;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .hero .btn:hover {
+      background-color: #f5c100;
+    }
+
+    /* Shape Animations */
+    .shape {
+      position: absolute;
+      opacity: 0.6;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .yellow-dot {
+      width: 20px;
+      height: 20px;
+      background-color: #ffdd57;
+      border-radius: 50%;
+      top: 40px;
+      left: 30px;
+    }
+
+    .blue-square {
+      width: 25px;
+      height: 25px;
+      background-color: #3fa9f5;
+      top: 120px;
+      right: 60px;
+    }
+
+    .pink-triangle {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 25px solid #f86ca7;
+      bottom: 50px;
+      left: 80px;
+    }
+
+    .white-dash {
+      width: 40px;
+      height: 6px;
+      background-color: #ffffff;
+      bottom: 120px;
+      right: 90px;
+      transform: rotate(45deg);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+      .hero p {
+        font-size: 16px;
+      }
+    }
+    
+/* SECTION 2 */
+.features-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 40px;
+  background-color: #f5f5f5;
+}
+
+.features-text {
+  flex: 1;
+  max-width: 700px;
+}
+
+.gradient-heading {
+  text-align: center;
+  font-size: 35px; /* Increased size */
+  font-weight: bold;
+  margin-bottom: 40px; /* Added space between heading and content */
+  background: linear-gradient(90deg, #ff4e50, #f9d423);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.feature-point {
+  margin-bottom: 25px;
+}
+
+.feature-point h3 {
+  font-size: 22px;
+  color:#0077b6;
+  margin-bottom: 5px;
+}
+
+.feature-point p {
+  font-size: 18px;
+  color: #444;
+}
+
+.features-img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.features-img img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+}
+
+.features-img img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .features-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .features-text,
+  .features-img {
+    max-width: 100%;
+  }
+}
+
+    /* SECTION 3 - Image Slider */
+   .slider-section {
+    padding: 40px 20px;
+    background: #f9f9f9;
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-track-wrapper {
+    overflow: hidden;
+    width: 80%;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+  }
+
+  .card {
+    min-width: 300px;
+    margin: 0 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card .caption {
+    padding: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .carousel-button {
+    background-color: #003366;
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 50%;
+  }
+
+  .carousel-button:hover {
+    background-color: #0055aa;
+  }
+
+  .dots {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .dot.active {
+    background-color: #003366;
+  }
+    /* === TEAMS SECTION === */
+.main-heading {
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: #2b2b2b;
+  text-align: center;
+}
+
+.teams-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-card {
+  flex: 1;
+  min-width: 380px;
+  max-width: 100%;
+  background-color: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  border: 3px solid #1093c7; /* Light grey border */
+}
+
+.team-image {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.team-card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.autoscroll-gallery {
+  overflow: hidden;
+  padding: 50px 0;
+  background: linear-gradient(to right, #f0f4f8, #ffffff);
+}
+
+.scrolling-images {
+  display: flex;
+  gap: 25px;
+  animation: scroll-left 40s linear infinite;
+  align-items: center;
+}
+
+/* Image Styling */
+.scrolling-images img {
+  width: 280px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+/* Highlight on Hover */
+.scrolling-images img:hover {
+  transform: scale(1.06);
+  filter: brightness(1.1);
+}
+
+/* Keyframe Animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.autoscroll-gallery {
+  overflow: hidden;
+  padding: 60px 0;
+  background: linear-gradient(to right, #f7f9fc, #ffffff);
+  position: relative;
+}
+
+/* Header Text */
+.gallery-heading {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 1px;
+}
+
+/* Scrolling Wrapper */
+.scrolling-images {
+  display: flex;
+  gap: 30px;
+  animation: scroll-left 45s linear infinite;
+  align-items: center;
+}
+
+/* Image Styling */
+.scrolling-images img {
+  width: 380px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 4px solid #e0e0e0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease, filter 0.4s ease, border-color 0.4s ease;
+}
+
+/* Hover Effects */
+.scrolling-images img:hover {
+  transform: scale(1.07);
+  filter: brightness(1.08);
+  border-color: #4a90e2;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Animation Keyframes */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+
+  /* === CTA SECTION === */
+.cta-section {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #007BFF, #00C9A7);
+      color: white;
+      text-align: center;
+    }
+
+    .cta-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .cta-box h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .cta-box p {
+      font-size: 18px;
+      margin: 15px 0;
+    }
+
+    .cta-box p i {
+      margin-right: 10px;
+      color: #ffd700;
+    }
+
+    .apply-btn {
+      background: #fff;
+      color: #007BFF;
+      font-weight: bold;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+
+    .apply-btn:hover {
+      background: #00C9A7;
+      color: white;
+    }
+
+    /* Modal Styling */
+   .modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  width: 95%;              /* Increased width */
+  max-width: 1000px;       /* Wider modal box */
+  max-height: 80vh;        /* Reduced height */
+  overflow-y: auto;        /* Scroll inside modal if content is tall */
+  position: relative;
+  text-align: left;
+  border: 4px solid;
+  border-image: linear-gradient(to right, #a20bbd, #00C9A7) 1;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #003366;
+  text-align: center;
+}
+
+.modal-content label {
+  display: flex;
+  align-items: center;
+  margin: 15px 0 8px;
+  font-weight: 600;
+  font-size: 17px;
+  color: #333;
+}
+
+.modal-content label i {
+  margin-right: 10px;
+  color: #007BFF;
+}
+
+.modal-content input, 
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.modal-content .btn-group {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.submit-btn, .close-btn {
+  padding: 10px 20px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.submit-btn {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+.close-btn {
+  background-color: #ccc;
+}
+
+/* Optional: Toast message */
+.toast {
+  display: none;
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background: #28a745;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+/* === VALUES / MISSION SECTION === */
+.mission-section {
+      padding: 60px 20px;
+      background: #f0f2f5;
+    }
+
+    .mission-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .mission-content h2 {
+      font-size: 36px;
+      color: #222;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 360px;
+      transition: all 0.3s ease;
+      border-left: 10px solid #ccc; /* default fallback */
+    }
+
+    /* Distinct left border colors */
+    .mission {
+      border-left: 10px solid #007bff; /* Blue */
+    }
+
+    .vision {
+      border-left: 10px solid #28a745; /* Green */
+    }
+
+    .values {
+      border-left: 10px solid #ff9800; /* Orange */
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .icon {
+      font-size: 30px;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+
+    .card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        max-width: 100%;
+      }
+    }
+/* === OPEN POSITIONS SECTION === */
+  .jobs-section {
+  max-width: 1600px;
+  margin: auto;
+}
+
+.section-heading {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 👈 Controls how many per row */
+  gap: 20px;
+  padding: 20px;
+}
+
+.job-stat-card {
+  border: 2px solid transparent; /* 🔸 No visible border initially */
+  border-radius: 15px;
+  max-width: 320px;
+  padding: 2px;
+  background: none;
+  background-size: 600% 600%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  will-change: transform, box-shadow;
+}
+
+.job-stat-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: #3b82f6; /* 🔸 Show border on hover */
+}
+
+.job-card-inner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  border-radius: 13px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.job-stat-card:hover .job-card-inner {
+  transform: rotateY(180deg);
+}
+
+.job-card-front,
+.job-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.job-card-back {
+  transform: rotateY(180deg);
+  background:#F0F8FF; /* 🔸 Use only one color for all card backs */
+  color: #333;
+}
+
+.job-icon img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin: 0 auto 15px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+}
+
+.exp-badge {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: #0ea5e9;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.job-card-back h4 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.job-card-back p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  padding: 0 10px;
+}
+
+.faq-section {
+    background-color: #f0f4f8;
+    padding: 60px 20px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .faq-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  .faq-container h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color:#003366;
+  }
+
+  .faq-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 15px 10px;
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .faq-question i.fa-question-circle {
+    color: #00C9A7;
+    margin-right: 10px;
+  }
+
+  .faq-answer {
+    display: none;
+    padding: 0 15px 15px 40px;
+    font-size: 16px;
+    color: #555;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .arrow-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item.active .faq-answer {
+    display: block;
+  }
+
+  .faq-item.active .arrow-icon {
+    transform: rotate(180deg);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .gradient-heading {
+   background: linear-gradient(to right, #003366);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+  </style>
+</head>
+<body>
+
+ <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="shape yellow-dot"></div>
+    <div class="shape blue-square"></div>
+    <div class="shape pink-triangle"></div>
+    <div class="shape white-dash"></div>
+    <h1>Join a Team that <span>Values</span> Your <span>Growth!</span></h1>
+    <p>
+      Astrolite is redefining technology to transform the workplace. Our goal is to make
+      corporate environments smarter and more efficient. We are searching for dedicated
+      individuals to join our growing team.
+    </p>
+    <button class="btn" onclick="location.href='#openings'">View Openings</button>
+  </section>
+
+
+<section class="features-section">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <div class="features-text">
+    <h2 class="gradient-heading">Discover What Makes Astrolite the Best Fit for You?</h2>
+
+    <div class="feature-point">
+      <h3><i class="fas fa-lightbulb"></i> Innovative Environment</h3>
+      <p>We’re constantly defining new industry standards.</p>
+    </div>
+
+    <div class="feature-point">
+      <h3><i class="fas fa-chart-line"></i> Growth Opportunities</h3>
+      <p>We believe in your potential—DigiSME is committed to your growth.</p>
+    </div>
+
+    <div class="feature-point">
+      <h3><i class="fas fa-users"></i> Collaborative Culture</h3>
+      <p>We value cooperation, innovation, and diversity.</p>
+    </div>
+
+    <div class="feature-point">
+      <h3><i class="fas fa-heart"></i> Employee-Centric</h3>
+      <p>You're not just an employee—you’re family.</p>
+    </div>
+  </div>
+
+  <div class="features-img">
+    <img src="https://www.digisme.in/contents/images/digisme-the-best-fit-for-you.webp" alt="Team Image" />
+  </div>
+</section>
+
+  <!-- SECTION 3 - CAROUSEL -->
+ <!-- SECTION 3 - CAROUSEL -->
+<section class="slider-section">
+   <h2 class="gradient-heading" style="text-align: center; font-size: 2rem; margin-bottom: 20px;">Why Working with Astrolite is Awesome</h2>
+  <div class="carousel-wrapper">
+    <button class="carousel-button left">&#10094;</button>
+    
+    <div class="carousel-track-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="card active">
+          <img src="https://cdn.mos.cms.futurecdn.net/7NBFMugk9wea5Y29Hh5tMG-1200-80.jpg" alt="Annual Outing">
+          <p class="caption">Annual Outings</p>
+        </div>
+        <div class="card">
+          <img src="https://thepaintsesh.com/wp-content/uploads/2021/04/corporate-580e8bbf3df78c2c73adc69a-scaled.jpeg" alt="Team Fun">
+          <p class="caption">Team Activities</p>
+        </div>
+        <div class="card">
+          <img src="https://thumbs.dreamstime.com/b/happy-team-diverse-corporate-employees-office-lobby-close-up-210083503.jpg" alt="Office View">
+          <p class="caption">Collaborative Culture</p>
+        </div>
+        <div class="card">
+          <img src="https://blog.hubspot.com/hubfs/company-outing.jpg?t=1508065303487" alt="Annual Outing">
+          <p class="caption">Annual Outing</p>
+        </div>
+        <div class="card">
+          <img src="https://cdn1.matadornetwork.com/blogs/1/2018/09/Festival-in-Chiang-Mai-Thailand.jpg" alt="Office View">
+          <p class="caption">Festivals & Cultural Events</p>
+        </div>
+        <div class="card">
+          <img src="https://joingenius.com/wp-content/uploads/2024/04/fun-games-in-office-on-fridays-cup-stacking.png" alt="Office View">
+          <p class="caption">Game & Chill Fridays</p>
+        </div>
+
+      </div>
+    </div>
+    
+    <button class="carousel-button right">&#10095;</button>
+  </div>
+
+  <div class="dots" id="carouselDots"></div>
+</section>
+<script>
+  const track = document.getElementById("carouselTrack");
+  const cards = document.querySelectorAll(".card");
+  const leftBtn = document.querySelector(".carousel-button.left");
+  const rightBtn = document.querySelector(".carousel-button.right");
+  const dotsContainer = document.getElementById("carouselDots");
+  let index = 0;
+
+  function createDots() {
+    cards.forEach((_, i) => {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => {
+        index = i;
+        updateCarousel();
+      });
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  function updateCarousel() {
+    const width = cards[0].offsetWidth + 20;
+    track.style.transform = `translateX(-${index * width}px)`;
+
+    document.querySelectorAll(".dot").forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+
+    cards.forEach((card, i) => {
+      card.classList.toggle("active", i === index);
+    });
+  }
+
+  leftBtn.onclick = () => {
+    index = (index - 1 + cards.length) % cards.length;
+    updateCarousel();
+  };
+
+  rightBtn.onclick = () => {
+    index = (index + 1) % cards.length;
+    updateCarousel();
+  };
+
+  createDots();
+  updateCarousel();
+</script>
+
+<!-- === VALUES / MISSION SECTION === -->
+<!-- === MISSION / VISION / VALUES SECTION === -->
+<section class="mission-section">
+  <div class="mission-container">
+
+    <!-- Title -->
+    <div class="mission-content">
+      <h2 class="gradient-heading">Our Mission, Vision & Core Values</h2>
+    </div>
+
+    <!-- Cards with colored left borders -->
+    <div class="cards">
+      <!-- Mission -->
+      <div class="card mission">
+        <span class="icon">🎯</span>
+        <h3>Our Mission</h3>
+        <p>To innovate and deliver cutting-edge HR solutions that empower organizations to thrive and grow.</p>
+        <p>We aim to streamline HR processes with smart technology, reduce manual efforts, and enhance employee satisfaction at every level.</p>
+      </div>
+
+      <!-- Vision -->
+      <div class="card vision">
+        <span class="icon">💡</span>
+        <h3>Our Vision</h3>
+        <p>To be the most trusted HRMS platform for transforming modern workplaces across the globe.</p>
+        <p>We envision a future where human resource management is seamless, data-driven, and people-first in every organization we serve.</p>
+      </div>
+
+      <!-- Core Values -->
+      <div class="card values">
+        <span class="icon">🤝</span>
+        <h3>Core Values</h3>
+        <p><strong>Integrity:</strong> We uphold honesty and transparency in all our actions.</p>
+        <p><strong>Collaboration:</strong> Success comes from working together as one team.</p>
+        <p><strong>Innovation:</strong> We constantly evolve to build smarter solutions.</p>
+        <p><strong>Customer-Centricity:</strong> Our clients are at the heart of everything we do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === AUTOSCROLL IMAGE GALLERY (HIGHLIGHTED) === -->
+<!-- === HIGHLIGHTED AUTOSCROLL GALLERY WITH HEADER === -->
+<section class="autoscroll-gallery">
+  <h2 class="gradient-heading gallery-heading">Work. Play. Thrive</h2>
+
+  <div class="scrolling-images">
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive23.webp" alt="Team Event 1" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive13.webp" alt="Team Event 2" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive14.webp" alt="Team Image" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive16.webp" alt="Outing" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive17.webp" alt="Office Banner" />
+
+    <!-- DUPLICATE for seamless scroll -->
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive23.webp" alt="Duplicate 1" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive3.webp" alt="Duplicate 2" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive4.webp" alt="Duplicate 3" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive5.webp" alt="Duplicate 4" />
+    <img src="https://www.digisme.in/contents/images/career/work-play-thrive8.webp" alt="Duplicate 5" />
+  </div>
+</section>
+
+
+
+ <section class="jobs-section" id="openings"></section>
+<h2 class="gradient-heading section-heading">✨ Open Positions</h2>
+  <div class="jobs-grid">
+    <!-- All your 10 job cards here (already provided in your message) -->
+    <!-- Keep them exactly as-is -->
+    <!-- No changes needed to your job card HTML -->
+    <!-- Just use the same code you pasted above -->
+    <!-- Job 1 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://as2.ftcdn.net/v2/jpg/04/32/10/43/1000_F_432104309_g7PupsCTVbVRgTnvfisMHL8dxTzOxDxU.jpg" alt="Software Support" />
+          </div>
+          <h3>Software Support Specialist</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">0–5+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Provide support to users, troubleshoot software issues, and ensure smooth system operations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 2 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://www.vcubesoftsolutions.com/wp-content/uploads/2021/11/2122.jpg" alt="Dotnet Developer" />
+          </div>
+          <h3>Dotnet Fullstack Developer</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">2+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Work with .NET Core and Angular to develop fullstack applications and backend APIs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 3 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://i.pinimg.com/originals/78/87/61/78876171ebe3d4a5013d2ee894c2d10c.jpg" alt="Fullstack Angular Developer" />
+          </div>
+          <h3>Fullstack Developer (Angular + .NET Core)</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">2+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Build scalable web apps with Angular frontend and .NET backend. Ensure code quality and testing.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 4 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230617194030/Getting-Started-with-iOS-Development.webp" alt="iOS Developer" />
+          </div>
+          <h3>iOS Developer</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">2+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Create high-quality mobile apps using Swift or Objective-C. Collaborate on design and performance.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 5 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://tse4.mm.bing.net/th/id/OIP.aUT1pcBqSFsq-cNvKK3UHgHaE8?pid=Api&P=0&h=180" alt="Android Developer" />
+          </div>
+          <h3>Android Developer</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">2+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Develop Android applications using Kotlin/Java and ensure app performance and stability.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 6 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://tse2.mm.bing.net/th/id/OIP.QXXpnsFnNBx7G-a0IIes5AHaE7?pid=Api&P=0&h=180" alt="UI/UX Designer" />
+          </div>
+          <h3>UI & UX Developer</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">3+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Design user interfaces and experiences using Figma, Adobe XD. Focus on usability and responsiveness.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 7 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.k1u84CvL-Sxe2EV2naAaXQHaE4?pid=Api&P=0&h=180" alt="Python Developer" />
+          </div>
+          <h3>Python Developer</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">3+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Build web apps using Python frameworks like Django or Flask. Work on automation and data processing.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job 8 -->
+    <div class="job-stat-card">
+      <div class="job-card-inner">
+        <div class="job-card-front">
+          <div class="job-icon">
+            <img src="https://atees.org/onam/img/fullstack/fsc-java.jpg" alt="Java Full Stack Developer" />
+          </div>
+          <h3>Java Full Stack Developer</h3>
+          <p>India | Full Time</p>
+          <span class="exp-badge">1+ Years</span>
+        </div>
+        <div class="job-card-back">
+          <h4>About the Role</h4>
+          <p>Work on both frontend (React/Angular) and backend (Java Spring Boot) to deliver fullstack solutions.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="faq-container">
+    <h2 class="gradient-heading">💬 Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span><i class="fas fa-question-circle"></i> How do I apply for a job at your company?</span>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+      </button>
+      <div class="faq-answer">
+        <p>You can apply by clicking the "Apply Now" button in the careers section. Fill out the form and upload your resume. Our team will review your profile and get back to you within 5 working days.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span><i class="fas fa-question-circle"></i> Can I apply for multiple positions?</span>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Yes, you can apply for multiple roles that match your skills. Please submit a separate application for each position.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span><i class="fas fa-question-circle"></i> What documents do I need to submit?</span>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+      </button>
+      <div class="faq-answer">
+        <p>You should submit your latest resume. A cover letter or portfolio is optional but highly recommended for creative or technical roles.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span><i class="fas fa-question-circle"></i> What is the interview process like?</span>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+      </button>
+      <div class="faq-answer">
+        <p>The process typically includes an initial screening call, followed by a technical or skill-based assessment, and one or more interviews with the team.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span><i class="fas fa-question-circle"></i> Do you offer remote or hybrid work options?</span>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Yes, we support flexible work arrangements including remote, hybrid, and in-office roles, depending on the job profile.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span><i class="fas fa-question-circle"></i> How long does it take to hear back after applying?</span>
+        <i class="fas fa-chevron-down arrow-icon"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Our team aims to respond within 5–7 business days. If shortlisted, you will be contacted via email or phone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Font Awesome CDN (if not already included) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script>
+  const faqItems = document.querySelectorAll(".faq-item");
+
+  faqItems.forEach(item => {
+    const question = item.querySelector(".faq-question");
+    question.addEventListener("click", () => {
+      item.classList.toggle("active");
+    });
+  });
+</script>
+
+<!-- === APPLICATION PROCESS / CTA SECTION === -->
+ <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<section class="cta-section">
+  <div class="cta-box">
+     <h2><i class="fas fa-clipboard-check"></i> Application Process</h2>
+    <p><i class="fas fa-file-alt"></i> <strong>How to Apply:</strong> Click the <b>Apply Now</b> button below and complete the form.</p>
+    <p><i class="fas fa-user-check"></i> <strong>After You Apply:</strong> We’ll review and contact you within 5 business days.</p>
+    <p><i class="fas fa-upload"></i> <strong>Resume/Portfolio:</strong> Upload your documents during the application.</p>
+    <p><i class="fas fa-bullseye"></i> <strong>Why it matters:</strong> We want to match you with the right opportunity!</p>
+    <button class="apply-btn" onclick="openModal()">Apply Now</button>
+  </div>
+</section>
+
+<!-- === MODAL === -->
+<div class="modal" id="applicationModal">
+  <div class="modal-content">
+    <h3><i class="fas fa-file-signature"></i> Job Application Form</h3>
+
+    <label for="name"><i class="fas fa-user"></i> Full Name:</label>
+    <input type="text" id="name" placeholder="Enter your full name" required>
+
+    <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+
+    <label for="phone"><i class="fas fa-phone"></i> Phone Number:</label>
+    <input type="tel" id="phone" placeholder="Enter your phone number">
+
+    <label for="position"><i class="fas fa-briefcase"></i> Position Applied For:</label>
+    <input type="text" id="position" placeholder="e.g. Frontend Developer">
+
+    <label for="resume"><i class="fas fa-file-upload"></i> Upload Resume:</label>
+    <input type="file" id="resume">
+
+    <label for="message"><i class="fas fa-comment-dots"></i> Cover Letter / Message:</label>
+    <textarea id="message" rows="4" placeholder="Write something..."></textarea>
+
+    <div class="btn-group">
+      <button class="close-btn" onclick="closeModal()">Close</button>
+      <button class="submit-btn" onclick="submitForm()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Message -->
+<div class="toast" id="toastMsg">✅ Application Submitted Successfully!</div>
+
+<script>
+  function openModal() {
+    document.getElementById("applicationModal").style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("applicationModal").style.display = "none";
+  }
+
+  function submitForm() {
+    // show toast message
+    const toast = document.getElementById("toastMsg");
+    toast.style.display = "block";
+
+    // auto hide toast after 3 sec
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 3000);
+
+    // close modal after short delay
+    setTimeout(() => {
+      closeModal();
+    }, 1000);
+
+    // clear form fields (optional)
+    document.querySelectorAll("#applicationModal input, #applicationModal textarea").forEach(el => {
+      if (el.type !== "file") el.value = "";
+    });
+  }
+</script>
+</body>
+</html>

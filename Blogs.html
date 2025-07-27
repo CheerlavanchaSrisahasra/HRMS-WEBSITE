@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Blogs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .main-content-wrapper {
+            width: 100%;
+           
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 1rem; 
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+            animation: headerEntrance 1.2s ease-out forwards;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(106,130,251,0.08) 0%, rgba(252,92,125,0.05) 50%, transparent 100%);
+            background-size: 200% 200%;
+            opacity: 0;
+            animation: backgroundShimmer 8s infinite alternate ease-in-out, backgroundFadeIn 1.5s ease-out 0.5s forwards;
+            z-index: 0;
+        }
+
+        .header-section h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            background: linear-gradient(to right, #6a82fb 40%, #fc5c7c6b 100%); /* New gradient colors */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: slideInLeft 0.8s ease-out forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-section p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(to right, #0ac8f8 0%, #2193b0 100%); /* New gradient colors */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: slideInRight 0.8s ease-out forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .featured-resource {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .featured-resource-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 0.75rem;
+            object-fit: cover;
+            background-color: #e0e0e0;
+        }
+
+        .featured-resource-content {
+            flex-grow: 1;
+        }
+
+        .resource-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: white-space 0.3s ease-in-out, overflow 0.3s ease-in-out, text-overflow 0.3s ease-in-out;
+        }
+        .grid-resource-card:hover .resource-meta {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+
+        .resource-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .resource-description {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            -webkit-text-fill-color: initial;
+            background: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Ensures description is limited to 2 lines by default */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: -webkit-line-clamp 0.3s ease-in-out, white-space 0.3s ease-in-out, overflow 0.3s ease-in-out, text-overflow 0.3s ease-in-out;
+        }
+        .grid-resource-card:hover .resource-description {
+            -webkit-line-clamp: unset; /* Remove line clamping on hover */
+            white-space: normal; /* Allow text to wrap naturally */
+            overflow: visible; /* Show all content */
+            text-overflow: clip; /* Prevent ellipsis */
+        }
+
+        .resource-action-button {
+            background-color: #007bff;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .resource-action-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .resource-action-button svg {
+            width: 1em;
+            height: 1em;
+        }
+
+        .grid-resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: start;
+        }
+
+        .grid-resource-card {
+            background-color: #f8f8f8;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            position: relative;
+        }
+        .grid-resource-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 0 15px rgba(0, 123, 255, 0.6);
+            border: 1px solid #007bff;
+            z-index: 10;
+            background-color: #f8faff;
+        }
+
+        .grid-resource-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #e0e0e0;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .grid-resource-card:hover .grid-resource-image {
+            transform: scale(1.03);
+        }
+
+        .grid-resource-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .grid-resource-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: white-space 0.3s ease-in-out, overflow 0.3s ease-in-out, text-overflow 0.3s ease-in-out;
+        }
+        .grid-resource-card:hover .grid-resource-title {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+
+        .all-resources-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Pop-up (Modal) Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .modal-close-button:hover {
+            color: #333;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .modal-meta {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-body {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.01);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes headerEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        @keyframes backgroundFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes backgroundShimmer {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(50px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .grid-resource-card:nth-child(1) { animation-delay: 0.1s; }
+        .grid-resource-card:nth-child(2) { animation-delay: 0.2s; }
+        .grid-resource-card:nth-child(3) { animation-delay: 0.3s; }
+        .grid-resource-card:nth-child(4) { animation-delay: 0.4s; }
+        .grid-resource-card:nth-child(5) { animation-delay: 0.5s; }
+        .grid-resource-card:nth-child(6) { animation-delay: 0.6s; }
+        .grid-resource-card:nth-child(7) { animation-delay: 0.7s; }
+        .grid-resource-card:nth-child(8) { animation-delay: 0.8s; }
+        .grid-resource-card:nth-child(9) { animation-delay: 0.9s; }
+        .grid-resource-card:nth-child(10) { animation-delay: 1.0s; }
+        .grid-resource-card:nth-child(11) { animation-delay: 1.1s; }
+
+        @media (min-width: 768px) {
+            .featured-resource {
+                flex-direction: row;
+            }
+            .featured-resource-image {
+                width: 50%;
+                height: auto;
+            }
+            .featured-resource-content {
+                width: 50%;
+                padding-left: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid-resources {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="main-content-wrapper">
+        <header class="header-section">
+            <h1 class="section-title">HR Blogs</h1>
+            <p class="header-description">
+            Dive into our collection of articles and insights on Human Resources.
+            </p>
+        </header>
+
+        <div class="content-section">
+            <div class="grid-resources">
+
+                <div class="grid-resource-card">
+                    <img src="https://www.myarklamiss.com/wp-content/uploads/sites/15/2019/07/minimum-wage-graphic_1530523989207.jpg_383302_ver1.0_1280_720-1.jpg?w=1280" alt="Minimum Wage" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/1280x720/e0e0e0/555555?text=Minimum+Wage';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">BENEFITS & COMP • 9 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="minimumWage">Minimum Wage by State</h3>
+                        <p class="resource-description">
+                            Are you unsure of minimum wage? Learn about state wage laws.
+                        </p>
+                        <button class="resource-action-button" data-article-id="minimumWage">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://securitytoday.com/Articles/List/-/media/SEC/Security-Products/Images/2018/01/dataprivacyday.jpg" alt="HR Confidential" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/1200x628/e0e0e0/555555?text=HR+Confidential';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">HR INSIGHTS • 5 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="hrConfidential">Is HR Confidential?</h3>
+                        <p class="resource-description">
+                            Learn what's covered in the workplace and how your data is protected.
+                        </p>
+                        <button class="resource-action-button" data-article-id="hrConfidential">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://www.shutterstock.com/image-vector/business-marketing-strategy-cartoon-man-600nw-2137929399.jpg" alt="HR Presentation" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/750x422/e0e0e0/555555?text=HR+Presentation';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">HR INSIGHTS • 7 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="hrPresentation">How to Make Your Next HR Data Presentation</h3>
+                        <p class="resource-description">
+                            follow these valuable tips from HR pros and the HR design team.
+                        </p>
+                        <button class="resource-action-button" data-article-id="hrPresentation">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://cdn.hifives.in/wp-content/uploads/2022/08/Employee-Rewards-and-Recognition-Program.png" alt="Employee Recognition" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/750x422/e0e0e0/555555?text=Employee+Recognition';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">BENEFITS & COMP • 4 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="celebrateSuccess">How to Celebrate Success</h3>
+                        <p class="resource-description">
+                            these creative employee recognition ideas that help you show authentic appreciation.
+                        </p>
+                        <button class="resource-action-button" data-article-id="celebrateSuccess">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTCyNvIFosfTbS1OzqzKJBrYrfl_ByR3Iixw&s" alt="Sexual Harassment" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/612x612/e0e0e0/555555?text=Interviewing+Leaders';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">HR INSIGHTS • 11 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="interviewingSeniors">The Ultimate HR Guide to Interviewing Seniors</h3>
+                        <p class="resource-description">
+                            Discover HR’s role in interviewing senior leaders.
+                        </p>
+                        <button class="resource-action-button" data-article-id="interviewingSeniors">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxpFzeVPA_Bz86F3fT6_avMdba9WfrGjf99A&s" alt="Inclusive Workplace" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/612x612/e0e0e0/555555?text=Inclusive+Workplace';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">HR INSIGHTS • 10 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="inclusiveWorkplace">How to Create an Inclusive Workplace Dress Code Policy</h3>
+                        <p class="resource-description">
+                            create an inclusive and effective workplace dress code policy.
+                        </p>
+                        <button class="resource-action-button" data-article-id="inclusiveWorkplace">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://media.istockphoto.com/id/1346611118/vector/scene-with-business-people-working-in-the-office.jpg?s=612x612&w=0&k=20&c=NH5XYaUYJan2QuqR6zHC0AFT8D29Cd6ynMqxExPm4kA=" alt="Workplace Romance" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/612x612/e0e0e0/555555?text=Workplace+Romance';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">HR INSIGHTS • 10 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="workplaceSupport">Workplace Support</h3>
+                        <p class="resource-description">
+                            Learn how to support employees with AstroHRM.
+                        </p>
+                        <button class="resource-action-button" data-article-id="workplaceSupport">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid-resource-card">
+                    <img src="https://i0.wp.com/cezannehr.com/wp-content/uploads/2016/12/The-Six-Personas-of-HR-Which-ones-are-you-Cezanne-HR-Blog.png?resize=660%2C372&ssl=1" alt="HR Associations" class="grid-resource-image" onerror="this.onerror=null;this.src='https://placehold.co/660x372/e0e0e0/555555?text=HR+Associations';">
+                    <div class="grid-resource-content">
+                        <p class="resource-meta">HR INSIGHTS • 8 MIN</p>
+                        <h3 class="grid-resource-title" data-article-id="hrAssociations">18 HR Associations</h3>
+                        <p class="resource-description">
+                            find the right professional group to grow your HR career in 2025.
+                        </p>
+                        <button class="resource-action-button" data-article-id="hrAssociations">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeModal">&times;</button>
+            <h2 class="modal-title" id="modalArticleTitle"></h2>
+            <p class="modal-meta" id="modalArticleMeta"></p>
+            <div class="modal-body" id="modalArticleBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Article Data (Full content for pop-ups)
+        const articleData = {
+            minimumWage: {
+                title: "Minimum Wage by State",
+                meta: "BENEFITS & COMP • 9 MIN",
+                body: "This article provides a comprehensive overview of minimum wage laws across different states in the USA, including recent updates and projections for 2025. It covers federal regulations, state-specific nuances, and how these impact HR policies and payroll. Understanding these laws is crucial for compliance and fair employee compensation. Dive deeper into the specifics, including exceptions for certain employee types and industries, and find out how to stay updated on future changes.",
+                image: "https://www.myarklamiss.com/wp-content/uploads/sites/15/2019/07/minimum-wage-graphic_1530523989207.jpg?w=1280"
+            },
+            hrConfidential: {
+                title: "Is HR Confidential?",
+                meta: "HR INSIGHTS • 5 MIN",
+                body: "The confidentiality of information shared with HR is a common concern for employees. This article clarifies what types of information HR is legally and ethically bound to keep confidential, and what situations might require them to disclose information (e.g., legal requirements, safety concerns). It emphasizes the importance of trust between employees and HR, and outlines best practices for HR professionals in handling sensitive data, ensuring employee privacy and data protection within the workplace context.",
+                image: "https://securitytoday.com/Articles/List/-/media/SEC/Security-Products/Images/2018/01/dataprivacyday.jpg"
+            },
+            hrPresentation: {
+                title: "How to Make Your Next HR Data Presentation",
+                meta: "HR INSIGHTS • 7 MIN",
+                body: "Presenting HR data effectively can be a challenge. This article offers practical tips and strategies for creating engaging and insightful HR data presentations. It covers everything from defining your audience and objective, to choosing the right visualizations, and crafting a compelling narrative. Learn how to transform raw data into actionable insights that resonate with stakeholders, using examples and templates from experienced HR professionals and design experts to elevate your presentation skills.",
+                image: "https://www.shutterstock.com/image-vector/business-marketing-strategy-cartoon-man-600nw-2137929399.jpg"
+            },
+            celebrateSuccess: {
+                title: "How to Celebrate Success",
+                meta: "BENEFITS & COMP • 4 MIN",
+                body: "Employee recognition is vital for morale and productivity. This article explores creative and impactful ways to celebrate employee successes and milestones. Beyond traditional awards, it suggests innovative ideas like peer-to-peer recognition programs, personalized thank-yous, and team-building activities that foster a culture of appreciation. Discover how genuine recognition can boost employee engagement, reduce turnover, and create a positive work environment, ultimately contributing to organizational success.",
+                image: "https://cdn.hifives.in/wp-content/uploads/2022/08/Employee-Rewards-and-Recognition-Program.png"
+            },
+            interviewingSeniors: {
+                title: "The Ultimate HR Guide to Interviewing Seniors",
+                meta: "HR INSIGHTS • 11 MIN",
+                body: "Interviewing senior leaders requires a different approach than interviewing entry-level candidates. This ultimate guide for HR professionals delves into effective strategies for interviewing senior-level candidates, focusing on competency-based questions, leadership assessment, and cultural fit. It provides frameworks for structuring interviews, evaluating executive presence, and ensuring a robust selection process that aligns with the organization's strategic goals and future leadership needs.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTCyNvIFosfTbS1OzqzKJBrYrfl_ByR3Iixw&s"
+            },
+            inclusiveWorkplace: {
+                title: "How to Create an Inclusive Workplace Dress Code Policy",
+                meta: "HR INSIGHTS • 10 MIN",
+                body: "Developing a dress code policy that promotes inclusivity while maintaining professionalism can be tricky. This article offers practical guidance on creating a workplace dress code that respects diversity, cultural differences, and individual expression. It emphasizes moving beyond outdated norms to foster an environment where all employees feel comfortable and respected, while still ensuring safety and brand image. Learn about common pitfalls to avoid and best practices for implementation and communication.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxpFzeVPA_Bz86F3fT6_avMdba9WfrGjf99A&s"
+            },
+            workplaceSupport: {
+                title: "Workplace Support",
+                meta: "HR INSIGHTS • 10 MIN",
+                body: "A supportive workplace is crucial for employee well-being and productivity. This article explores various ways HR and management can foster a supportive environment using AstroHRM. It covers mental health resources, flexible work arrangements, employee assistance programs, and open communication channels. Learn how to identify and address employee needs, promote a culture of empathy, and build a resilient workforce that thrives even in challenging times, leveraging technology for better support.",
+                image: "https://media.istockphoto.com/id/1346611118/vector/scene-with-business-people-working-in-the-office.jpg?s=612x612&w=0&k=20&c=NH5XYaUYJan2QuqR6zHC0AFT8D29Cd6ynMqxExPm4kA="
+            },
+            hrAssociations: {
+                title: "18 HR Associations",
+                meta: "HR INSIGHTS • 8 MIN",
+                body: "Joining a professional HR association can significantly boost your career. This article lists 18 prominent HR associations and discusses the benefits of membership, including networking opportunities, professional development, certifications, and access to industry resources. Whether you're a seasoned HR professional or just starting, finding the right community can provide invaluable support and insights to help you grow your HR career in 2025 and beyond.",
+                image: "https://i0.wp.com/cezannehr.com/wp-content/uploads/2016/12/The-Six-Personas-of-HR-Which-ones-are-you-Cezanne-HR-Blog.png?resize=660%2C372&ssl=1"
+            }
+        };
+
+        // Get modal elements
+        const articleModal = document.getElementById('articleModal');
+        const closeModalButton = document.getElementById('closeModal');
+        const modalArticleTitle = document.getElementById('modalArticleTitle');
+        const modalArticleMeta = document.getElementById('modalArticleMeta');
+        const modalArticleBody = document.getElementById('modalArticleBody');
+
+        // Function to open the modal with article data
+        function openArticleModal(articleId) {
+            const article = articleData[articleId];
+            if (article) {
+                modalArticleTitle.textContent = article.title;
+                modalArticleMeta.textContent = article.meta;
+                modalArticleBody.textContent = article.body;
+                articleModal.classList.add('open');
+            }
+        }
+
+        // Function to close the modal
+        function closeArticleModal() {
+            articleModal.classList.remove('open');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded successfully with updated blog posts and buttons.');
+
+            const resourceActionButtons = document.querySelectorAll('.resource-action-button');
+            resourceActionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const articleId = button.dataset.articleId;
+                    if (articleId) {
+                        openArticleModal(articleId);
+                    }
+                });
+            });
+
+            // Close modal when close button is clicked
+            closeModalButton.addEventListener('click', closeArticleModal);
+
+            // Close modal when clicking outside the modal content
+            articleModal.addEventListener('click', (event) => {
+                if (event.target === articleModal) {
+                    closeArticleModal();
+                }
+            });
+
+            // Close modal when Escape key is pressed
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && articleModal.classList.contains('open')) {
+                    closeArticleModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

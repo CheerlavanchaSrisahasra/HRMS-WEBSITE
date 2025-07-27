@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astrolite Increment & Bonus Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for consistent styling */
+      :root {
+        --primary-green: #38b44a;
+        --light-green: #e6f6e8;
+        --dark-blue: #1a237e;
+        --light-blue: #e0f2f7; /* Used for main background now */
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --white: #fff;
+        --border-radius: 8px;
+        --shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* For general cards */
+        --astrolite-blue: #e0f2f7; /* Main background color from the new screenshot */
+        --astrolite-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow for cards */
+        --astrolite-text-blue: #1a237e; /* Darker text color for headings */
+        --modal-bg: rgba(0, 0, 0, 0.5); /* Overlay for modal */
+        --modal-card-bg: #fff;
+        --modal-border-radius: 12px;
+        --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Basic Reset and Body Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(
+          --astrolite-blue
+        ); /* Apply the new theme background */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      /* Utility Container for content width */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Section Styling */
+      section {
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+        background-color: var(
+          --astrolite-blue
+        ); /* Ensure all sections have the theme background */
+      }
+
+      /* Override previous alternating background if needed, now all sections are the same theme color */
+      section:nth-of-type(odd) {
+        background-color: var(--astrolite-blue);
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3 {
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(
+          --astrolite-text-blue
+        ); /* Headings use the theme's dark blue */
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      h3 {
+        font-size: 1.8em;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      /* Button Styling */
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-primary:hover {
+        background-color: #151a5c;
+        border-color: #151a5c;
+      }
+
+      /* Disabled state for buttons */
+      .btn-primary:disabled {
+        background-color: #cccccc;
+        border-color: #cccccc;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .btn-primary:disabled:hover {
+        background-color: #cccccc; /* Keep same on hover when disabled */
+        border-color: #cccccc;
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--dark-blue);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-blue);
+      }
+
+      .btn-success {
+        background-color: var(--primary-green);
+        color: var(--white);
+        border: 1px solid var(--primary-green);
+      }
+
+      .btn-success:hover {
+        background-color: #319d40;
+        border-color: #319d40;
+      }
+
+      /* Flexbox Layout for content rows */
+      .flex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 40px; /* Space between flex items */
+      }
+
+      .flex-row > div {
+        flex: 1; /* Allow items to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+      }
+
+      /* Image Mockup Styling - General for any image that needs a mockup container */
+      .image-mockup {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        background-color: transparent; /* Ensure no default background */
+        padding: 0; /* Remove padding if image fills entirely */
+      }
+      .image-mockup img {
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove extra space below image */
+        border-radius: var(
+          --border-radius
+        ); /* Apply border-radius to the image itself */
+      }
+
+      /* Specific adjustments for hero section image */
+      .section-hero .hero-image {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--border-radius);
+        box-shadow: none; /* No shadow for this specific image */
+        flex: 1; /* Allow image to take up flex space */
+        min-width: 300px; /* Ensure it doesn't get too small */
+        object-fit: contain; /* Ensure image scales properly */
+        align-self: center; /* Center the image vertically in the flex container */
+        order: 2; /* Image on the right */
+      }
+
+      /* Adjustments for images that are now direct children of flex-row */
+      .section-hr-management .direct-image,
+      .section-reporting .direct-image {
+        /* Added for new section */
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--border-radius);
+        box-shadow: none; /* Remove shadow if it was inherited from image-mockup */
+        flex: 1; /* Allow image to take up flex space */
+        min-width: 300px; /* Ensure it doesn't get too small */
+        object-fit: contain; /* Ensure image scales properly */
+        align-self: center; /* Center the image vertically in the flex container */
+      }
+
+      /* Content areas that should be white like cards */
+      .content-card {
+        background-color: var(--white);
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: var(
+          --astrolite-card-shadow
+        ); /* Apply lighter card shadow */
+      }
+
+      /* Specific section styles */
+
+      /* Hero Section: Increment & Bonus Management */
+      .section-hero {
+        background-color: var(--astrolite-blue); /* Matches page background */
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+
+      .section-hero .flex-row {
+        justify-content: space-between; /* Distribute space between content and image */
+        align-items: center; /* Vertically align items */
+        gap: 60px;
+      }
+
+      .section-hero .content {
+        flex: 1.2; /* Content takes more space */
+        max-width: 550px;
+        text-align: left; /* Align text to the left */
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+        order: 1; /* Content on the left */
+      }
+      .section-hero .content h2 {
+        text-align: left; /* Ensure heading is left-aligned */
+        font-size: 3em;
+        margin-bottom: 15px;
+      }
+      .section-hero .content p {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .section-hero .buttons {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start; /* Align buttons to the left */
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Section: Automated Compensation Workflows */
+      .section-hr-management .content {
+        flex: 1.5;
+        padding-left: 40px;
+        order: 2;
+      }
+      .section-hr-management .direct-image {
+        /* Increased height */
+        height: 480px; /* Increased from 400px */
+      }
+
+      .feature-list {
+        list-style: none;
+        margin-top: 30px;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer;
+      }
+
+      .feature-list li::before {
+        content: "+";
+        color: var(--primary-green);
+        font-weight: 700;
+        margin-right: 10px;
+        font-size: 1.2em;
+      }
+      .feature-list li.highlight::before {
+        content: "–";
+      }
+
+      /* Styling for the toggled description */
+      .feature-description {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        margin-left: 20px;
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .feature-description.show {
+        display: block;
+        max-height: 100px;
+        opacity: 1;
+      }
+
+      /* Section: Comprehensive Reporting & Analytics (new section) */
+      .section-reporting .content {
+        flex: 1.5;
+        padding-right: 40px;
+      }
+
+      .section-reporting .direct-image {
+        height: 480px;
+      }
+
+      /* Section: Why choose Astrolite */
+      .section-why-choose {
+        text-align: center;
+      }
+
+      .section-why-choose h2 {
+        margin-bottom: 50px;
+      }
+
+      .reason-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .reason-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--astrolite-card-shadow);
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        max-width: 280px;
+        transition: transform 0.3s ease;
+      }
+
+      .reason-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .reason-card img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+
+      .reason-card h3 {
+        font-size: 1.4em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .reason-card p {
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .flex-row {
+          flex-direction: column;
+          text-align: center;
+        }
+        .flex-row > div {
+          min-width: unset;
+          width: 100%;
+        }
+        .section-hr-management .content,
+        .section-reporting .content,
+        .section-hero .content {
+          /* Added .section-hero .content here */
+          padding-right: 0;
+          padding-left: 0;
+          order: unset; /* Remove explicit order on smaller screens */
+        }
+        .section-hr-management .direct-image,
+        .section-reporting .direct-image,
+        .section-hero .hero-image {
+          /* Added .section-hero .hero-image here */
+          margin-top: 40px;
+          /* Increased height for smaller screens */
+          height: 350px; /* Increased from 300px */
+        }
+
+        .reason-card {
+          max-width: 45%;
+        }
+        .content-card {
+          padding: 30px;
+        }
+        .section-hero .content {
+          padding: 0;
+          text-align: center;
+        }
+        .section-hero .content h2 {
+          text-align: center;
+          font-size: 2.5em;
+        }
+        .section-hero .buttons {
+          justify-content: center;
+        }
+        /* Removed specific hero-image height for 992px, let it be auto */
+      }
+
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 2em;
+        }
+        h3 {
+          font-size: 1.5em;
+        }
+        section {
+          padding: 60px 0;
+        }
+        .reason-cards {
+          flex-direction: column;
+          align-items: center;
+        }
+        .reason-card {
+          max-width: 90%;
+        }
+        .btn {
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          width: 100%;
+        }
+      }
+
+      /* Demo Request Modal Styles */
+      .demo-request-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .demo-request-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .demo-request-modal-content {
+        background-color: #e0f2f7; /* Changed to light blue as sidebar is removed */
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        display: flex;
+        max-width: 600px; /* Reduced max-width as requested */
+        width: 90%;
+        overflow: hidden;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        flex-direction: column; /* Ensure content stacks vertically */
+        max-height: 700px; /* Set maximum height */
+        height: 98vh; /* Fallback for smaller screens */
+        overflow-y: auto; /* Enable vertical scrolling */
+        display: flex;
+        flex-direction: column;
+      }
+      .demo-request-modal-content::-webkit-scrollbar {
+        display: none;
+      }
+
+      .demo-request-modal-overlay.show .demo-request-modal-content {
+        transform: translateY(0);
+      }
+
+      .demo-request-modal-left {
+        display: none; /* Hide the left sidebar content */
+      }
+
+      .demo-request-modal-right {
+        flex: 1;
+        padding: 40px;
+        background-color: #e0f2f7; /* Light blue background */
+        border-radius: var(
+          --modal-border-radius
+        ); /* Apply radius to all corners */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: unset; /* Allow it to shrink */
+        width: 100%; /* Take full width of its parent */
+        position: relative; /* For positioning close button */
+      }
+
+      .demo-request-modal-right .modal-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .demo-request-modal-right .modal-header-top h3 {
+        color: var(--astrolite-text-blue);
+        margin-bottom: 0;
+        font-size: 2em;
+      }
+
+      .demo-request-modal-right .form-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .demo-request-modal-right .form-group {
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 0;
+      }
+
+      .demo-request-modal-right input[type="text"],
+      .demo-request-modal-right input[type="email"],
+      .demo-request-modal-right input[type="tel"],
+      .demo-request-modal-right select,
+      .demo-request-modal-right textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95em;
+        background-color: var(--white);
+        color: var(--text-color);
+      }
+
+      .demo-request-modal-right input[type="text"]:focus,
+      .demo-request-modal-right input[type="email"]:focus,
+      .demo-request-modal-right input[type="tel"]:focus,
+      .demo-request-modal-right select:focus,
+      .demo-request-modal-right textarea:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 2px rgba(56, 180, 74, 0.2);
+      }
+
+      .demo-request-modal-right textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .demo-request-modal-right .btn-schedule-demo {
+        width: 100%;
+        padding: 15px;
+        margin-top: 10px;
+        font-size: 1.1em;
+        font-weight: 600;
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .demo-request-modal-right .btn-schedule-demo:hover {
+        background-color: #151a5c;
+      }
+
+      /* Close button for new modal */
+      .demo-request-close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2em;
+        color: var(--astrolite-text-blue); /* Visible color for close button */
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s ease;
+      }
+      .demo-request-close-btn:hover {
+        color: #555;
+      }
+
+      /* Responsive adjustments for new modal */
+      @media (max-width: 850px) {
+        .demo-request-modal-content {
+          flex-direction: column;
+          width: 95%;
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+        .demo-request-modal-left {
+          display: none;
+        }
+        .demo-request-modal-right {
+          min-width: unset;
+          width: 100%;
+          padding: 30px;
+          border-radius: var(--modal-border-radius);
+        }
+        .demo-request-modal-right .modal-header-top {
+          border-bottom: none;
+          margin-bottom: 15px;
+        }
+        .demo-request-close-btn {
+          top: 10px;
+          right: 10px;
+          font-size: 1.8em;
+          color: var(--astrolite-text-blue);
+        }
+      }
+
+      @media (max-width: 500px) {
+        .demo-request-modal-right {
+          padding: 20px;
+        }
+        .demo-request-modal-right .modal-header-top h3 {
+          font-size: 1.6em;
+        }
+        .demo-request-modal-right .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+        .demo-request-modal-right .form-group {
+          min-width: unset;
+          width: 100%;
+        }
+      }
+
+      /* Success Message Container - Updated for bottom right card */
+      .success-message {
+        position: fixed;
+        bottom: 30px; /* Position from bottom */
+        right: 30px; /* Position from right */
+        background-color: var(--primary-green);
+        color: var(--white);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        transform: translateY(
+          20px
+        ); /* Start slightly below for slide-up effect */
+        min-width: 250px; /* Ensure it's a decent size */
+        justify-content: center; /* Center content horizontally */
+      }
+
+      .success-message.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0); /* Slide up to final position */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section: Increment & Bonus Management -->
+    <section class="section-hero">
+      <div class="container flex-row">
+        <!-- Content now comes first for left alignment -->
+        <div class="content">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Employee Compensation System
+          </p>
+          <h2>Simplify Increment & Bonus Management for Employees & HR</h2>
+          <p>
+            Automate performance-based increments and bonus distributions.
+            Ensure fairness, motivate employees, and manage compensation with
+            transparency and efficiency.
+          </p>
+          <div class="buttons">
+            <a href="#" id="openDemoRequestModalBtn" class="btn btn-primary"
+              >Get a Personalized Demo</a
+            >
+          </div>
+        </div>
+        <!-- Image now comes second for right alignment -->
+        <img
+          class="hero-image"
+          src="https://i.pinimg.com/736x/64/4e/d9/644ed941f4f2a3e7c841022a0aaf536d.jpg"
+          alt="Increment and Bonus Dashboard"
+        />
+      </div>
+    </section>
+
+    <!-- Section: Automated Compensation Workflows -->
+    <section class="section-hr-management">
+      <div class="container flex-row">
+        <img
+          class="direct-image"
+          src="https://i.pinimg.com/736x/63/95/9d/63959d39985fe45e664e45a76bd489e8.jpg"
+          alt="Automated Compensation Workflow"
+        />
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Streamlined Compensation Solution
+          </p>
+          <h2>Automated Increment & Bonus Calculation Workflows</h2>
+          <p>
+            Digitize the entire compensation process, from performance data
+            integration to final bonus payouts, ensuring accuracy and
+            compliance.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Performance-Linked Increments
+              <div class="feature-description">
+                Link annual increments directly to employee performance reviews
+                and predefined metrics for fair and data-driven adjustments.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Automated Bonus Calculations
+              <div class="feature-description">
+                Set up rules for bonus eligibility and calculation based on
+                company performance, individual achievements, or project
+                completion.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Multi-Level Approval Hierarchies
+              <div class="feature-description">
+                Configure various approval stages for compensation adjustments,
+                ensuring all increments and bonuses are reviewed by relevant
+                stakeholders.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Comprehensive Reporting & Analytics -->
+    <section class="section-reporting">
+      <div class="container flex-row">
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            In-depth Insights
+          </p>
+          <h2>Comprehensive Reporting & Analytics for Informed Decisions</h2>
+          <p>
+            Generate powerful reports and analyze compensation data to identify
+            trends, ensure equity, and make data-driven decisions for your
+            workforce.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Customizable Compensation Reports
+              <div class="feature-description">
+                Create tailored reports on salary structures, bonus payouts, and
+                increment history to meet specific analytical needs.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Budget vs. Actuals Analysis
+              <div class="feature-description">
+                Track your compensation budget against actual expenditures in
+                real-time to maintain financial control.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Equity & Fairness Audits
+              <div class="feature-description">
+                Run reports to analyze compensation distribution and identify
+                any potential biases or disparities across employee groups.
+              </div>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="direct-image"
+          src="https://i.pinimg.com/736x/48/c5/38/48c5381c7ba5c0eac8cd0d3aa312b153.jpg"
+          alt="Compensation Reporting Dashboard"
+        />
+      </div>
+    </section>
+
+    <!-- Section: Why choose Astrolite -->
+    <section class="section-why-choose">
+      <div class="container">
+        <h2>Why Choose Astrolite for Increment & Bonus Management?</h2>
+        <div class="reason-cards">
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/04/Hourly-Leaves-with-Reliever.svg"
+              alt="Fairness Icon"
+            />
+            <h3>Fair & Transparent</h3>
+            <p>
+              Ensure equitable and transparent compensation decisions based on
+              clear, data-driven performance metrics, fostering trust.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/04/In-depth-Custom-Reporting.svg"
+              alt="Motivation Icon"
+            />
+            <h3>Boost Motivation</h3>
+            <p>
+              Effectively recognize and reward high-performing employees,
+              significantly boosting morale, engagement, and overall
+              productivity.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/04/Simplified-Leave-Approvals.svg"
+              alt="Budget Control Icon"
+            />
+            <h3>Smart Budgeting</h3>
+            <p>
+              Gain comprehensive visibility and granular control over
+              compensation budgets, preventing overspending and ensuring
+              financial health.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/04/Rule-based-Leave-Automation.svg"
+              alt="Compliance Icon"
+            />
+            <h3>Compliance & Audit</h3>
+            <p>
+              Automate adherence to internal company policies and external labor
+              laws, minimizing risks and simplifying audit processes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Request Modal -->
+    <div id="demoRequestModal" class="demo-request-modal-overlay">
+      <div class="demo-request-modal-content">
+        <div class="demo-request-modal-right">
+          <button class="demo-request-close-btn" aria-label="Close Modal">
+            &times;
+          </button>
+          <div class="modal-header-top">
+            <h3>Let's Talk!</h3>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" id="firstName" placeholder="" />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name*</label>
+              <input type="text" id="lastName" placeholder="" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone*</label>
+              <input type="tel" id="phone" placeholder="" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email*</label>
+              <input type="email" id="email" placeholder="" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="companyName">Company Name*</label>
+              <input type="text" id="companyName" placeholder="" />
+            </div>
+            <div class="form-group">
+              <label for="employeeCount">Employee Count*</label>
+              <select id="employeeCount">
+                <option value="">Select</option>
+                <option value="1-10">1-10</option>
+                <option value="11-50">11-50</option>
+                <option value="51-200">51-200</option>
+                <option value="201-500">201-500</option>
+                <option value="500+">500+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder=""></textarea>
+          </div>
+          <button id="scheduleDemoBtn" class="btn-schedule-demo">
+            Schedule a Demo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message Container -->
+    <div id="successMessage" class="success-message">
+      <span>Demo scheduled successfully!</span>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const openDemoRequestModalBtn = document.getElementById(
+          "openDemoRequestModalBtn"
+        );
+        const demoRequestModal = document.getElementById("demoRequestModal");
+        const demoRequestCloseBtn = document.querySelector(
+          ".demo-request-close-btn"
+        );
+        const scheduleDemoBtn = document.getElementById("scheduleDemoBtn");
+        const successMessage = document.getElementById("successMessage");
+        const toggleFeatureItems = document.querySelectorAll(".toggle-feature");
+
+        // New demo request form inputs
+        const firstNameInput = document.getElementById("firstName");
+        const lastNameInput = document.getElementById("lastName");
+        const phoneInput = document.getElementById("phone");
+        const emailInput = document.getElementById("email");
+        const companyNameInput = document.getElementById("companyName");
+        const employeeCountSelect = document.getElementById("employeeCount");
+        const messageTextarea = document.getElementById("message");
+
+        // Function to show the success message
+        function showSuccessMessage(message) {
+          successMessage.querySelector("span").textContent = message;
+          successMessage.classList.add("show");
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 3000); // Hide after 3 seconds
+        }
+
+        // Show Demo Request Modal
+        openDemoRequestModalBtn.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default link behavior
+          demoRequestModal.classList.add("show");
+          // Optionally reset form fields when opening
+          firstNameInput.value = "";
+          lastNameInput.value = "";
+          phoneInput.value = "";
+          emailInput.value = "";
+          companyNameInput.value = "";
+          employeeCountSelect.value = "";
+          messageTextarea.value = "";
+        });
+
+        // Hide Demo Request Modal
+        demoRequestCloseBtn.addEventListener("click", () => {
+          demoRequestModal.classList.remove("show");
+        });
+
+        // Hide Demo Request Modal if clicking outside the content
+        demoRequestModal.addEventListener("click", (e) => {
+          if (e.target === demoRequestModal) {
+            demoRequestModal.classList.remove("show");
+          }
+        });
+
+        // Handle Schedule Demo button click
+        scheduleDemoBtn.addEventListener("click", () => {
+          // Basic validation (can be expanded)
+          const firstName = firstNameInput.value.trim();
+          const lastName = lastNameInput.value.trim();
+          const phone = phoneInput.value.trim();
+          const email = emailInput.value.trim();
+          const companyName = companyNameInput.value.trim();
+          const employeeCount = employeeCountSelect.value;
+
+          if (
+            !firstName ||
+            !lastName ||
+            !phone ||
+            !email ||
+            !companyName ||
+            !employeeCount
+          ) {
+            showSuccessMessage("Please fill in all required fields."); // Reusing success message for error
+            return;
+          }
+
+          // Simulate form submission
+          console.log("Demo Request Details:", {
+            firstName,
+            lastName,
+            phone,
+            email,
+            companyName,
+            employeeCount,
+            message: messageTextarea.value.trim(),
+          });
+
+          showSuccessMessage("Demo scheduled successfully!"); // Updated success message
+          demoRequestModal.classList.remove("show"); // Close modal after submission
+        });
+
+        // Toggle functionality for feature list items
+        toggleFeatureItems.forEach((item) => {
+          item.addEventListener("click", (event) => {
+            // Prevent click on the description itself from toggling the parent
+            if (event.target.classList.contains("feature-description")) {
+              return;
+            }
+            const description = item.querySelector(".feature-description");
+            if (description) {
+              description.classList.toggle("show");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

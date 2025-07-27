@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astrolite HR Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for consistent styling */
+      :root {
+        --primary-green: #38b44a;
+        --light-green: #e6f6e8;
+        --dark-blue: #1a237e;
+        --light-blue: #e0f2f7; /* Used for main background now */
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --white: #fff;
+        --border-radius: 8px;
+        --shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* For general cards */
+        --astrolite-blue: #e0f2f7; /* Main background color from the new screenshot */
+        --astrolite-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow for cards */
+        --astrolite-text-blue: #1a237e; /* Darker text color for headings */
+        --modal-bg: rgba(0, 0, 0, 0.5); /* Overlay for modal */
+        --modal-card-bg: #fff;
+        --modal-border-radius: 12px;
+        --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        --calendar-border-color: #e0e0e0;
+        --calendar-day-hover: #f0f0f0;
+        --calendar-day-selected: #d0e8f2; /* Light blue for selected days */
+        --calendar-current-day: #a0d8ed; /* Slightly darker blue for current day */
+      }
+
+      /* Basic Reset and Body Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(
+          --astrolite-blue
+        ); /* Apply the new theme background */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      /* Utility Container for content width */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Section Styling */
+      section {
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+        background-color: var(
+          --astrolite-blue
+        ); /* Ensure all sections have the theme background */
+      }
+
+      /* Override previous alternating background if needed, now all sections are the same theme color */
+      section:nth-of-type(odd) {
+        background-color: var(--astrolite-blue);
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3 {
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(
+          --astrolite-text-blue
+        ); /* Headings use the theme's dark blue */
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      h3 {
+        font-size: 1.8em;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      /* Button Styling */
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-primary:hover {
+        background-color: #151a5c;
+        border-color: #151a5c;
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--dark-blue);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-blue);
+      }
+
+      .btn-success {
+        background-color: var(--primary-green);
+        color: var(--white);
+        border: 1px solid var(--primary-green);
+      }
+
+      .btn-success:hover {
+        background-color: #319d40;
+        border-color: #319d40;
+      }
+
+      /* Flexbox Layout for content rows */
+      .flex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 40px; /* Space between flex items */
+      }
+
+      .flex-row > div {
+        flex: 1; /* Allow items to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+      }
+
+      /* Image Mockup Styling */
+      .image-mockup {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        background-color: transparent; /* Ensure no default background */
+        padding: 0; /* Remove padding if image fills entirely */
+      }
+      .image-mockup img {
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove extra space below image */
+        border-radius: var(
+          --border-radius
+        ); /* Apply border-radius to the image itself */
+      }
+
+      /* Specific adjustments for hero section image */
+      .section-hero .image-mockup {
+        box-shadow: none; /* No shadow for this specific image mockup */
+      }
+
+      /* Content areas that should be white like cards */
+      .content-card {
+        background-color: var(--white);
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: var(
+          --astrolite-card-shadow
+        ); /* Apply lighter card shadow */
+      }
+
+      /* Specific section styles */
+
+      /* Hero Section: Attendance Management with Facial Recognition and Geo-tagging */
+      .section-hero {
+        background-color: var(--astrolite-blue); /* Matches page background */
+        text-align: center;
+        padding-top: 100px; /* More padding for hero section */
+        padding-bottom: 100px;
+      }
+
+      .section-hero .flex-row {
+        justify-content: center;
+        align-items: flex-start; /* Align content to top for better flow */
+        gap: 60px; /* More space for hero section */
+      }
+
+      .section-hero .content {
+        flex: 1.2; /* Content takes more space */
+        max-width: 550px; /* Max width for text block */
+        text-align: left;
+        margin: 0; /* Remove auto margin from previous .content-card */
+        padding: 0; /* Remove padding from previous .content-card */
+        background-color: transparent; /* No background for this content block */
+        box-shadow: none; /* No shadow for this content block */
+      }
+      .section-hero .content h2 {
+        text-align: left; /* Align heading to left */
+        font-size: 3em; /* Larger heading */
+        margin-bottom: 15px;
+      }
+      .section-hero .content p {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .section-hero .image-mockup {
+        flex: 1;
+        min-height: 450px; /* Larger height for hero image */
+        box-shadow: none; /* No shadow for this specific image mockup */
+        background-color: transparent; /* No background for this specific image mockup */
+        padding: 0; /* No padding for this specific image mockup */
+        display: flex; /* Ensure flex for image centering if needed */
+        align-items: center;
+        justify-content: center;
+      }
+      .section-hero .image-mockup img {
+        width: 100%; /* Make image fill the mockup div */
+        height: 450px; /* Fixed height for consistency with previous mockup */
+        object-fit: contain; /* Ensure image fits without cropping, maintaining aspect ratio */
+      }
+
+      .section-hero .buttons {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start; /* Align buttons to left */
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Section: Real-time Attendance Dashboard */
+      .section-dashboard .content {
+        flex: 1.5;
+        padding-right: 40px;
+      }
+
+      .section-dashboard .image-mockup {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .section-dashboard .image-mockup img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+      }
+
+      .feature-list {
+        list-style: none;
+        margin-top: 30px;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer; /* Indicate clickable */
+      }
+
+      .feature-list li::before {
+        content: "+";
+        color: var(--primary-green);
+        font-weight: 700;
+        margin-right: 10px;
+        font-size: 1.2em;
+      }
+      .feature-list li.highlight::before {
+        content: "–";
+      }
+
+      /* Styling for the toggled description */
+      .feature-description {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        margin-left: 20px; /* Indent the description */
+        display: none; /* Hidden by default */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .feature-description.show {
+        display: block; /* Show when 'show' class is present */
+        max-height: 100px; /* A value large enough to contain the text */
+        opacity: 1;
+      }
+
+      /* Section: Simplified HR Management */
+      .section-hr-management .content {
+        flex: 1.5;
+        padding-left: 40px;
+        order: 2;
+      }
+      .section-hr-management .image-mockup {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .section-hr-management .image-mockup img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+      }
+
+      /* Section: Why choose Astrolite */
+      .section-why-choose {
+        text-align: center;
+      }
+
+      .section-why-choose h2 {
+        margin-bottom: 50px;
+      }
+
+      .reason-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .reason-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--astrolite-card-shadow);
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        max-width: 280px;
+        transition: transform 0.3s ease;
+      }
+
+      .reason-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .reason-card img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+
+      .reason-card h3 {
+        font-size: 1.4em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .reason-card p {
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .flex-row {
+          flex-direction: column;
+          text-align: center;
+        }
+        .flex-row > div {
+          min-width: unset;
+          width: 100%;
+        }
+        .section-dashboard .content,
+        .section-hr-management .content {
+          padding-right: 0;
+          padding-left: 0;
+          order: unset;
+        }
+        .section-dashboard .image-mockup,
+        .section-hr-management .image-mockup {
+          margin-top: 40px;
+        }
+
+        .reason-card {
+          max-width: 45%;
+        }
+        .content-card {
+          padding: 30px;
+        }
+        .section-hero .content {
+          padding: 0; /* Remove padding for hero content on small screens */
+          text-align: center; /* Center text on small screens */
+        }
+        .section-hero .content h2 {
+          text-align: center;
+          font-size: 2.5em; /* Adjust font size for smaller screens */
+        }
+        .section-hero .buttons {
+          justify-content: center; /* Center buttons on small screens */
+        }
+        .section-hero .image-mockup {
+          min-height: 300px; /* Adjust height for smaller screens */
+        }
+        .section-hero .image-mockup img,
+        .section-dashboard .image-mockup img,
+        .section-hr-management .image-mockup img {
+          height: 300px; /* Adjust image height for smaller screens */
+        }
+      }
+
+      @media (max-width: 850px) {
+        .consultation-modal-content {
+          flex-direction: column;
+          width: 95%;
+          max-height: 90vh; /* Allow scrolling for content */
+          overflow-y: auto;
+        }
+        .consultation-modal-left,
+        .consultation-modal-right {
+          min-width: unset;
+          width: 100%;
+          padding: 30px;
+        }
+        .consultation-modal-right {
+          border-left: none;
+          border-top: 1px solid var(--calendar-border-color);
+        }
+        .close-modal-btn {
+          top: 10px;
+          right: 10px;
+          font-size: 1.8em;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 2em;
+        }
+        h3 {
+          font-size: 1.5em;
+        }
+        section {
+          padding: 60px 0;
+        }
+        .reason-cards {
+          flex-direction: column;
+          align-items: center;
+        }
+        .reason-card {
+          max-width: 90%;
+        }
+        .btn {
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .consultation-modal-left,
+        .consultation-modal-right {
+          padding: 20px;
+        }
+        .consultation-modal-header h3 {
+          font-size: 1.4em;
+        }
+        .consultation-info h4 {
+          font-size: 1.5em;
+        }
+        .calendar-day {
+          padding: 8px 0;
+          font-size: 0.85em;
+        }
+        .calendar-day-name {
+          font-size: 0.8em;
+        }
+      }
+
+      /* Consultation Modal Styles */
+      .consultation-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .consultation-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .consultation-modal-content {
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        display: flex;
+        max-width: 900px; /* Adjust as needed */
+        width: 90%;
+        overflow: hidden;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+      }
+
+      .consultation-modal-overlay.show .consultation-modal-content {
+        transform: translateY(0);
+      }
+
+      .consultation-modal-left {
+        flex: 1;
+        padding: 40px;
+        background-color: var(--white); /* Ensure it's white */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 350px; /* Prevent it from getting too small */
+      }
+
+      .consultation-modal-right {
+        flex: 1.2;
+        padding: 40px;
+        background-color: var(--white); /* Ensure it's white */
+        border-left: 1px solid var(--calendar-border-color); /* Separator line */
+        min-width: 400px; /* Prevent it from getting too small */
+      }
+
+      .consultation-modal-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .consultation-modal-header img {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+      }
+
+      .consultation-modal-header h3 {
+        font-size: 1.6em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 0;
+      }
+
+      .consultation-info h4 {
+        font-size: 1.8em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 15px;
+      }
+
+      .consultation-info p {
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 0.95em;
+      }
+
+      .consultation-info .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #555;
+      }
+
+      .consultation-info .detail-item svg {
+        margin-right: 10px;
+        color: var(--primary-green); /* Icon color */
+        font-size: 1.2em;
+      }
+
+      .consultation-info .description {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+      }
+      .consultation-info .description strong {
+        color: var(--astrolite-text-blue);
+      }
+
+      .consultation-links {
+        margin-top: 30px;
+        font-size: 0.85em;
+      }
+
+      .consultation-links a {
+        color: var(--dark-blue);
+        text-decoration: none;
+        margin-right: 20px;
+        transition: color 0.2s ease;
+      }
+
+      .consultation-links a:hover {
+        color: var(--primary-green);
+      }
+
+      /* Calendar Styles */
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        color: var(--astrolite-text-blue);
+        font-size: 1.2em;
+        font-weight: 600;
+      }
+
+      .calendar-header button {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #888;
+        padding: 5px;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+      }
+      .calendar-header button:hover {
+        background-color: var(--calendar-day-hover);
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+      }
+
+      .calendar-day-name {
+        font-weight: 600;
+        color: #888;
+        padding: 10px 0;
+        font-size: 0.9em;
+      }
+
+      .calendar-day {
+        padding: 12px 0;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        font-size: 0.95em;
+        color: #444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .calendar-day:hover:not(.empty):not(.selected):not(.current-day) {
+        background-color: var(--calendar-day-hover);
+      }
+
+      .calendar-day.empty {
+        cursor: not-allowed;
+        opacity: 0.5;
+        color: #999;
+      }
+
+      .calendar-day.selected {
+        background-color: var(--calendar-day-selected);
+        color: var(--dark-blue);
+        font-weight: 600;
+      }
+      .calendar-day.current-day {
+        background-color: var(--calendar-current-day);
+        color: var(--white);
+        font-weight: 600;
+      }
+      .calendar-day.current-day.selected {
+        background-color: var(
+          --dark-blue
+        ); /* Darker if current day is also selected */
+        color: var(--white);
+      }
+
+      .calendar-day .dot {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        background-color: var(--primary-green);
+        border-radius: 50%;
+      }
+
+      .timezone-selector {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        font-size: 0.9em;
+        color: #555;
+        border-top: 1px solid var(--calendar-border-color);
+        padding-top: 20px;
+      }
+
+      .timezone-selector svg {
+        margin-right: 10px;
+        color: #888;
+      }
+
+      /* Close button for modal */
+      .close-modal-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2em;
+        color: #888;
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s ease;
+      }
+      .close-modal-btn:hover {
+        color: var(--dark-blue);
+      }
+
+      /* Success Message Container */
+      .success-message {
+        position: fixed;
+        bottom: 30px; /* Position from bottom */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary-green);
+        color: var(--white);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 1001; /* Above modal overlay */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+      }
+
+      .success-message.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .success-message svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section: Attendance Management with Facial Recognition and Geo-tagging -->
+    <section class="section-hero">
+      <div class="container flex-row">
+        <div class="content">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Attendance Management System
+          </p>
+          <h2>Attendance Management with Facial Recognition and Geo-tagging</h2>
+          <p>
+            Introduce your employees to a robust attendance management software
+            that makes their attendance punching exciting.
+          </p>
+          <div class="buttons">
+            <a href="#" id="bookConsultationBtn" class="btn btn-primary"
+              >Book a Consultation</a
+            >
+          </div>
+        </div>
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2024/06/Attendance-Management-System-banner-1024x707.webp"
+            alt="Man with phone and attendance widgets"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Simplified HR Management (Interchanged position) -->
+    <section class="section-hr-management">
+      <div class="container flex-row">
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2024/05/Accurate-Attendance-Data-for-Simplified-Payrolls-2048x1674.webp"
+            alt="Woman with phone and facial recognition UI"
+          />
+        </div>
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Smooth Attendance Management Solution
+          </p>
+          <h2>Simplified HR Management System with Real-time Attendance</h2>
+          <p>
+            Completely Automated Attendance Process with Geo-tracking &
+            Geo-fencing
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              smHRty Identify
+              <div class="feature-description">
+                Utilize smart identity verification for secure and seamless
+                employee access and attendance.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Biometric Integration
+              <div class="feature-description">
+                Integrate with various biometric devices for accurate and
+                reliable attendance capture.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Facial Recognition
+              <div class="feature-description">
+                Enable contactless attendance capture using advanced facial
+                recognition technology via smartphone app.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Real-time Attendance Dashboard (Interchanged position) -->
+    <section class="section-dashboard">
+      <div class="container flex-row">
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Real-time Attendance Dashboard
+          </p>
+          <h2>
+            On-time Report Generation with Errorless Attendance Processing
+          </h2>
+          <p>
+            Mobile accessible Attendance management software with advanced ESS,
+            HRMS payroll, and leave management system.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              On-duty & WFH Integration
+              <div class="feature-description">
+                Enhanced flexibility to set 'on-duty' attendance for manual
+                on-site remote work or a 'work-from-home' setup to ensure
+                accurate attendance.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Attendance Regularization
+              <div class="feature-description">
+                Streamline the process of regularizing attendance, ensuring all
+                discrepancies are resolved efficiently.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Rule-based Overtime Calculation
+              <div class="feature-description">
+                Automate overtime calculations based on predefined company
+                rules, ensuring fair and accurate compensation.
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2024/05/Smooth-Attendance-Management-Solutions.webp"
+            alt="Man holding tablet with attendance forms"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Why choose Astrolite -->
+    <section class="section-why-choose">
+      <div class="container">
+        <h2>Why choose Astrolite Attendance Management Software?</h2>
+        <div class="reason-cards">
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/2024/04/Biometric-Attendance-icon.svg"
+              alt="Biometric Icon"
+            />
+            <h3>Biometric Attendance</h3>
+            <p>
+              Capture employee attendance with facial recognition, fingerprint
+              scanner, and any other biometric device.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Real-Time-Data-Visibility-r82c90c78sivlkspsydrglydu2yzwllq42mzbvgdt4.png"
+              alt="Real-time Data Icon"
+            />
+            <h3>Real-Time Data Visibility</h3>
+            <p>
+              Visualize employee attendance details through real-time
+              dashboards, enabling quick insights.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Fool-proof-Automation-r82c9mwbstdrc7vy584t4g9g3bvt1c3a76amuiixns.png"
+              alt="Automation Icon"
+            />
+            <h3>Fool-proof Automation</h3>
+            <p>
+              Completely automated attendance capture and authenticity
+              verification for accurate, foolproof capture of attendance.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Remote-Access-r82caloctopd9shfi5606phi2l4dy4xcnyfllr3d9k.png"
+              alt="Remote Access Icon"
+            />
+            <h3>Remote Access</h3>
+            <p>
+              24/7 remote access to attendance and shift data for in-depth
+              reporting and simplified company analytics.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultation Modal -->
+    <div id="consultationModal" class="consultation-modal-overlay">
+      <div class="consultation-modal-content">
+        <button class="close-modal-btn" aria-label="Close Modal">
+          &times;
+        </button>
+
+        <div class="consultation-modal-left">
+          <div>
+            <!-- Removed logo container and company name -->
+            <div class="consultation-modal-header">
+              <h3>Consultation Call</h3>
+            </div>
+            <div class="consultation-info">
+              <h4>Personalized Consultation Call</h4>
+              <div class="detail-item">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-clock"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span>30 min</span>
+              </div>
+              <div class="detail-item">
+                <!-- Updated to a different phone icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-phone"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2H7c.45 0 .9.06 1.3.18a2 2 0 0 1 1.62 1.62A16.07 16.07 0 0 0 21.82 15.7a2 2 0 0 1 .18 1.3z"
+                  />
+                </svg>
+                <span>Phone call</span>
+              </div>
+              <p class="description">
+                Let's discuss how our solution streamlines everything, enhancing
+                your employee experience. Schedule a brief, personalized call
+                with a representative.
+              </p>
+            </div>
+          </div>
+          <div class="consultation-links">
+            <!-- Removed Cookie settings and Report abuse links -->
+          </div>
+        </div>
+
+        <div class="consultation-modal-right">
+          <div id="detailsForm">
+            <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+              Enter Your Details
+            </h3>
+            <div style="margin-bottom: 20px">
+              <label
+                for="clientName"
+                style="
+                  display: block;
+                  margin-bottom: 5px;
+                  font-weight: 500;
+                  color: #333;
+                "
+                >Full Name:</label
+              >
+              <input
+                type="text"
+                id="clientName"
+                placeholder="Your Name"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                  font-size: 1em;
+                "
+              />
+              <p
+                id="nameError"
+                style="
+                  color: red;
+                  font-size: 0.85em;
+                  margin-top: 5px;
+                  display: none;
+                "
+              >
+                Please enter your full name.
+              </p>
+            </div>
+            <div style="margin-bottom: 30px">
+              <label
+                for="clientEmail"
+                style="
+                  display: block;
+                  margin-bottom: 5px;
+                  font-weight: 500;
+                  color: #333;
+                "
+                >Email Address:</label
+              >
+              <input
+                type="email"
+                id="clientEmail"
+                placeholder="your.email@example.com"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                  font-size: 1em;
+                "
+              />
+              <p
+                id="emailError"
+                style="
+                  color: red;
+                  font-size: 0.85em;
+                  margin-top: 5px;
+                  display: none;
+                "
+              >
+                Please enter a valid email address.
+              </p>
+            </div>
+            <button
+              id="nextToCalendarBtn"
+              class="btn btn-primary"
+              style="width: 100%"
+            >
+              Next
+            </button>
+          </div>
+
+          <div id="calendarSection" style="display: none">
+            <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+              Select a Date & Time
+            </h3>
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <button id="prevMonthBtn">&lt;</button>
+                <span id="currentMonthYear"></span>
+                <button id="nextMonthBtn">&gt;</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-day-name">MON</div>
+                <div class="calendar-day-name">TUE</div>
+                <div class="calendar-day-name">WED</div>
+                <div class="calendar-day-name">THU</div>
+                <div class="calendar-day-name">FRI</div>
+                <div class="calendar-day-name">SAT</div>
+                <div class="calendar-day-name">SUN</div>
+                <!-- Days will be populated by JavaScript -->
+              </div>
+            </div>
+            <div class="timezone-selector">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-globe"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                <path d="M2 12h20" />
+              </svg>
+              <span>Time zone</span>
+              <span style="margin-left: auto; font-weight: 500"
+                >India Standard Time (4:05pm)</span
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-chevron-down"
+                style="margin-left: 5px; color: #888"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message Container -->
+    <div id="successMessage" class="success-message">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-check-circle"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-8.1" />
+        <path d="m3 12 2 2 7-7" />
+      </svg>
+      <span>Booked a consultation successfully!</span>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const bookConsultationBtn = document.getElementById(
+          "bookConsultationBtn"
+        );
+        const consultationModal = document.getElementById("consultationModal");
+        const closeModalBtn = document.querySelector(".close-modal-btn");
+        const calendarGrid = document.querySelector(".calendar-grid");
+        const currentMonthYearSpan =
+          document.getElementById("currentMonthYear");
+        const prevMonthBtn = document.getElementById("prevMonthBtn");
+        const nextMonthBtn = document.getElementById("nextMonthBtn");
+        const successMessage = document.getElementById("successMessage");
+        const toggleFeatureItems = document.querySelectorAll(".toggle-feature");
+
+        // New elements for form
+        const detailsForm = document.getElementById("detailsForm");
+        const calendarSection = document.getElementById("calendarSection");
+        const clientNameInput = document.getElementById("clientName");
+        const clientEmailInput = document.getElementById("clientEmail");
+        const nameError = document.getElementById("nameError");
+        const emailError = document.getElementById("emailError");
+        const nextToCalendarBtn = document.getElementById("nextToCalendarBtn");
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        const today = new Date();
+        let selectedDate = null; // To store the currently selected date
+
+        // Function to render the calendar days
+        function renderCalendar(month, year) {
+          // Clear existing days, but keep day names
+          calendarGrid.innerHTML = `
+                    <div class="calendar-day-name">MON</div>
+                    <div class="calendar-day-name">TUE</div>
+                    <div class="calendar-day-name">WED</div>
+                    <div class="calendar-day-name">THU</div>
+                    <div class="calendar-day-name">FRI</div>
+                    <div class="calendar-day-name">SAT</div>
+                    <div class="calendar-day-name">SUN</div>
+                `;
+
+          const firstDayOfMonth = new Date(year, month, 1);
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+          const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
+
+          // Adjust first day of month to be Monday=0, Sunday=6
+          let startDayOfWeek = firstDayOfMonth.getDay();
+          if (startDayOfWeek === 0) startDayOfWeek = 7; // Sunday becomes 7
+          startDayOfWeek--; // Adjust to make Monday = 0
+
+          currentMonthYearSpan.textContent = new Date(
+            year,
+            month
+          ).toLocaleString("en-US", { month: "long", year: "numeric" });
+
+          // Add days from the previous month (disabled)
+          for (let i = startDayOfWeek - 1; i >= 0; i--) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day", "empty");
+            dayDiv.textContent = lastDayOfPrevMonth - i;
+            calendarGrid.appendChild(dayDiv);
+          }
+
+          // Add days of the current month
+          for (let i = 1; i <= daysInMonth; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day");
+            dayDiv.textContent = i;
+            dayDiv.dataset.date = `${year}-${month + 1}-${i}`; // Store full date for easy reference
+
+            const date = new Date(year, month, i);
+
+            // Disable past dates
+            if (
+              date <
+              new Date(today.getFullYear(), today.getMonth(), today.getDate())
+            ) {
+              dayDiv.classList.add("empty"); // Use 'empty' to disable and hide cursor
+              dayDiv.style.cursor = "not-allowed";
+              dayDiv.style.opacity = "0.5";
+            } else {
+              // Highlight current day
+              if (
+                date.getDate() === today.getDate() &&
+                date.getMonth() === today.getMonth() &&
+                date.getFullYear() === today.getFullYear()
+              ) {
+                dayDiv.classList.add("current-day");
+              }
+
+              // Apply selected class if this day is the currently selected one
+              if (
+                selectedDate &&
+                date.getDate() === selectedDate.getDate() &&
+                date.getMonth() === selectedDate.getMonth() &&
+                date.getFullYear() === selectedDate.getFullYear()
+              ) {
+                dayDiv.classList.add("selected");
+              }
+
+              // Add click listener for day selection
+              dayDiv.addEventListener("click", () => {
+                // Only allow selection if not a past date or an empty/disabled date
+                if (!dayDiv.classList.contains("empty")) {
+                  // Remove 'selected' from previously selected day
+                  const previouslySelected = calendarGrid.querySelector(
+                    ".calendar-day.selected"
+                  );
+                  if (previouslySelected) {
+                    previouslySelected.classList.remove("selected");
+                  }
+                  // Add 'selected' to the clicked day
+                  dayDiv.classList.add("selected");
+                  selectedDate = date; // Update selected date
+                  console.log("Selected date:", selectedDate.toDateString()); // For testing
+
+                  // Show success message
+                  showSuccessMessage();
+                }
+              });
+            }
+            calendarGrid.appendChild(dayDiv);
+          }
+
+          // Add days from the next month (disabled) to fill the grid
+          const totalCells = calendarGrid.children.length - 7; // Exclude day names
+          const remainingCells = 42 - totalCells; // 6 rows * 7 days = 42 cells total (common calendar layout)
+
+          for (let i = 1; i <= remainingCells; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day", "empty");
+            dayDiv.textContent = i;
+            calendarGrid.appendChild(dayDiv);
+          }
+        }
+
+        // Function to show the success message
+        function showSuccessMessage() {
+          successMessage.classList.add("show");
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 3000); // Hide after 3 seconds
+        }
+
+        // Function to validate the client details form
+        function validateClientDetails() {
+          let isValid = true;
+          nameError.style.display = "none"; // Hide previous errors
+          emailError.style.display = "none"; // Hide previous errors
+
+          if (clientNameInput.value.trim() === "") {
+            nameError.textContent = "Please enter your full name.";
+            nameError.style.display = "block";
+            isValid = false;
+          }
+
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(clientEmailInput.value.trim())) {
+            emailError.textContent = "Please enter a valid email address.";
+            emailError.style.display = "block";
+            isValid = false;
+          }
+
+          return isValid;
+        }
+
+        // Event listeners for month navigation (these will be attached to the calendar section)
+        prevMonthBtn.addEventListener("click", () => {
+          currentMonth--;
+          if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+          }
+          selectedDate = null; // Reset selected date on month change
+          renderCalendar(currentMonth, currentYear);
+        });
+
+        nextMonthBtn.addEventListener("click", () => {
+          currentMonth++;
+          if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+          }
+          selectedDate = null; // Reset selected date on month change
+          renderCalendar(currentMonth, currentYear);
+        });
+
+        // Show modal
+        bookConsultationBtn.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default link behavior
+          consultationModal.classList.add("show");
+          // Show details form and hide calendar section initially
+          detailsForm.style.display = "block";
+          calendarSection.style.display = "none";
+          // Clear any previous input and errors when opening the modal
+          clientNameInput.value = "";
+          clientEmailInput.value = "";
+          nameError.style.display = "none";
+          emailError.style.display = "none";
+          selectedDate = null; // Ensure no date is pre-selected
+        });
+
+        // Handle "Next" button click for client details
+        nextToCalendarBtn.addEventListener("click", () => {
+          if (validateClientDetails()) {
+            detailsForm.style.display = "none";
+            calendarSection.style.display = "block";
+            // Render calendar when user proceeds to this section
+            renderCalendar(currentMonth, currentYear);
+          }
+        });
+
+        // Hide modal
+        closeModalBtn.addEventListener("click", () => {
+          consultationModal.classList.remove("show");
+        });
+
+        // Hide modal if clicking outside the content
+        consultationModal.addEventListener("click", (e) => {
+          if (e.target === consultationModal) {
+            consultationModal.classList.remove("show");
+          }
+        });
+
+        // Toggle functionality for feature list items
+        toggleFeatureItems.forEach((item) => {
+          item.addEventListener("click", (event) => {
+            // Prevent click on the description itself from toggling the parent
+            if (event.target.classList.contains("feature-description")) {
+              return;
+            }
+            const description = item.querySelector(".feature-description");
+            if (description) {
+              description.classList.toggle("show");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

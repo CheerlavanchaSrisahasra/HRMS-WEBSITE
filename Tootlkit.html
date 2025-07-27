@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Toolkit</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .main-content-wrapper {
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        box-sizing: border-box;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      .header-section {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 1rem;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        position: relative;
+        overflow: hidden;
+        animation: headerEntrance 1.2s ease-out forwards;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+      .header-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(106, 130, 251, 0.08) 0%,
+          rgba(252, 92, 125, 0.05) 50%,
+          transparent 100%
+        );
+        background-size: 200% 200%;
+        opacity: 0;
+        animation: backgroundShimmer 8s infinite alternate ease-in-out,
+          backgroundFadeIn 1.5s ease-out 0.5s forwards;
+        z-index: 0;
+      }
+      .header-section h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+        background: linear-gradient(to right, #6a82fb 40%, #fc5c7c6b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: slideInLeft 0.8s ease-out forwards;
+        position: relative;
+        z-index: 1;
+      }
+      .header-section p {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        background: linear-gradient(to right, #0ac8f8 0%, #2193b0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: slideInRight 0.8s ease-out forwards;
+        position: relative;
+        z-index: 1;
+      }
+      .content-section {
+        padding: 2rem;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .featured-resource {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+      .featured-resource-image {
+        width: 100%;
+        height: 300px;
+        border-radius: 0.75rem;
+        object-fit: cover;
+        background-color: #e0e0e0;
+      }
+      .featured-resource-content {
+        flex-grow: 1;
+      }
+      .resource-meta {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: white-space 0.3s ease-in-out, overflow 0.3s ease-in-out,
+          text-overflow 0.3s ease-in-out;
+      }
+      .grid-resource-card:hover .resource-meta {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+      .resource-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+      }
+      .resource-description {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        -webkit-text-fill-color: initial;
+        background: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: -webkit-line-clamp 0.3s ease-in-out,
+          white-space 0.3s ease-in-out, overflow 0.3s ease-in-out,
+          text-overflow 0.3s ease-in-out;
+      }
+      .grid-resource-card:hover .resource-description {
+        -webkit-line-clamp: unset;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+      .resource-action-button {
+        background: linear-gradient(to right, #007bff, #0056b3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out, transform 0.2s ease-in-out,
+          box-shadow 0.2s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .resource-action-button:hover {
+        background: linear-gradient(to right, #0056b3, #003087);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+      }
+      .resource-action-button svg {
+        width: 1em;
+        height: 1em;
+      }
+      .grid-resources {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+        align-items: start;
+      }
+      .grid-resource-card {
+        background-color: #f8f8f8;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+          border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        position: relative;
+      }
+      .grid-resource-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15),
+          0 0 15px rgba(0, 123, 255, 0.6);
+        border: 1px solid #007bff;
+        z-index: 10;
+        background-color: #f8faff;
+      }
+      .grid-resource-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background-color: #e0e0e0;
+        transition: transform 0.3s ease-in-out;
+      }
+      .grid-resource-card:hover .grid-resource-image {
+        transform: scale(1.03);
+      }
+      .grid-resource-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .grid-resource-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: white-space 0.3s ease-in-out, overflow 0.3s ease-in-out,
+          text-overflow 0.3s ease-in-out;
+      }
+      .grid-resource-card:hover .grid-resource-title {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+      .all-resources-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .alert-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        max-width: 90%;
+        width: 450px;
+        text-align: center;
+        animation: fadeIn 0.3s ease-out;
+        border: 1px solid #e0e0e0;
+        background: linear-gradient(145deg, #ffffff, #f8faff);
+      }
+      .alert-popup p {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+        color: #333;
+      }
+      .alert-popup button {
+        background: linear-gradient(to right, #007bff, #0056b3);
+        color: white;
+        padding: 0.75rem 1.5em;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out, transform 0.2s ease-in-out,
+          box-shadow 0.2s ease-in-out;
+      }
+      .alert-popup button:hover {
+        background: linear-gradient(to right, #0056b3, #003087);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      @keyframes slideInLeft {
+        from {
+          transform: translateX(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideInRight {
+        from {
+          transform: translateX(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.01);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      @keyframes headerEntrance {
+        0% {
+          opacity: 0;
+          transform: translateY(-30px) scale(0.95);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+      }
+      @keyframes backgroundFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes backgroundShimmer {
+        0% {
+          background-position: 0% 0%;
+        }
+        to {
+          background-position: 100% 100%;
+        }
+      }
+      .grid-resource-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .grid-resource-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .grid-resource-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .grid-resource-card:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .grid-resource-card:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .grid-resource-card:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .grid-resource-card:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .grid-resource-card:nth-child(8) {
+        animation-delay: 0.8s;
+      }
+      @media (min-width: 768px) {
+        .featured-resource {
+          flex-direction: row;
+        }
+        .featured-resource-image {
+          width: 50%;
+          height: auto;
+        }
+        .featured-resource-content {
+          width: 50%;
+          padding-left: 2rem;
+        }
+      }
+      @media (min-width: 1024px) {
+        .grid-resources {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (max-width: 640px) {
+        .alert-popup {
+          width: 90%;
+          padding: 1rem;
+        }
+        .alert-popup p {
+          font-size: 0.9rem;
+        }
+        .alert-popup button {
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="main-content-wrapper">
+      <div class="header-section">
+        <h1 class="section-title">HR Toolkit</h1>
+        <p class="header-description">
+          Useful tools and resources for HR Management.
+        </p>
+      </div>
+      <div class="grid-resources">
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://kredily.com/wp-content/uploads/2023/06/HR-TOOLKIT-1200-%C3%97-628px-1024x536.png"
+            alt="HR Toolkit"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/1200x628/e0e0e0/555555?text=HR+Toolkit';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">GUIDE • 25 PAGES</p>
+            <h3 class="grid-resource-title">
+              Essential HR Toolkit for Small Businesses
+            </h3>
+            <p class="resource-description">
+              Comprehensive toolkit for small businesses, from hiring to
+              compliance.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="Essential HR Toolkit for Small Businesses"
+              data-description="Comprehensive toolkit for small businesses, from hiring to compliance."
+              data-meta="GUIDE • 25 PAGES"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://d341ezm4iqaae0.cloudfront.net/assets/2018/07/11172600/Onboarding_Checklist02-1024x585.jpg"
+            alt="Onboarding Checklist"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/1024x585/e0e0e0/555555?text=Onboarding+Checklist';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">TEMPLATE • 1 PAGE</p>
+            <h3 class="grid-resource-title">New Hire Onboarding Checklist</h3>
+            <p class="resource-description">
+              Ensure a smooth onboarding process with this customizable
+              checklist.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="New Hire Onboarding Checklist"
+              data-description="Ensure a smooth onboarding process with this customizable checklist."
+              data-meta="TEMPLATE • 1 PAGE"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://leapmax.ai/wp-content/uploads/2024/08/employee-performance-review.webp"
+            alt="Performance Review"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/1200x628/e0e0e0/555555?text=Performance+Review';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">FORM • 3 PAGES</p>
+            <h3 class="grid-resource-title">
+              Employee Performance Review Form
+            </h3>
+            <p class="resource-description">
+              Standardized form for fair and effective employee performance
+              evaluations.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="Employee Performance Review Form"
+              data-description="Standardized form for fair and effective employee performance evaluations."
+              data-meta="FORM • 3 PAGES"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdrnwgxw5LRo26hsbYCcA5XDd7othUPdRnug&s"
+            alt="Webinar Recording"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/612x612/e0e0e0/555555?text=Webinar+Recording';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 45 MIN</p>
+            <h3 class="grid-resource-title">
+              Webinar: Mastering Remote Team Management
+            </h3>
+            <p class="resource-description">
+              Watch recording on strategies for leading successful remote teams.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="Webinar: Mastering Remote Team Management"
+              data-description="Watch recording on strategies for leading successful remote teams."
+              data-meta="WEBINAR • 45 MIN"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://www.shutterstock.com/shutterstock/videos/1107106741/thumb/11.jpg?ip=x480"
+            alt="Policy Template"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/480x270/e0e0e0/555555?text=Policy+Template';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">TEMPLATE • 8 PAGES</p>
+            <h3 class="grid-resource-title">
+              Employee Handbook Policy Template
+            </h3>
+            <p class="resource-description">
+              Customizable template for a comprehensive employee handbook.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="Employee Handbook Policy Template"
+              data-description="Customizable template for a comprehensive employee handbook."
+              data-meta="TEMPLATE • 8 PAGES"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://media.istockphoto.com/id/1349473705/vector/job-interviews-concept.jpg?s=612x612&w=0&k=20&c=xDC8tinola1i-S2xEXUl2dJaJfq6kBgVU9okAMT_d8Y="
+            alt="Interview Guide"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/612x612/e0e0e0/555555?text=Interview+Guide';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">GUIDE • 12 PAGES</p>
+            <h3 class="grid-resource-title">
+              Effective Interviewing Techniques Guide
+            </h3>
+            <p class="resource-description">
+              Best practices for conducting interviews to find top talent.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="Effective Interviewing Techniques Guide"
+              data-description="Best practices for conducting interviews to find top talent."
+              data-meta="GUIDE • 12 PAGES"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://www.shutterstock.com/image-vector/compliance-rules-standard-regulation-balance-600nw-2060543345.jpg"
+            alt="Compliance Checklist"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/555555?text=Compliance+Checklist';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">CHECKLIST • 2 PAGES</p>
+            <h3 class="grid-resource-title">HR Compliance Checklist 2024</h3>
+            <p class="resource-description">
+              Stay up-to-date with the latest HR compliance requirements.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="HR Compliance Checklist 2024"
+              data-description="Stay up-to-date with the latest HR compliance requirements."
+              data-meta="CHECKLIST • 2 PAGES"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="grid-resource-card fade-in-scroll">
+          <img
+            src="https://blog.darwinbox.com/hubfs/MicrosoftTeams-image%20%2844%29-2.png"
+            alt="Employee Engagement"
+            class="grid-resource-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/1200x628/e0e0e0/555555?text=Employee+Engagement';"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">EBOOK • 30 PAGES</p>
+            <h3 class="grid-resource-title">
+              Boosting Employee Engagement Ebook
+            </h3>
+            <p class="resource-description">
+              Strategies and tips to foster a more engaged and productive
+              workforce.
+            </p>
+            <button
+              class="resource-action-button"
+              data-title="Boosting Employee Engagement Ebook"
+              data-description="Strategies and tips to foster a more engaged and productive workforce."
+              data-meta="EBOOK • 30 PAGES"
+            >
+              Download
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM6.75 18a.75.75 0 000 1.5h10.5a.75.75 0 000-1.5H6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function alert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "alert-popup";
+        alertBox.innerHTML = `
+                <p>${message}</p>
+                <button>OK</button>
+            `;
+        document.body.appendChild(alertBox);
+        alertBox.querySelector("button").addEventListener("click", () => {
+          alertBox.style.animation = "fadeOut 0.3s ease-out forwards";
+          alertBox.addEventListener(
+            "animationend",
+            () => {
+              document.body.removeChild(alertBox);
+            },
+            { once: true }
+          );
+        });
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log(
+          "Resources page loaded successfully with updated header, buttons, and more cards."
+        );
+        const { jsPDF } = window.jspdf;
+        const resourceActionButtons = document.querySelectorAll(
+          ".resource-action-button"
+        );
+        resourceActionButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const title = button.getAttribute("data-title");
+            const description = button.getAttribute("data-description");
+            const meta = button.getAttribute("data-meta");
+            const doc = new jsPDF({
+              orientation: "portrait",
+              unit: "mm",
+              format: "a4",
+            });
+            const margin = 20;
+            const contentWidth = 170;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.setTextColor(33, 150, 243);
+            const headerText = "HR Toolkit Resource";
+            const headerTextWidth = doc.getTextWidth(headerText);
+            doc.text(headerText, (pageWidth - headerTextWidth) / 2, 20);
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(33, 150, 243);
+            doc.line(margin, 25, pageWidth - margin, 25);
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text(title, margin, 40, { maxWidth: contentWidth });
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(meta, margin, 50, { maxWidth: contentWidth });
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(description, margin, 60, { maxWidth: contentWidth });
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Overview", margin, 80);
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            const additionalContent = `
+                        This resource is part of the HR Toolkit collection designed to support HR professionals and business owners in managing key HR processes effectively. It includes practical tools, templates, and guides to streamline operations and ensure compliance with current standards.
+                        Key Features:
+                        - Tailored for small to medium-sized businesses
+                        - Customizable to fit your organization's needs
+                        - Includes best practices and actionable insights
+                        For more information or to access additional resources, visit the HR Toolkit website or contact our support team.
+                    `;
+            doc.text(additionalContent, margin, 90, { maxWidth: contentWidth });
+            const currentDate = new Date().toLocaleString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Generated on ${currentDate}`, margin, 270, {
+              align: "left",
+            });
+            doc.text("HR Toolkit © 2025", pageWidth - margin, 270, {
+              align: "right",
+            });
+            const fileName =
+              title.replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf";
+            doc.save(fileName);
+            alert(`Downloading "${title}" as ${fileName}`);
+          });
+        });
+        const scrollAnimatedElements =
+          document.querySelectorAll(".fade-in-scroll");
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+        scrollAnimatedElements.forEach((element) => {
+          observer.observe(element);
+        });
+      });
+    </script>
+  </body>
+</html>

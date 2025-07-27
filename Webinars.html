@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webinar Resources</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .main-content-wrapper {
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        box-sizing: border-box;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      .header-section {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 1rem;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        position: relative;
+        overflow: hidden;
+        animation: headerEntrance 1.2s ease-out forwards;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+      .header-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(106, 130, 251, 0.08) 0%,
+          rgba(252, 92, 125, 0.05) 50%,
+          transparent 100%
+        );
+        background-size: 200% 200%;
+        opacity: 0;
+        animation: backgroundShimmer 8s infinite alternate ease-in-out,
+          backgroundFadeIn 1.5s ease-out 0.5s forwards;
+        z-index: 0;
+      }
+
+      .header-section h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+        background: linear-gradient(
+          to right,
+          #6a82fb 40%,
+          #fc5c7c6b 100%
+        ); /* New gradient colors */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: slideInLeft 0.8s ease-out forwards;
+        position: relative;
+        z-index: 1;
+      }
+
+      .header-section p {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        background: linear-gradient(
+          to right,
+          #0ac8f8 0%,
+          #2193b0 100%
+        ); /* New gradient colors */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: slideInRight 0.8s ease-out forwards;
+        position: relative;
+        z-index: 1;
+      }
+
+      .content-section {
+        padding: 2rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .featured-resource {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .featured-resource-image {
+        width: 100%;
+        height: 300px;
+        border-radius: 0.75rem;
+        object-fit: cover;
+        background-color: #e0e0e0;
+      }
+
+      .featured-resource-content {
+        flex-grow: 1;
+      }
+
+      .resource-meta {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: white-space 0.3s ease-in-out, overflow 0.3s ease-in-out,
+          text-overflow 0.3s ease-in-out;
+      }
+      .grid-resource-card:hover .resource-meta {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+
+      .resource-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+      }
+
+      .resource-description {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        -webkit-text-fill-color: initial;
+        background: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .grid-resource-card:hover .resource-description {
+        -webkit-line-clamp: unset; /* Remove line clamping on hover */
+        white-space: normal; /* Allow text to wrap naturally */
+        overflow: visible; /* Show all content */
+        text-overflow: clip; /* Prevent ellipsis */
+      }
+
+      .resource-action-button {
+        background-color: #007bff;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out,
+          transform 0.2s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .resource-action-button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      .resource-action-button svg {
+        width: 1em;
+        height: 1em;
+      }
+
+      .grid-resources {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+        align-items: start;
+      }
+
+      .grid-resource-card {
+        background-color: #f8f8f8;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+          border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        position: relative;
+      }
+      .grid-resource-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15),
+          0 0 15px rgba(0, 123, 255, 0.6);
+        border: 1px solid #007bff;
+        z-index: 10;
+        background-color: #f8faff;
+      }
+
+      .grid-resource-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background-color: #e0e0e0;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .grid-resource-card:hover .grid-resource-image {
+        transform: scale(1.03);
+      }
+
+      .grid-resource-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .grid-resource-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: white-space 0.3s ease-in-out, overflow 0.3s ease-in-out,
+          text-overflow 0.3s ease-in-out;
+      }
+      .grid-resource-card:hover .grid-resource-title {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+
+      .all-resources-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          transform: translateX(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.01);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes headerEntrance {
+        0% {
+          opacity: 0;
+          transform: translateY(-30px) scale(0.95);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      @keyframes backgroundFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes backgroundShimmer {
+        0% {
+          background-position: 0% 0%;
+        }
+        100% {
+          background-position: 100% 100%;
+        }
+      }
+
+      .grid-resource-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .grid-resource-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .grid-resource-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .grid-resource-card:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .grid-resource-card:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .grid-resource-card:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .grid-resource-card:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .grid-resource-card:nth-child(8) {
+        animation-delay: 0.8s;
+      }
+      .grid-resource-card:nth-child(9) {
+        animation-delay: 0.9s;
+      }
+      .grid-resource-card:nth-child(10) {
+        animation-delay: 1s;
+      }
+      .grid-resource-card:nth-child(11) {
+        animation-delay: 1.1s;
+      }
+
+      @media (min-width: 768px) {
+        .featured-resource {
+          flex-direction: row;
+        }
+        .featured-resource-image {
+          width: 50%;
+          height: auto;
+        }
+        .featured-resource-content {
+          width: 50%;
+          padding-left: 2rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .grid-resources {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="main-content-wrapper">
+      <div class="header-section">
+        <h1 class="section-title">Webinar Resources</h1>
+        <p class="header-description">
+          Explore our collection of webinars on various HR topics
+        </p>
+      </div>
+
+      <div class="grid-resources content-section">
+        <div class="grid-resource-card">
+          <img
+            src="https://media.istockphoto.com/id/1209904658/vector/worker-using-computer.jpg?s=612x612&w=0&k=20&c=-1nWOpS2Qc7PhY9Ba-LE0mBXJFlgaFImqwLUkEh4T-Y="
+            alt="Remote Work Webinar"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 60 MIN</p>
+            <h3 class="grid-resource-title">
+              Mastering Remote Team Management in 2025
+            </h3>
+            <p class="resource-description">
+              Learn strategies for effective communication, productivity in a
+              remote work environment.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/003/512/528/non_2x/business-webinar-concept-isolated-professional-development-coaching-and-training-people-scene-in-flat-cartoon-design-illustration-for-blogging-website-mobile-app-promotional-materials-vector.jpg"
+            alt="Performance Webinar"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 45 MIN</p>
+            <h3 class="grid-resource-title">Boosting Employee Performance</h3>
+            <p class="resource-description">
+              Discover how to implement effective feedback loops to drive
+              employee growth.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://www.shutterstock.com/image-vector/compliance-rules-standard-regulation-balance-600nw-2060543345.jpg"
+            alt="Compliance Webinar"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 75 MIN</p>
+            <h3 class="grid-resource-title">
+              HR Compliance Updates for the New Fiscal Year
+            </h3>
+            <p class="resource-description">
+              Stay compliant with the latest HR regulations.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://cdn-blog.novoresume.com/articles/resume-statistics/bg.webp"
+            alt="Recruitment Webinar"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 50 MIN</p>
+            <h3 class="grid-resource-title">Modern Recruitment Strategies</h3>
+            <p class="resource-description">
+              Learn approaches to attract, engage, and hire the best candidates.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://c-assets.papillon.io/image/fetch/s--YnOMApIW--/f_auto/https://dkf1ato8y5dsg.cloudfront.net/uploads/8/62/640x360-gettyimages-1302746025.jpg"
+            alt="Employee Wellbeing"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 65 MIN</p>
+            <h3 class="grid-resource-title">
+              Employee Wellbeing in the Hybrid Workplace
+            </h3>
+            <p class="resource-description">
+              Strategies to support mental and physical health for your hybrid
+              workforce.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/023/803/057/small_2x/hr-department-human-resources-management-employer-hiring-candidates-recruitment-agency-employment-headhunting-business-modern-flat-cartoon-style-illustration-on-white-background-vector.jpg"
+            alt="HR Tech Trends"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 55 MIN</p>
+            <h3 class="grid-resource-title">
+              Top HR Tech Trends to Watch in 2025
+            </h3>
+            <p class="resource-description">
+              Explore the latest technological advancements transforming human
+              resources.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://snacknation.com/wp-content/uploads/2022/03/diversity-inclusion-activities.png"
+            alt="Diversity Inclusion"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 70 MIN</p>
+            <h3 class="grid-resource-title">
+              Building a Diverse and Inclusive Workplace
+            </h3>
+            <p class="resource-description">
+              Best practices for fostering diversity, equity in your
+              organization.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-resource-card">
+          <img
+            src="https://blog.advantageclub.co/wp-content/uploads/2024/10/HR-analytics.webp"
+            alt="HR Analytics"
+            class="grid-resource-image"
+          />
+          <div class="grid-resource-content">
+            <p class="resource-meta">WEBINAR • 60 MIN</p>
+            <h3 class="grid-resource-title">Introduction to HR Analytics</h3>
+            <p class="resource-description">
+              Understand how to leverage data to make informed HR decisions.
+            </p>
+            <button class="resource-action-button">
+              Watch Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function alert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                max-width: 300px;
+                text-align: center;
+                animation: fadeIn 0.3s ease-out;
+            `;
+        alertBox.innerHTML = `
+                <p class="text-gray-800 text-lg">${message}</p>
+                <button class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 ease-in-out">OK</button>
+            `;
+
+        document.body.appendChild(alertBox);
+
+        alertBox.querySelector("button").addEventListener("click", () => {
+          alertBox.style.animation = "fadeOut 0.3s ease-out forwards";
+          alertBox.addEventListener(
+            "animationend",
+            () => {
+              document.body.removeChild(alertBox);
+            },
+            { once: true }
+          );
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("Webinar Resources page loaded successfully.");
+
+        const resourceActionButtons = document.querySelectorAll(
+          ".resource-action-button"
+        );
+        resourceActionButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            alert(`You clicked "${button.textContent.trim()}"!`);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

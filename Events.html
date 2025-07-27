@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Page</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background-color: #f4faff;
+      }
+
+      .event-section {
+        background-color: #032d60;
+        color: #fff;
+        padding: 60px 40px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      .event-content {
+        max-width: 600px;
+        margin-bottom: 20px;
+      }
+
+      .gradient-heading {
+        font-size: 44px;
+        font-weight: 800;
+        line-height: 1.3;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #00e0ff, #00ffa2, #fcb045);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+      }
+
+      .event-content p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        color: #d0e8ff;
+      }
+
+      .event-content button {
+        background-color: #fff;
+        color: #032d60;
+        border: none;
+        padding: 12px 26px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .event-content button:hover {
+        background-color: #dcefff;
+        transform: translateY(-2px);
+      }
+
+      .event-image {
+        max-width: 600px;
+        width: 100%;
+        position: relative;
+      }
+
+      .event-image img {
+        width: 100%;
+        border-radius: 12px;
+        z-index: 2;
+        position: relative;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .wave-divider {
+        position: relative;
+        height: 80px;
+        overflow: hidden;
+      }
+
+      .wave-divider svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      @media (max-width: 1000px) {
+        .event-section {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .event-content,
+        .event-image {
+          max-width: 100%;
+        }
+
+        .event-image {
+          margin-top: 30px;
+        }
+      }
+      .expert-card,
+      .newsletter-card {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 30px 25px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        width: 300px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: left;
+      }
+
+      .expert-card:hover,
+      .newsletter-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 112, 210, 0.2);
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-box {
+        background-color: #fff;
+        margin: 80px auto;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #333;
+      }
+
+      .modal-box h2 {
+        margin-top: 0;
+        color: #032d60;
+      }
+
+      .modal-box label {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #032d60;
+      }
+
+      .modal-box input,
+      .modal-box select,
+      .modal-box textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .modal-box button {
+        background-color: #0070d2;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .success-message {
+        display: none;
+        margin-top: 20px;
+        background-color: #e6ffed;
+        color: #1a7f37;
+        padding: 12px;
+        border-left: 6px solid #1a7f37;
+        border-radius: 5px;
+        font-weight: 600;
+      }
+      /* Popup Overlay */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+
+      .popup-box {
+        background: #fff;
+        padding: 30px 20px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 12px;
+        position: relative;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .popup-box h3 {
+        margin-top: 0;
+        text-align: center;
+        color: #032d60;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin: 10px 0 6px;
+        font-size: 14px;
+        color: #032d60;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+
+      .submit-btn {
+        margin-top: 20px;
+        background: #032d60;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        color: #888;
+        cursor: pointer;
+      }
+
+      .close-btn:hover {
+        color: red;
+      }
+      .event-card {
+        border: 2px solid transparent; /* No border by default */
+      }
+
+      .event-card:hover,
+      .event-card:focus-within {
+        border: 2px solid #00bfff; /* Blue border on hover or focus */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Event Section -->
+    <section class="event-section">
+      <div class="event-content">
+        <h1 class="gradient-heading">
+          Relive the biggest moments from our best Astrolite yet.
+        </h1>
+        <p>
+          Thank you Trailblazers for three unforgettable days. Catch the
+          highlights from the largest AI event ever.
+        </p>
+        <button>Watch on Astrolite</button>
+      </div>
+      <div class="event-image">
+        <img
+          src="https://wallpapers.com/images/featured/corporate-event-g6myc8i808y8llhh.jpg"
+          alt="Dreamforce Event Image"
+        />
+      </div>
+    </section>
+
+    <!-- Wave Divider -->
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path
+          fill="#032d60"
+          d="M0,64L48,58.7C96,53,192,43,288,42.7C384,43,480,53,576,69.3C672,85,768,107,864,112C960,117,1056,107,1152,96C1248,85,1344,75,1392,69.3L1440,64V0H1392C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0H0Z"
+        ></path>
+      </svg>
+    </div>
+
+    <!-- CONTINUATION FROM PREVIOUS CODE -->
+    <!-- Events Listing Section -->
+    <!-- Events Listing Section -->
+    <section
+      style="padding: 60px 20px; background-color: #fff; text-align: center"
+    >
+      <h2 style="font-size: 32px; color: #032d60; margin-bottom: 10px">
+        Experience groundbreaking innovation,<br />
+        coming right to you.
+      </h2>
+      <p style="font-size: 18px; color: #333; margin-bottom: 40px">
+        Register now or sign up to be the first to know when registration is
+        live.
+      </p>
+
+      <div
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 40px;
+          max-width: 1260px;
+          margin: auto;
+        "
+      >
+        <style>
+          .event-card {
+            background-color: #f9fbff;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 360px;
+            height: 510px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+          }
+          .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+          }
+          .event-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+          }
+          .event-card-body {
+            padding: 20px;
+          }
+          .event-tag {
+            display: inline-block;
+            background: #e5f1ff;
+            color: #032d60;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+          }
+          .event-title {
+            font-size: 20px;
+            color: #032d60;
+            margin-bottom: 6px;
+          }
+          .event-date {
+            color: black;
+            font-size: 20px;
+            margin-bottom: 6px;
+          }
+          .event-desc {
+            font-size: 18px;
+            color: black;
+          }
+          .register-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #032d60;
+            color: white;
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+          }
+          .register-btn:hover {
+            background-color: #004aad;
+          }
+
+          /* Popup */
+          .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+          }
+          .popup-box {
+            background: #fff;
+            padding: 30px;
+            width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            position: relative;
+          }
+          .popup-box h3 {
+            margin-bottom: 20px;
+            color: #032d60;
+            text-align: center;
+          }
+          .popup-box label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+            color: #032d60;
+          }
+          .input-icon {
+            position: relative;
+            margin-bottom: 20px;
+          }
+          .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #666;
+          }
+          .popup-box input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+          }
+          .popup-box button {
+            width: 100%;
+            padding: 10px;
+            background: #032d60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+          }
+          .popup-box .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+          }
+          .event-card {
+            border: 2px solid transparent; /* No border by default */
+          }
+
+          .event-card:hover,
+          .event-card:focus-within {
+            border: 2px solid #00bfff; /* Blue border on hover or focus */
+          }
+        </style>
+
+        <!-- CARD 1 -->
+        <div class="event-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/eo-card-tdx25.jpg"
+            alt="TrailblazerDX"
+          />
+          <div class="event-card-body">
+            <span class="event-tag">San Francisco & Astrolite</span>
+            <h3 class="event-title">TrailblazerDX</h3>
+            <p class="event-date">March 5–6, 2025</p>
+            <p class="event-desc">
+              The ultimate developer conference for Trailblazers worldwide.
+            </p>
+            <button class="register-btn" onclick="openPopup('TrailblazerDX')">
+              Register Now
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="event-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/eo-card-edu-summit-25.jpg"
+            alt="Education Summit"
+          />
+          <div class="event-card-body">
+            <span class="event-tag">Chicago & Astrolite</span>
+            <h3 class="event-title">Education Summit</h3>
+            <p class="event-date">March 11–13, 2025</p>
+            <p class="event-desc">
+              The premier learning event for educators and institutions.
+            </p>
+            <button
+              class="register-btn"
+              onclick="openPopup('Education Summit')"
+            >
+              Register Now
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="event-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-in/wp-content/uploads/sites/21/2025/02/AWT25-WEBSITE-ASSET-6-1080-X-608-PX.png"
+            alt="Agentforce World Tour"
+          />
+          <div class="event-card-body">
+            <span class="event-tag">Mumbai</span>
+            <h3 class="event-title">Agentforce World Tour Mumbai</h3>
+            <p class="event-date">April 15, 2025</p>
+            <p class="event-desc">
+              The premier learning event for service & field agents in India.
+            </p>
+            <button
+              class="register-btn"
+              onclick="openPopup('Agentforce World Tour Mumbai')"
+            >
+              Register Now
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="event-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/eo-card-tc25.jpg"
+            alt="Tableau Conference"
+          />
+          <div class="event-card-body">
+            <span class="event-tag">San Diego & Astrolite</span>
+            <h3 class="event-title">Tableau Conference</h3>
+            <p class="event-date">April 15–17, 2025</p>
+            <p class="event-desc">
+              A celebration for data enthusiasts, analysts, developers, and
+              leaders.
+            </p>
+            <button
+              class="register-btn"
+              onclick="openPopup('Tableau Conference')"
+            >
+              Register Now
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="event-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/eo-card-df25.jpg"
+            alt="TDX Bengaluru"
+          />
+          <div class="event-card-body">
+            <span class="event-tag">Bengaluru & Astrolite</span>
+            <h3 class="event-title">TDX Bengaluru</h3>
+            <p class="event-date">May 2–3, 2025</p>
+            <p class="event-desc">
+              The must-attend event for developers, admins, and architects in
+              India.
+            </p>
+            <button class="register-btn" onclick="openPopup('TDX Bengaluru')">
+              Register Now
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 6 -->
+        <div class="event-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/11/eo-card-cnx25.jpg"
+            alt="Connections"
+          />
+          <div class="event-card-body">
+            <span class="event-tag">Chicago & Astrolite</span>
+            <h3 class="event-title">Connections</h3>
+            <p class="event-date">June 11–12, 2025</p>
+            <p class="event-desc">
+              Where educators and institutions gather to share learning
+              innovations.
+            </p>
+            <button class="register-btn" onclick="openPopup('Connections')">
+              Register Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Past Events Section-->
+    <section style="padding: 60px 20px; background-color: #ffffff">
+      <h2
+        style="
+          text-align: center;
+          font-size: 32px;
+          color: #032d60;
+          margin-bottom: 10px;
+        "
+      >
+        Past Events
+      </h2>
+      <p
+        style="
+          text-align: center;
+          font-size: 16px;
+          color: Black;
+          max-width: 700px;
+          margin: 0 auto 40px;
+          font-size: 20px;
+        "
+      >
+        Revisit all the excitement and stories of success exclusively on
+        Astrolite.
+      </p>
+
+      <!-- Cards Container -->
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 40px;
+          max-width: 1260px;
+          margin: auto;
+        "
+      >
+        <!-- Common Card Styles -->
+        <style>
+          .past-card {
+            background-color: #f9fbff;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 360px;
+            height: 440px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          .past-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+          }
+          .past-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+          }
+          .past-card-body {
+            padding: 20px;
+          }
+          .past-tag {
+            display: inline-block;
+            background: #e5f1ff;
+            color: #032d60;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+          }
+          .past-title {
+            font-size: 20px;
+            color: #032d60;
+            margin-bottom: 6px;
+          }
+          .past-desc {
+            font-size: 16px;
+            color: Black;
+          }
+          .event-card {
+            border: 2px solid transparent; /* No border by default */
+          }
+
+          .event-card:hover,
+          .event-card:focus-within {
+            border: 2px solid #00bfff; /* Blue border on hover or focus */
+          }
+        </style>
+
+        <!-- Card 1 -->
+        <div class="past-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-au/wp-content/uploads/sites/12/2024/11/awt-virtual-card.png?resize=1024,576"
+            alt="Discover Agentforce"
+          />
+          <div class="past-card-body">
+            <span class="past-tag">Watch on demand</span>
+            <h3 class="past-title">Discover Agentforce</h3>
+            <p class="past-desc">
+              Astrolite is here to take action for you and drive results 24/7.
+              Learn how autonomous agents boost growth and productivity.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="past-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-au/wp-content/uploads/sites/12/2023/10/events-df23.png?resize=300,169"
+            alt="Dreamforce 2024"
+          />
+          <div class="past-card-body">
+            <span class="past-tag">Watch on demand</span>
+            <h3 class="past-title">Dreamforce 2024</h3>
+            <p class="past-desc">
+              Stream all the innovation and inspiration from the most valuable
+              event in business. Discover the transformative power of AI + CRM +
+              Trust.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="past-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-au/wp-content/uploads/sites/12/2023/10/events-wtsyd23.jpeg?resize=300,169"
+            alt="World Tour Sydney 2024"
+          />
+          <div class="past-card-body">
+            <span class="past-tag">Watch on demand</span>
+            <h3 class="past-title">World Tour Sydney 2024</h3>
+            <p class="past-desc">
+              Join Astrolite leaders to learn how everyone can become an
+              Einstein with Data + AI + CRM + Trust — featuring powerful
+              real-world use cases.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explore Events Section -->
+    <section style="padding: 60px 20px; background-color: #ffffff">
+      <h2
+        style="
+          text-align: center;
+          font-size: 32px;
+          color: #032d60;
+          margin-bottom: 40px;
+        "
+      >
+        Explore events that help you sharpen your customer focus.
+      </h2>
+
+      <!-- Cards Container -->
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 30px;
+          max-width: 1200px;
+          margin: auto;
+        "
+      >
+        <!-- Card 1 -->
+        <div
+          style="
+            background-color: #f9fbff;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 270px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            text-align: left;
+          "
+        >
+          <img
+            src="https://tse2.mm.bing.net/th/id/OIP.GLOwce0WVcqBIO3EkRVBfgHaEK?pid=Api&P=0&h=180"
+            alt="Free On-Demand Webinars"
+            style="width: 100%; height: 160px; object-fit: cover"
+          />
+          <div style="padding: 20px">
+            <h3 style="font-size: 18px; color: #032d60; margin-bottom: 10px">
+              Free On-Demand Webinars
+            </h3>
+            <p style="font-size: 14px; color: Black">
+              Get in-depth guidance on how to drive growth with Astrolite.
+            </p>
+            <a
+              href="#"
+              style="
+                font-weight: 600;
+                color: #032d60;
+                font-size: 15px;
+                display: inline-block;
+                margin-top: 10px;
+              "
+              >Learn more</a
+            >
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div
+          style="
+            background-color: #f9fbff;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 270px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            text-align: left;
+          "
+        >
+          <img
+            src="https://tse2.mm.bing.net/th/id/OIP.bTQXSWnU6VQ4rMBAOBcq8AHaE2?pid=Api&P=0&h=180"
+            alt="Astrolite"
+            style="width: 100%; height: 160px; object-fit: cover"
+          />
+          <div style="padding: 20px">
+            <h3 style="font-size: 18px; color: #032d60; margin-bottom: 10px">
+              Astrolite
+            </h3>
+            <p style="font-size: 14px; color: Black">
+              Stream live and recorded events and original programming.
+            </p>
+            <a
+              href="#"
+              style="
+                font-weight: 600;
+                color: #032d60;
+                font-size: 15px;
+                display: inline-block;
+                margin-top: 10px;
+              "
+              >Learn more</a
+            >
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div
+          style="
+            background-color: #f9fbff;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 270px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            text-align: left;
+          "
+        >
+          <img
+            src="https://ds6br8f5qp1u2.cloudfront.net/blog/wp-content/uploads/2017/05/wearedevs.jpg?x88475"
+            alt="Developer Events"
+            style="width: 100%; height: 160px; object-fit: cover"
+          />
+          <div style="padding: 20px">
+            <h3 style="font-size: 18px; color: #032d60; margin-bottom: 10px">
+              Developer Events
+            </h3>
+            <p style="font-size: 14px; color: Black">
+              Learn from the experts how to innovate with Astrolite.
+            </p>
+            <a
+              href="#"
+              style="
+                font-weight: 600;
+                color: #032d60;
+                font-size: 15px;
+                display: inline-block;
+                margin-top: 10px;
+              "
+              >Learn more</a
+            >
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div
+          style="
+            background-color: #f9fbff;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 270px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            text-align: left;
+          "
+        >
+          <img
+            src="https://lh6.googleusercontent.com/bc_quGhaAS48wB5Nsnm1O3QY10WBAEiKBFQ6YW73IPnCOq_XN67dSL0gehku4q85Ip0lqo_sDhkB66LYE40LiVA-WvIg1WIyC0f9Po3PJSwqA9QWTJuJ1xPAKxwsYIbNyIPqQvSwFfNEDKONDh4_wPA"
+            alt="Customer Success Events"
+            style="width: 100%; height: 160px; object-fit: cover"
+          />
+          <div style="padding: 20px">
+            <h3 style="font-size: 18px; color: #032d60; margin-bottom: 10px">
+              Customer Success Events
+            </h3>
+            <p style="font-size: 14px; color: Black">
+              Learn all about Customer 360 in hands-on workshops.
+            </p>
+            <a
+              href="#"
+              style="
+                font-weight: 600;
+                color: #032d60;
+                font-size: 15px;
+                display: inline-block;
+                margin-top: 10px;
+              "
+              >Learn more</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section
+      style="
+        padding: 80px 20px;
+        background: linear-gradient(to bottom, #f2f8fb 0%, #e8f4fc 100%);
+        text-align: center;
+        position: relative;
+      "
+    >
+      <h2 style="font-size: 32px; color: #032d60; margin-bottom: 50px">
+        Questions? We’ll put you on the right path.
+      </h2>
+
+      <!-- Two Cards Side by Side -->
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 40px;
+        "
+      >
+        <!-- Card 1: Talk to an Expert -->
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        />
+
+        <div class="expert-card">
+          <div style="font-size: 36px; color: #0070d2; margin-bottom: 16px">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <h3
+            style="
+              font-size: 20px;
+              color: #032d60;
+              margin-bottom: 10px;
+              text-align: left;
+            "
+          >
+            Talk to an expert.
+          </h3>
+          <p style="font-size: 15px; color: #444">
+            Tell us a bit more so the right person can reach out faster.
+          </p>
+          <a
+            href="#"
+            onclick="openModal()"
+            style="
+              display: inline-block;
+              margin-top: 16px;
+              font-weight: 600;
+              color: #032d60;
+              font-size: 14px;
+              text-decoration: underline;
+            "
+            >Request a call</a
+          >
+        </div>
+
+        <!-- Card 2: Stay up to date -->
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        />
+
+        <div class="newsletter-card">
+          <div style="font-size: 36px; color: #0070d2; margin-bottom: 16px">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h3
+            style="
+              font-size: 20px;
+              color: #032d60;
+              margin-bottom: 10px;
+              text-align: left;
+            "
+          >
+            Stay up to date.
+          </h3>
+          <p style="font-size: 15px; color: #444">
+            Get the latest research, industry insights, and product news
+            delivered straight to your inbox.
+          </p>
+          <a
+            href="#"
+            onclick="openNewsletterModal()"
+            style="
+              display: inline-block;
+              margin-top: 16px;
+              font-weight: 600;
+              color: #032d60;
+              font-size: 14px;
+              text-decoration: underline;
+            "
+            >Sign up for newsletter</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal 1: Request a Call -->
+    <div class="modal-overlay" id="modal">
+      <div class="modal-box">
+        <span class="close-btn" onclick="closeModal()">✖</span>
+        <h2><i class="fas fa-phone-volume"></i> Request a Call</h2>
+        <form id="requestForm" onsubmit="return submitForm(event)">
+          <label for="name"><i class="fas fa-user"></i> Full Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required />
+
+          <label for="email"
+            ><i class="fas fa-envelope"></i> Email Address</label
+          >
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+
+          <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            placeholder="Enter your phone number"
+            required
+          />
+
+          <label for="message"
+            ><i class="fas fa-comment-dots"></i> Message</label
+          >
+          <textarea
+            id="message"
+            rows="4"
+            placeholder="What would you like to discuss?"
+          ></textarea>
+
+          <button type="submit">Submit Request</button>
+          <div class="success-message" id="successMessage">
+            🎉 Thank you! Your request has been submitted successfully!
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal 2: Newsletter Signup -->
+    <div class="modal-overlay" id="newsletterModal">
+      <div class="modal-box">
+        <span class="close-btn" onclick="closeNewsletterModal()">✖</span>
+        <h2><i class="fas fa-paper-plane"></i> Newsletter Signup</h2>
+        <form id="newsletterForm" onsubmit="return handleSubmit(event)">
+          <label for="firstName"><i class="fas fa-user"></i> First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="Your name"
+            required
+          />
+
+          <label for="email"><i class="fas fa-envelope"></i> Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Your email address"
+            required
+          />
+
+          <label for="country"
+            ><i class="fas fa-globe"></i> Country/Region</label
+          >
+          <select name="country" required>
+            <option value="">Select Country</option>
+            <option value="India">India</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+            <option value="Australia">Australia</option>
+          </select>
+
+          <label for="industry"><i class="fas fa-industry"></i> Industry</label>
+          <select name="industry" required>
+            <option value="">Select Industry</option>
+            <option value="IT">IT</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Education">Education</option>
+            <option value="Finance">Finance</option>
+          </select>
+
+          <button type="submit">SIGN ME UP!</button>
+          <div class="success-message" id="newsletterSuccess">
+            🎉 Thank you! You're signed up!
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Call request modal functions
+      function openModal() {
+        document.getElementById("modal").style.display = "block";
+        document.getElementById("successMessage").style.display = "none";
+      }
+
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+
+      function submitForm(event) {
+        event.preventDefault();
+        document.getElementById("successMessage").style.display = "block";
+        document.getElementById("requestForm").reset();
+        setTimeout(() => {
+          closeModal();
+        }, 3000);
+        return false;
+      }
+
+      // Newsletter modal functions
+      function openNewsletterModal() {
+        document.getElementById("newsletterModal").style.display = "block";
+        document.getElementById("newsletterSuccess").style.display = "none";
+      }
+
+      function closeNewsletterModal() {
+        document.getElementById("newsletterModal").style.display = "none";
+        document.getElementById("newsletterForm").reset();
+      }
+
+      function handleSubmit(event) {
+        event.preventDefault();
+        document.getElementById("newsletterSuccess").style.display = "block";
+        setTimeout(() => {
+          closeNewsletterModal();
+        }, 2500);
+        return false;
+      }
+
+      window.onclick = function (event) {
+        if (event.target == document.getElementById("modal")) {
+          closeModal();
+        }
+        if (event.target == document.getElementById("newsletterModal")) {
+          closeNewsletterModal();
+        }
+      };
+    </script>
+  </body>
+</html>

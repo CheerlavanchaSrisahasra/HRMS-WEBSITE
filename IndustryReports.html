@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HRMS Software for Healthcare</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #ffffff;
+        color: #0c2a55;
+      }
+
+      .hero {
+        background: url("https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/03/Health-Life-Sciences_Overview_Marquee_Marquee-Background_Version-2.jpg?resize=2048,640")
+          no-repeat center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 60px 10%;
+        flex-wrap: wrap;
+      }
+
+      .content {
+        flex: 1;
+        max-width: 550px;
+      }
+
+      .content h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        line-height: 1.3;
+        color: #6c63ff;
+      }
+
+      .content p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        color: #333333;
+      }
+
+      .enquire-btn {
+        background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+        color: #ffffff;
+        border: none;
+        padding: 12px 28px;
+        font-size: 1em;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .enquire-btn:hover {
+        background-color: #ffcc00;
+      }
+
+      .image-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      .stat-heading {
+        text-align: center;
+        font-size: 34px;
+        margin-bottom: 1px;
+      }
+
+      .stats-section {
+        background-color: #f9f9f9;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .stats-section::-webkit-scrollbar {
+        display: none;
+      }
+
+      .stats-container {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 20px;
+        padding: 60px 3.5%;
+        scroll-behavior: smooth;
+        width: max-content;
+      }
+
+      .stat-box {
+        flex: 0 0 calc(33.333% - 20px);
+        min-width: 300px;
+        max-width: 320px;
+        background: url("https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/01/stat-card-bg-01-min.png?resize=300,294")
+          no-repeat center center;
+        background-size: cover;
+        border-radius: 16px;
+        height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-top: 5px solid #9457eb;
+      }
+
+      .stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-top: 5px solid #663399;
+      }
+
+      .stat-content {
+        padding: 20px;
+        border-radius: 12px;
+      }
+
+      .stat-content h2 {
+        font-size: 2.5em;
+        margin: 0 0 10px;
+        color: #003366;
+      }
+
+      .stat-content h3 {
+        font-size: 1.1em;
+        margin: 0 0 10px;
+        color: #0c2a55;
+      }
+
+      .stat-content p {
+        font-size: 1em;
+        color: #333333;
+        line-height: 1.5;
+      }
+
+      .industry-section {
+        padding: 60px 10%;
+        background-color: #f9f9f9;
+      }
+
+      .industry-title {
+        text-align: center;
+        font-size: 2.2em;
+        color: #0c2a55;
+        margin-bottom: 40px;
+      }
+
+      .industry-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .industry-card {
+        border-top: 3px solid #3f3abf;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        flex: 1;
+        max-width: calc(33.333% - 20px);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .industry-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .industry-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+
+      .industry-card h3 {
+        font-size: 24px;
+        color: #6c63ff;
+        margin-bottom: 10px;
+      }
+
+      .industry-card p {
+        font-size: 1em;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .explore-btn {
+        background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+        color: #fff;
+        border: none;
+        padding: 10px 24px;
+        font-size: 1em;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .explore-btn:hover {
+        background-color: #4ab8e6;
+      }
+
+      @media (max-width: 992px) {
+        .industry-row {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .industry-card {
+          max-width: 100%;
+        }
+      }
+
+      .faq-section {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 5%;
+        color: #0c2a55;
+      }
+
+      .faq-section h2 {
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 30px;
+      }
+
+      .faq-item {
+        background: #eaf4fc;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        overflow: hidden;
+      }
+
+      .faq-question {
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        padding: 25px 40px;
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #0c2a55;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 12px;
+      }
+
+      .toggle-icon {
+        font-size: 1.5em;
+        transition: transform 0.3s ease;
+      }
+
+      .faq-answer {
+        padding: 0 40px 30px 40px;
+        font-size: 1.1em;
+        line-height: 1.5;
+        color: #333333;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="content">
+        <h1>HRMS Software for the<br />Various Industries</h1>
+        <p>
+          Our powerful HRMS is designed for all industries, including
+          manufacturing, healthcare, IT, education, retail, and construction. It
+          streamlines recruitment, onboarding, payroll, attendance, performance
+          management, and compliance—allowing you to focus on business growth
+          and employee success.
+        </p>
+
+        <button class="enquire-btn" onclick="handleEnquire()">
+          Enquire Now
+        </button>
+      </div>
+
+      <div class="image-container">
+        <img
+          src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2025/01/Health-Life-Sciences_Overview_-Marquee_Marquee_Version-1.png?resize=2048,1365"
+          alt="HR Software Screenshot"
+        />
+      </div>
+    </section>
+
+    <section class="industry-section">
+      <h2 class="industry-title">Explore Industry Reports</h2>
+
+      <div class="industry-row">
+        <div class="industry-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/08/HBR_healthcare.png?resize=1024,576"
+            alt="Healthcare"
+          />
+          <h3>Healthcare</h3>
+          <p>
+            Helps hospitals and clinics manage staff schedules, ensure
+            regulatory compliance, and track employee performance.
+          </p>
+          <button class="explore-btn">Explore More</button>
+        </div>
+
+        <div class="industry-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/05/Connected-Car-Disconnect_-65-of-U.S.-Drivers-Dont-Understand-1.png?resize=1024,576"
+            alt="Automobile"
+          />
+          <h3>Automobile</h3>
+          <p>
+            Improves workforce planning in factories, making it easier to manage
+            skilled labor and boost productivity.
+          </p>
+          <button class="explore-btn">Explore More</button>
+        </div>
+
+        <div class="industry-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/05/Retail-Resource-card-4.png?resize=1024,576"
+            alt="Retail"
+          />
+          <h3>Retail</h3>
+          <p>
+            Supports HR for retail chains by managing store employees, seasonal
+            workers, and time tracking across multiple locations
+          </p>
+          <button class="explore-btn">Explore More</button>
+        </div>
+      </div>
+
+      <div class="industry-row">
+        <div class="industry-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/06/Simplify-Partner-Engagement_-A-Guide-for-Manufacturers-1.png?resize=1024,576"
+            alt="Manufacturing"
+          />
+          <h3>Manufacturing</h3>
+          <p>
+            Manages factory workforce schedules, ensures labor law compliance,
+            and monitors performance on the shop floor.
+          </p>
+          <button class="explore-btn">Explore More</button>
+        </div>
+
+        <div class="industry-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2025/03/S-ORG-DG-5-Practical-Steps-Ebook-Confirmation-image-768x432-1.png?resize=768,417"
+            alt="Education"
+          />
+          <h3>Education</h3>
+          <p>
+            Simplifies HR for schools and universities by handling teacher
+            onboarding, leave requests, and document verification.
+          </p>
+          <button class="explore-btn">Explore More</button>
+        </div>
+
+        <div class="industry-card">
+          <img
+            src="https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/07/The-Top-5-Ways-AI-is-Unlocking-Growth-Opportunities-in-the-Travel-and-Hospitality-Industry.png?resize=1024,576"
+            alt="Transportation"
+          />
+          <h3>Transportation</h3>
+          <p>
+            Enhance guest experiences by efficiently managing staff scheduling,
+            and compliance across hotels, airlines, and travel services.
+          </p>
+          <button class="explore-btn">Explore More</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <div class="stats-container">
+        <div class="stat-box">
+          <div class="stat-content">
+            <h2>27%</h2>
+            <h3>Greater Patient Adherence</h3>
+            <p>Improve patient outcomes with connected care plans.</p>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-content">
+            <h2>35%</h2>
+            <h3>Faster automation of business processes</h3>
+            <p>Improve operational efficiency.</p>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-content">
+            <h2>39%</h2>
+            <h3>Increase in online revenue*</h3>
+            <p>Retailers experience online gains with Salesforce.</p>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-content">
+            <h2>39%</h2>
+            <h3>Decrease in case wrap-up time</h3>
+            <p>It helps manufacturers reduce time-to-close services cases.</p>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-content">
+            <h2>10%</h2>
+            <h3>Growth in fundraising contributions</h3>
+            <p>
+              Nurture alumni relationships and unlock a data-driven approach to
+              fundraising.
+            </p>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-content">
+            <h2>31%</h2>
+            <h3>Improvement in customer satisfaction</h3>
+            <p>
+              Companies reported increased customer satisfaction after
+              implementing HRMS.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-section">
+      <h2>HR Challenges in Various Industries</h2>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How can Astrolite help hospitals manage staff shifts?
+          <span class="toggle-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          It provides smart scheduling tools to efficiently manage staff shifts,
+          ensuring proper coverage and reducing conflicts.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is a CRM for the Automotive industry?
+          <span class="toggle-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Customer relationship management for the Automotive industry is a
+          system for managing all of your company’s interactions with current
+          and potential customers, as well as critical information like driver,
+          vehicle, retail, and Automotive financial data.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What are the benefits of HRMS for retail?
+          <span class="toggle-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Retailers have access to a unified engagement platform that provides a
+          single source of truth across their entire partner ecosystem – retail
+          marketing, commerce, service, IT, and store. You can now focus on
+          driving costs down and loyalty up with Salesforce for retail CRM.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is CRM in manufacturing? <span class="toggle-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Customer relationship management (CRM) for the manufacturing industry
+          is a system for managing all of your company’s interactions with
+          current and potential customers and partners like distributors. It
+          also helps manage critical information, such as asset data, order
+          management, and demand forecasting.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can Astrolite help us onboard new doctors or support staff quickly?
+          <span class="toggle-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Yes, It offers streamlined onboarding workflows, document management,
+          and training tracking for new hires.
+        </div>
+      </div>
+    </section>
+
+    <script>
+      document.querySelectorAll(".faq-question").forEach((button) => {
+        button.addEventListener("click", () => {
+          const answer = button.nextElementSibling;
+          const icon = button.querySelector(".toggle-icon");
+
+          if (answer.style.display === "block") {
+            answer.style.display = "none";
+            icon.textContent = "+";
+          } else {
+            document
+              .querySelectorAll(".faq-answer")
+              .forEach((ans) => (ans.style.display = "none"));
+            document
+              .querySelectorAll(".toggle-icon")
+              .forEach((ic) => (ic.textContent = "+"));
+
+            answer.style.display = "block";
+            icon.textContent = "−";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

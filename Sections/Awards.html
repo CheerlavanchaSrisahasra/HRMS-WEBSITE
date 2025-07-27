@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>#1 HR Software Award</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background-color: #fff;
+        padding: 40px;
+      }
+
+      .award-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .left-content {
+        flex: 1;
+        max-width: 45%;
+      }
+
+      .left-content h2 {
+        font-size: 2rem;
+        color: #111;
+        margin-bottom: 20px;
+      }
+
+      .left-content h2 span {
+        color: #ef4d91;
+        font-weight: bold;
+      }
+
+      .trophy-image {
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .right-content {
+        flex: 1;
+        max-width: 50%;
+      }
+
+      .badge-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .badge-grid img {
+        width: 100%;
+        max-width: 120px;
+        object-fit: contain;
+      }
+    </style>
+    <section class="award-section">
+      <div class="left-content">
+        <h2>Awarded as India’s <br /><span>#1 HR Software.</span></h2>
+        <img
+          src="../Assests/awards.png"
+          alt="Man holding trophy"
+          class="trophy-image"
+        />
+      </div>
+
+      <div class="right-content">
+        <div class="badge-grid">
+          <img src="../Assests/Quality choice.png" alt="Quality Choice" />
+          <img src="../Assests/Leader.png" alt="Leader 2024" />
+          <img src="../Assests/Front Runner.png" alt="Front Runners 2023" />
+          <img src="../Assests/Capterra.png" alt="Capterra Shortlist 2023" />
+          <!-- <img src="" alt="Top 50 HR Products 2024" />
+          <img src="assets/badge6.png" alt="High Performer Winter 2023" /> -->
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

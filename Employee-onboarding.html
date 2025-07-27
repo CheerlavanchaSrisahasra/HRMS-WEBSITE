@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astrolite Employee Onboarding</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for consistent styling */
+      :root {
+        --primary-green: #38b44a;
+        --light-green: #e6f6e8;
+        --dark-blue: #1a237e;
+        --light-blue: #e0f2f7; /* Used for main background now */
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --white: #fff;
+        --border-radius: 8px;
+        --shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* For general cards */
+        --astrolite-blue: #e0f2f7; /* Main background color from the new screenshot */
+        --astrolite-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow for cards */
+        --astrolite-text-blue: #1a237e; /* Darker text color for headings */
+        --modal-bg: rgba(0, 0, 0, 0.5); /* Overlay for modal */
+        --modal-card-bg: #fff;
+        --modal-border-radius: 12px;
+        --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        --calendar-border-color: #e0e0e0;
+        --calendar-day-hover: #f0f0f0;
+        --calendar-day-selected: #d0e8f2; /* Light blue for selected days */
+        --calendar-current-day: #a0d8ed; /* Slightly darker blue for current day */
+      }
+
+      /* Basic Reset and Body Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(
+          --astrolite-blue
+        ); /* Apply the new theme background */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      /* Utility Container for content width */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Section Styling */
+      section {
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+        background-color: var(
+          --astrolite-blue
+        ); /* Ensure all sections have the theme background */
+      }
+
+      /* Override previous alternating background if needed, now all sections are the same theme color */
+      section:nth-of-type(odd) {
+        background-color: var(--astrolite-blue);
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3 {
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(
+          --astrolite-text-blue
+        ); /* Headings use the theme's dark blue */
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      h3 {
+        font-size: 1.8em;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      /* Button Styling */
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-primary:hover {
+        background-color: #151a5c;
+        border-color: #151a5c;
+      }
+
+      /* Disabled state for buttons */
+      .btn-primary:disabled {
+        background-color: #cccccc;
+        border-color: #cccccc;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .btn-primary:disabled:hover {
+        background-color: #cccccc; /* Keep same on hover when disabled */
+        border-color: #cccccc;
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--dark-blue);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-blue);
+      }
+
+      .btn-success {
+        background-color: var(--primary-green);
+        color: var(--white);
+        border: 1px solid var(--primary-green);
+      }
+
+      .btn-success:hover {
+        background-color: #319d40;
+        border-color: #319d40;
+      }
+
+      /* Flexbox Layout for content rows */
+      .flex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 40px; /* Space between flex items */
+      }
+
+      .flex-row > div {
+        flex: 1; /* Allow items to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+      }
+
+      /* Image Mockup Styling */
+      .image-mockup {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        background-color: transparent; /* Ensure no default background */
+        padding: 0; /* Remove padding if image fills entirely */
+      }
+      .image-mockup img {
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove extra space below image */
+        border-radius: var(
+          --border-radius
+        ); /* Apply border-radius to the image itself */
+      }
+
+      /* Specific adjustments for hero section image */
+      .section-hero .image-mockup {
+        box-shadow: none; /* No shadow for this specific image mockup */
+      }
+
+      /* Content areas that should be white like cards */
+      .content-card {
+        background-color: var(--white);
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: var(
+          --astrolite-card-shadow
+        ); /* Apply lighter card shadow */
+      }
+
+      /* Specific section styles */
+
+      /* Hero Section: Employee Onboarding */
+      .section-hero {
+        background-color: var(--astrolite-blue); /* Matches page background */
+        text-align: center;
+        padding-top: 100px; /* More padding for hero section */
+        padding-bottom: 100px;
+      }
+
+      .section-hero .flex-row {
+        justify-content: center;
+        align-items: flex-start; /* Align content to top for better flow */
+        gap: 60px; /* More space for hero section */
+      }
+
+      .section-hero .content {
+        flex: 1.2; /* Content takes more space */
+        max-width: 550px; /* Max width for text block */
+        text-align: left;
+        margin: 0; /* Remove auto margin from previous .content-card */
+        padding: 0; /* Remove padding from previous .content-card */
+        background-color: transparent; /* No background for this content block */
+        box-shadow: none; /* No shadow for this content block */
+      }
+      .section-hero .content h2 {
+        text-align: left; /* Align heading to left */
+        font-size: 3em; /* Larger heading */
+        margin-bottom: 15px;
+      }
+      .section-hero .content p {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .section-hero .image-mockup {
+        flex: 1;
+        min-height: 450px; /* Larger height for hero image */
+        box-shadow: none; /* No shadow for this specific image mockup */
+        background-color: transparent; /* No background for this specific image mockup */
+        padding: 0; /* No padding for this specific image mockup */
+        display: flex; /* Ensure flex for image centering if needed */
+        align-items: center;
+        justify-content: center;
+      }
+      .section-hero .image-mockup img {
+        width: 100%; /* Make image fill the mockup div */
+        height: 450px; /* Fixed height for consistency with previous mockup */
+        object-fit: contain; /* Ensure image fits without cropping, maintaining aspect ratio */
+      }
+
+      .section-hero .buttons {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start; /* Align buttons to left */
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* Section: Onboarding Progress Tracking & Analytics */
+      .section-dashboard .content {
+        flex: 1.5;
+        padding-right: 40px;
+      }
+
+      .section-dashboard .image-mockup {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .section-dashboard .image-mockup img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+      }
+
+      .feature-list {
+        list-style: none;
+        margin-top: 30px;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer; /* Indicate clickable */
+      }
+
+      .feature-list li::before {
+        content: "+";
+        color: var(--primary-green);
+        font-weight: 700;
+        margin-right: 10px;
+        font-size: 1.2em;
+      }
+      .feature-list li.highlight::before {
+        content: "–";
+      }
+
+      /* Styling for the toggled description */
+      .feature-description {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        margin-left: 20px; /* Indent the description */
+        display: none; /* Hidden by default */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .feature-description.show {
+        display: block; /* Show when 'show' class is present */
+        max-height: 100px; /* A value large enough to contain the text */
+        opacity: 1;
+      }
+
+      /* Section: Automated Onboarding Workflows */
+      .section-hr-management .content {
+        flex: 1.5;
+        padding-left: 40px;
+        order: 2;
+      }
+      .section-hr-management .image-mockup {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .section-hr-management .image-mockup img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+      }
+
+      /* Section: Why choose Astrolite */
+      .section-why-choose {
+        text-align: center;
+      }
+
+      .section-why-choose h2 {
+        margin-bottom: 50px;
+      }
+
+      .reason-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .reason-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--astrolite-card-shadow);
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        max-width: 280px;
+        transition: transform 0.3s ease;
+      }
+
+      .reason-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .reason-card img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+
+      .reason-card h3 {
+        font-size: 1.4em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .reason-card p {
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .flex-row {
+          flex-direction: column;
+          text-align: center;
+        }
+        .flex-row > div {
+          min-width: unset;
+          width: 100%;
+        }
+        .section-dashboard .content,
+        .section-hr-management .content {
+          padding-right: 0;
+          padding-left: 0;
+          order: unset;
+        }
+        .section-dashboard .image-mockup,
+        .section-hr-management .image-mockup {
+          margin-top: 40px;
+        }
+
+        .reason-card {
+          max-width: 45%;
+        }
+        .content-card {
+          padding: 30px;
+        }
+        .section-hero .content {
+          padding: 0; /* Remove padding for hero content on small screens */
+          text-align: center; /* Center text on small screens */
+        }
+        .section-hero .content h2 {
+          text-align: center;
+          font-size: 2.5em; /* Adjust font size for smaller screens */
+        }
+        .section-hero .buttons {
+          justify-content: center; /* Center buttons on small screens */
+        }
+        .section-hero .image-mockup {
+          min-height: 300px; /* Adjust height for smaller screens */
+        }
+        .section-hero .image-mockup img,
+        .section-dashboard .image-mockup img,
+        .section-hr-management .image-mockup img {
+          height: 300px; /* Adjust image height for smaller screens */
+        }
+      }
+
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 2em;
+        }
+        h3 {
+          font-size: 1.5em;
+        }
+        section {
+          padding: 60px 0;
+        }
+        .reason-cards {
+          flex-direction: column;
+          align-items: center;
+        }
+        .reason-card {
+          max-width: 90%;
+        }
+        .btn {
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          width: 100%;
+        }
+      }
+
+      /* Consultation Modal Styles */
+      .consultation-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .consultation-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .consultation-modal-content {
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        display: flex;
+        max-width: 900px; /* Adjust as needed */
+        width: 90%;
+        overflow: hidden;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+      }
+
+      .consultation-modal-overlay.show .consultation-modal-content {
+        transform: translateY(0);
+      }
+
+      .consultation-modal-left {
+        flex: 1;
+        padding: 40px;
+        background-color: var(--white); /* Ensure it's white */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 350px; /* Prevent it from getting too small */
+      }
+
+      .consultation-modal-right {
+        flex: 1.2;
+        padding: 40px;
+        background-color: var(--white); /* Ensure it's white */
+        border-left: 1px solid var(--calendar-border-color); /* Separator line */
+        min-width: 400px; /* Prevent it from getting too small */
+        display: flex; /* Make it a flex container */
+        flex-direction: column; /* Stack children vertically */
+      }
+
+      /* Styles for the steps */
+      .consultation-step {
+        display: none; /* Hidden by default */
+        flex-grow: 1; /* Allow steps to take available space */
+        flex-direction: column; /* Stack contents of step */
+        justify-content: space-between; /* Push button to bottom */
+      }
+
+      .consultation-step.active {
+        display: flex; /* Show active step */
+      }
+
+      .consultation-modal-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .consultation-modal-header img {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+      }
+
+      .consultation-modal-header h3 {
+        font-size: 1.6em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 0;
+      }
+
+      .consultation-info h4 {
+        font-size: 1.8em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 15px;
+      }
+
+      .consultation-info p {
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 0.95em;
+      }
+
+      .consultation-info .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #555;
+      }
+
+      .consultation-info .detail-item svg {
+        margin-right: 10px;
+        color: var(--primary-green); /* Icon color */
+        font-size: 1.2em;
+      }
+
+      .consultation-info .description {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+      }
+      .consultation-info .description strong {
+        color: var(--astrolite-text-blue);
+      }
+
+      .consultation-links {
+        margin-top: 30px;
+        font-size: 0.85em;
+      }
+
+      .consultation-links a {
+        color: var(--dark-blue);
+        text-decoration: none;
+        margin-right: 20px;
+        transition: color 0.2s ease;
+      }
+
+      .consultation-links a:hover {
+        color: var(--primary-green);
+      }
+
+      /* Calendar Styles */
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        color: var(--astrolite-text-blue);
+        font-size: 1.2em;
+        font-weight: 600;
+      }
+
+      .calendar-header button {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #888;
+        padding: 5px;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+      }
+      .calendar-header button:hover {
+        background-color: var(--calendar-day-hover);
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+      }
+
+      .calendar-day-name {
+        font-weight: 600;
+        color: #888;
+        padding: 10px 0;
+        font-size: 0.9em;
+      }
+
+      .calendar-day {
+        padding: 12px 0;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        font-size: 0.95em;
+        color: #444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .calendar-day:hover:not(.empty):not(.selected):not(.current-day) {
+        background-color: var(--calendar-day-hover);
+      }
+
+      .calendar-day.empty {
+        cursor: not-allowed;
+        opacity: 0.5;
+        color: #999;
+      }
+
+      .calendar-day.selected {
+        background-color: var(--calendar-day-selected);
+        color: var(--dark-blue);
+        font-weight: 600;
+      }
+      .calendar-day.current-day {
+        background-color: var(--calendar-current-day);
+        color: var(--white);
+        font-weight: 600;
+      }
+      .calendar-day.current-day.selected {
+        background-color: var(
+          --dark-blue
+        ); /* Darker if current day is also selected */
+        color: var(--white);
+      }
+
+      .calendar-day .dot {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        background-color: var(--primary-green);
+        border-radius: 50%;
+      }
+
+      .timezone-selector {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        font-size: 0.9em;
+        color: #555;
+        border-top: 1px solid var(--calendar-border-color);
+        padding-top: 20px;
+      }
+
+      .timezone-selector svg {
+        margin-right: 10px;
+        color: #888;
+      }
+
+      /* Close button for modal */
+      .close-modal-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2em;
+        color: #888;
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s ease;
+      }
+      .close-modal-btn:hover {
+        color: var(--dark-blue);
+      }
+
+      /* Form styling */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--astrolite-text-blue);
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="email"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95em;
+      }
+
+      .form-group input[type="text"]:focus,
+      .form-group input[type="email"]:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 2px rgba(56, 180, 74, 0.2);
+      }
+
+      /* Buttons for navigation within modal */
+      #nextStepBtn,
+      #confirmBookingBtn {
+        width: 100%;
+        padding: 15px;
+        margin-top: auto; /* Push button to bottom */
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      /* Responsive adjustments for modal */
+      @media (max-width: 850px) {
+        .consultation-modal-content {
+          flex-direction: column;
+          width: 95%;
+          max-height: 90vh; /* Allow scrolling for content */
+          overflow-y: auto;
+        }
+        .consultation-modal-left,
+        .consultation-modal-right {
+          min-width: unset;
+          width: 100%;
+          padding: 30px;
+        }
+        .consultation-modal-right {
+          border-left: none;
+          border-top: 1px solid var(--calendar-border-color);
+        }
+        .close-modal-btn {
+          top: 10px;
+          right: 10px;
+          font-size: 1.8em;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .consultation-modal-left,
+        .consultation-modal-right {
+          padding: 20px;
+        }
+        .consultation-modal-header h3 {
+          font-size: 1.4em;
+        }
+        .consultation-info h4 {
+          font-size: 1.5em;
+        }
+        .calendar-day {
+          padding: 8px 0;
+          font-size: 0.85em;
+        }
+        .calendar-day-name {
+          font-size: 0.8em;
+        }
+      }
+
+      /* Success Message Container */
+      .success-message {
+        position: fixed;
+        bottom: 30px; /* Position from bottom */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary-green);
+        color: var(--white);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 1001; /* Above modal overlay */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+      }
+
+      .success-message.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .success-message svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* Styles for the New Hire Checklist Generator Modal */
+      .checklist-generator-modal-overlay {
+        /* New class name */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .checklist-generator-modal-overlay.show {
+        /* New class name */
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .checklist-generator-modal-content {
+        /* New class name */
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        padding: 40px;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .checklist-generator-modal-overlay.show
+        .checklist-generator-modal-content {
+        /* New class name */
+        transform: translateY(0);
+      }
+
+      .checklist-generator-modal-content h3 {
+        /* New class name */
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .checklist-generator-modal-content input[type="text"] {
+        /* New style for input */
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95em;
+      }
+
+      .checklist-generator-modal-content .btn-generate-checklist {
+        /* New class name */
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .checklist-generator-modal-content .btn-generate-checklist:hover {
+        /* New class name */
+        background-color: #151a5c;
+      }
+
+      .checklist-output {
+        /* New class name */
+        background-color: var(--light-gray);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        min-height: 100px;
+        font-size: 0.9em;
+        color: #444;
+        white-space: pre-wrap; /* Preserve whitespace and line breaks */
+        word-wrap: break-word; /* Break long words */
+        text-align: left; /* Align text left */
+      }
+      .checklist-output.empty-state {
+        /* New class name */
+        color: #888;
+        font-style: italic;
+        text-align: center;
+      }
+
+      .checklist-output ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      .checklist-output li {
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 500px) {
+        .checklist-generator-modal-content {
+          /* New class name */
+          padding: 20px;
+        }
+        .checklist-generator-modal-content h3 {
+          /* New class name */
+          font-size: 1.4em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section: Employee Onboarding -->
+    <section class="section-hero">
+      <div class="container flex-row">
+        <div class="content">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Employee Onboarding System
+          </p>
+          <h2>Seamless Employee Onboarding for a Great First Impression</h2>
+          <p>
+            Digitize your onboarding process, reduce paperwork, and create an
+            engaging experience for your new hires from day one. Ensure a smooth
+            transition and quick productivity.
+          </p>
+          <div class="buttons">
+            <a href="#" id="bookConsultationBtn" class="btn btn-primary"
+              >Request an Onboarding Demo</a
+            >
+          </div>
+        </div>
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2022/04/Why-Pocket-HRMS-2.jpg"
+            alt="New Employee Welcome"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Automated Onboarding Workflows -->
+    <section class="section-hr-management">
+      <div class="container flex-row">
+        <div class="image-mockup">
+          <img
+            src=" https://i.pinimg.com/1200x/6a/9a/66/6a9a661a89881207fcc24bf0c16e5bf5.jpg"
+            alt="Digital Onboarding Forms"
+          />
+        </div>
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Streamlined Onboarding Solution
+          </p>
+          <h2>Automated Onboarding Workflows for Efficiency</h2>
+          <p>
+            Streamline pre-boarding, document collection, and task management
+            with automated workflows. Ensure all necessary steps are completed
+            efficiently and accurately.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Digital Document Management
+              <div class="feature-description">
+                Securely manage and collect offer letters, employment contracts,
+                tax forms, and other essential documents digitally.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Automated Task Assignment
+              <div class="feature-description">
+                Automatically assign onboarding tasks to IT, HR, managers, and
+                new hires (e.g., IT setup, HR meetings, training modules).
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Customizable Onboarding Checklists
+              <div class="feature-description">
+                Create tailored checklists for different roles, departments, or
+                locations to ensure a consistent and complete onboarding
+                experience.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Onboarding Progress Tracking & Analytics -->
+    <section class="section-dashboard">
+      <div class="container flex-row">
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Real-time Onboarding Insights
+          </p>
+          <h2>Onboarding Progress Tracking & Analytics for Success</h2>
+          <p>
+            Gain real-time visibility into new hire progress, ensure compliance,
+            and analyze new hire engagement to continuously improve your
+            onboarding process.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              New Hire Progress Dashboard
+              <div class="feature-description">
+                Visualize where each new hire stands in their onboarding journey
+                with intuitive dashboards and progress indicators.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Compliance & Training Tracking
+              <div class="feature-description">
+                Monitor completion of mandatory compliance documents, policy
+                acknowledgements, and assigned training modules.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Onboarding Feedback & Analytics
+              <div class="feature-description">
+                Collect feedback from new hires and managers to identify areas
+                for improvement and optimize the onboarding experience.
+              </div>
+            </li>
+          </ul>
+          <div class="buttons" style="margin-top: 30px">
+            <button id="openChecklistGeneratorBtn" class="btn btn-secondary">
+              Generate New Hire Checklist 📝
+            </button>
+            <!-- Changed button text and ID -->
+          </div>
+        </div>
+        <div class="image-mockup">
+          <img
+            src="https://i.pinimg.com/736x/5b/a6/d5/5ba6d5f2bee6a8dd3f2e1afb25260229.jpg"
+            alt="Onboarding Progress Dashboard"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Why choose Astrolite -->
+    <section class="section-why-choose">
+      <div class="container">
+        <h2>Why Choose Astrolite Employee Onboarding Software?</h2>
+        <div class="reason-cards">
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/smHRt-Payroll-compliance-r7fqvtx5x6sr7nccbi61j42ptg67xscsnp33m4y76w.png"
+              alt="Seamless Pre-boarding Icon"
+            />
+            <h3>Seamless Pre-boarding</h3>
+            <p>
+              Engage new hires even before their first day, providing essential
+              information and forms to complete remotely.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Fool-proof-Automation-r82c9mwbstdrc7vy584t4g9g3bvt1c3a76amuiixns.png "
+              alt="Reduced Paperwork Icon"
+            />
+            <h3>Reduced Paperwork</h3>
+            <p>
+              Go paperless with digital forms, e-signatures, and automated
+              document routing, saving time and resources.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Remote-Access-r82caloctopd9shfi5606phi2l4dy4xcnyfllr3d9k.png"
+              alt="Enhanced Experience Icon"
+            />
+            <h3>Enhanced New Hire Experience</h3>
+            <p>
+              Provide a welcoming and organized experience, helping new
+              employees feel valued and productive quickly.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Real-Time-Data-Visibility-r82c90c78sivlkspsydrglydu2yzwllq42mzbvgdt4.png"
+              alt="Compliance Assurance Icon"
+            />
+            <h3>Compliance Assurance</h3>
+            <p>
+              Ensure all regulatory and internal compliance requirements are met
+              during the onboarding process with automated tracking.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultation Modal -->
+    <div id="consultationModal" class="consultation-modal-overlay">
+      <div class="consultation-modal-content">
+        <button class="close-modal-btn" aria-label="Close Modal">
+          &times;
+        </button>
+
+        <div class="consultation-modal-left">
+          <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+            Personalized Onboarding Solution Demo
+          </h3>
+          <div>
+            <div class="consultation-info">
+              <div class="detail-item">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-clock"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span>30 min</span>
+              </div>
+              <div class="detail-item">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-phone"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2H7c.45 0 .9.06 1.3.18a2 2 0 0 1 1.62 1.62 16.07 16.07 0 0 0 4.38 4.38 2 2 0 0 1 1.62 1.62A16.07 16.07 0 0 0 21.82 15.7a2 2 0 0 1 .18 1.3z"
+                  />
+                </svg>
+                <span>Phone call</span>
+              </div>
+              <p class="description">
+                Discover how Astrolite's
+                <strong>onboarding solution</strong> can streamline your new
+                hire process, ensure compliance, and create a positive
+                experience. Schedule a brief, personalized demo with an
+                onboarding expert.
+              </p>
+            </div>
+          </div>
+          <div class="consultation-links">
+            <a href="#">Cookie settings</a>
+            <a href="#">Report abuse</a>
+          </div>
+        </div>
+
+        <div class="consultation-modal-right">
+          <!-- Step 1: Enter Details -->
+          <div id="detailsStep" class="consultation-step active">
+            <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+              Enter Your Details
+            </h3>
+            <div class="form-group">
+              <label for="clientName">Full Name</label>
+              <input
+                type="text"
+                id="clientName"
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="clientEmail">Email Address</label>
+              <input
+                type="email"
+                id="clientEmail"
+                placeholder="your.email@example.com"
+              />
+            </div>
+            <button id="nextStepBtn" class="btn btn-primary" disabled>
+              Next
+            </button>
+          </div>
+
+          <!-- Step 2: Select Date & Time (Initially Hidden) -->
+          <div id="calendarStep" class="consultation-step">
+            <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+              Select a Date & Time
+            </h3>
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <button id="prevMonthBtn">&lt;</button>
+                <span id="currentMonthYear"></span>
+                <button id="nextMonthBtn">&gt;</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-day-name">MON</div>
+                <div class="calendar-day-name">TUE</div>
+                <div class="calendar-day-name">WED</div>
+                <div class="calendar-day-name">THU</div>
+                <div class="calendar-day-name">FRI</div>
+                <div class="calendar-day-name">SAT</div>
+                <div class="calendar-day-name">SUN</div>
+                <!-- Days will be populated by JavaScript -->
+              </div>
+            </div>
+            <div class="timezone-selector">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-globe"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                <path d="M2 12h20" />
+              </svg>
+              <span>Time zone</span>
+              <span style="margin-left: auto; font-weight: 500"
+                >India Standard Time (4:05pm)</span
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-chevron-down"
+                style="margin-left: 5px; color: #888"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+            <button id="confirmBookingBtn" class="btn btn-primary" disabled>
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Hire Checklist Generator Modal (Replaced Onboarding Assistant) -->
+    <div id="checklistGeneratorModal" class="checklist-generator-modal-overlay">
+      <!-- Changed ID and class -->
+      <div class="checklist-generator-modal-content">
+        <!-- Changed class -->
+        <button
+          class="close-modal-btn"
+          aria-label="Close Modal"
+          id="closeChecklistGeneratorModalBtn"
+        >
+          &times;
+        </button>
+        <!-- Changed ID -->
+        <h3>Generate New Hire Checklist</h3>
+        <!-- Changed title -->
+        <p>
+          Enter the new hire's role or department to get a tailored onboarding
+          checklist.
+        </p>
+
+        <div class="form-group">
+          <label for="newHireRoleInput">Role/Department</label>
+          <input
+            type="text"
+            id="newHireRoleInput"
+            placeholder="e.g., Software Engineer, Sales, Marketing"
+          />
+          <!-- Changed ID -->
+        </div>
+
+        <button id="generateChecklistBtn" class="btn-generate-checklist">
+          <!-- Changed ID and class -->
+          Generate Checklist
+        </button>
+        <div id="checklistOutput" class="checklist-output empty-state">
+          <!-- Changed ID and class -->
+          Your checklist will appear here.
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message Container -->
+    <div id="successMessage" class="success-message">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-check-circle"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-8.1" />
+        <path d="m3 12 2 2 7-7" />
+      </svg>
+      <span>Booked an onboarding demo successfully!</span>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const bookConsultationBtn = document.getElementById(
+          "bookConsultationBtn"
+        );
+        const consultationModal = document.getElementById("consultationModal");
+        const closeModalBtn = document.querySelector(".close-modal-btn");
+        const calendarGrid = document.querySelector(".calendar-grid");
+        const currentMonthYearSpan =
+          document.getElementById("currentMonthYear");
+        const prevMonthBtn = document.getElementById("prevMonthBtn");
+        const nextMonthBtn = document.getElementById("nextMonthBtn");
+        const successMessage = document.getElementById("successMessage");
+        const toggleFeatureItems = document.querySelectorAll(".toggle-feature");
+
+        // Elements for the New Hire Checklist Generator feature
+        const openChecklistGeneratorBtn = document.getElementById(
+          "openChecklistGeneratorBtn"
+        ); // Changed ID
+        const checklistGeneratorModal = document.getElementById(
+          "checklistGeneratorModal"
+        ); // Changed ID
+        const closeChecklistGeneratorModalBtn = document.getElementById(
+          "closeChecklistGeneratorModalBtn"
+        ); // Changed ID
+        const newHireRoleInput = document.getElementById("newHireRoleInput"); // Changed ID
+        const generateChecklistBtn = document.getElementById(
+          "generateChecklistBtn"
+        ); // Changed ID
+        const checklistOutput = document.getElementById("checklistOutput"); // Changed ID
+
+        // Elements for consultation booking steps
+        const detailsStep = document.getElementById("detailsStep");
+        const calendarStep = document.getElementById("calendarStep");
+        const clientNameInput = document.getElementById("clientName");
+        const clientEmailInput = document.getElementById("clientEmail");
+        const nextStepBtn = document.getElementById("nextStepBtn");
+        const confirmBookingBtn = document.getElementById("confirmBookingBtn");
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        const today = new Date();
+        let selectedDate = null; // To store the currently selected date
+
+        // Function to validate the current step of the booking form
+        function validateCurrentStep() {
+          if (detailsStep.classList.contains("active")) {
+            // Validate Name and Email for the first step
+            const nameFilled = clientNameInput.value.trim() !== "";
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+              clientEmailInput.value.trim()
+            );
+            nextStepBtn.disabled = !(nameFilled && emailValid);
+          } else if (calendarStep.classList.contains("active")) {
+            // Validate Date selection for the second step
+            confirmBookingBtn.disabled = selectedDate === null;
+          }
+        }
+
+        // Function to render the calendar days
+        function renderCalendar(month, year) {
+          // Clear existing days, but keep day names
+          calendarGrid.innerHTML = `
+                    <div class="calendar-day-name">MON</div>
+                    <div class="calendar-day-name">TUE</div>
+                    <div class="calendar-day-name">WED</div>
+                    <div class="calendar-day-name">THU</div>
+                    <div class="calendar-day-name">FRI</div>
+                    <div class="calendar-day-name">SAT</div>
+                    <div class="calendar-day-name">SUN</div>
+                `;
+
+          const firstDayOfMonth = new Date(year, month, 1);
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+          const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
+
+          // Adjust first day of month to be Monday=0, Sunday=6
+          let startDayOfWeek = firstDayOfMonth.getDay();
+          if (startDayOfWeek === 0) startDayOfWeek = 7; // Sunday becomes 7
+          startDayOfWeek--; // Adjust to make Monday = 0
+
+          currentMonthYearSpan.textContent = new Date(
+            year,
+            month
+          ).toLocaleString("en-US", { month: "long", year: "numeric" });
+
+          // Add days from the previous month (disabled)
+          for (let i = startDayOfWeek - 1; i >= 0; i--) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day", "empty");
+            dayDiv.textContent = lastDayOfPrevMonth - i;
+            calendarGrid.appendChild(dayDiv);
+          }
+
+          // Add days of the current month
+          for (let i = 1; i <= daysInMonth; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day");
+            dayDiv.textContent = i;
+            dayDiv.dataset.date = `${year}-${month + 1}-${i}`; // Store full date for easy reference
+
+            const date = new Date(year, month, i);
+
+            // Disable past dates
+            if (
+              date <
+              new Date(today.getFullYear(), today.getMonth(), today.getDate())
+            ) {
+              dayDiv.classList.add("empty"); // Use 'empty' to disable and hide cursor
+              dayDiv.style.cursor = "not-allowed";
+              dayDiv.style.opacity = "0.5";
+            } else {
+              // Highlight current day
+              if (
+                date.getDate() === today.getDate() &&
+                date.getMonth() === today.getMonth() &&
+                date.getFullYear() === today.getFullYear()
+              ) {
+                dayDiv.classList.add("current-day");
+              }
+
+              // Apply selected class if this day is the currently selected one
+              if (
+                selectedDate &&
+                date.getDate() === selectedDate.getDate() &&
+                date.getMonth() === selectedDate.getMonth() &&
+                date.getFullYear() === selectedDate.getFullYear()
+              ) {
+                dayDiv.classList.add("selected");
+              }
+
+              // Add click listener for day selection
+              dayDiv.addEventListener("click", () => {
+                // Only allow selection if not a past date or an empty/disabled date
+                if (!dayDiv.classList.contains("empty")) {
+                  // Remove 'selected' from previously selected day
+                  const previouslySelected = calendarGrid.querySelector(
+                    ".calendar-day.selected"
+                  );
+                  if (previouslySelected) {
+                    previouslySelected.classList.remove("selected");
+                  }
+                  // Add 'selected' to the clicked day
+                  dayDiv.classList.add("selected");
+                  selectedDate = date; // Update selected date
+                  console.log("Selected date:", selectedDate.toDateString()); // For testing
+                  validateCurrentStep(); // Re-validate form after date selection
+                }
+              });
+            }
+            calendarGrid.appendChild(dayDiv);
+          }
+
+          // Add days from the next month (disabled) to fill the grid
+          const totalCells = calendarGrid.children.length - 7; // Exclude day names
+          const remainingCells = 42 - totalCells; // 6 rows * 7 days = 42 cells total (common calendar layout)
+
+          for (let i = 1; i <= remainingCells; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day", "empty");
+            dayDiv.textContent = i;
+            calendarGrid.appendChild(dayDiv);
+          }
+        }
+
+        // Function to show the success message
+        function showSuccessMessage() {
+          successMessage.classList.add("show");
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 3000); // Hide after 3 seconds
+        }
+
+        // Initial render
+        renderCalendar(currentMonth, currentYear);
+        validateCurrentStep(); // Initial validation on page load
+
+        // Event listeners for month navigation
+        prevMonthBtn.addEventListener("click", () => {
+          currentMonth--;
+          if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+          }
+          selectedDate = null; // Reset selected date on month change
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep(); // Re-validate after month change
+        });
+
+        nextMonthBtn.addEventListener("click", () => {
+          currentMonth++;
+          if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+          }
+          selectedDate = null; // Reset selected date on month change
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep(); // Re-validate after month change
+        });
+
+        // Show consultation modal
+        bookConsultationBtn.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default link behavior
+          consultationModal.classList.add("show");
+          detailsStep.classList.add("active"); // Show the first step
+          calendarStep.classList.remove("active"); // Hide the second step
+          // Re-render calendar to ensure correct current day highlighting on modal open
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep(); // Re-validate when modal opens
+        });
+
+        // Hide consultation modal
+        closeModalBtn.addEventListener("click", () => {
+          consultationModal.classList.remove("show");
+          // Clear inputs and selected date when closing modal
+          clientNameInput.value = "";
+          clientEmailInput.value = "";
+          selectedDate = null;
+          renderCalendar(currentMonth, currentYear); // Re-render to clear selection
+          validateCurrentStep(); // Re-validate after clearing form
+        });
+
+        // Hide consultation modal if clicking outside the content
+        consultationModal.addEventListener("click", (e) => {
+          if (e.target === consultationModal) {
+            consultationModal.classList.remove("show");
+            // Clear inputs and selected date when closing modal by clicking outside
+            clientNameInput.value = "";
+            clientEmailInput.value = "";
+            selectedDate = null;
+            renderCalendar(currentMonth, currentYear); // Re-render to clear selection
+            validateCurrentStep(); // Re-validate after clearing form
+          }
+        });
+
+        // Event listeners for input fields to trigger validation
+        clientNameInput.addEventListener("input", validateCurrentStep);
+        clientEmailInput.addEventListener("input", validateCurrentStep);
+
+        // Logic for "Next" button
+        nextStepBtn.addEventListener("click", () => {
+          if (!nextStepBtn.disabled) {
+            detailsStep.classList.remove("active");
+            calendarStep.classList.add("active");
+            validateCurrentStep(); // Validate the calendar step after showing it
+          }
+        });
+
+        // Logic for "Confirm Booking" button
+        confirmBookingBtn.addEventListener("click", () => {
+          // The button should already be enabled only if valid, so no need for alerts here.
+          const clientName = clientNameInput.value.trim();
+          const clientEmail = clientEmailInput.value.trim();
+
+          // At this point, you have clientName, clientEmail, and selectedDate
+          // You would typically send this data to your backend server here.
+          console.log("Booking details:", {
+            name: clientName,
+            email: clientEmail,
+            date: selectedDate.toDateString(),
+          });
+
+          // Simulate successful booking
+          showSuccessMessage();
+          consultationModal.classList.remove("show"); // Close the modal after booking
+          clientNameInput.value = ""; // Clear input fields
+          clientEmailInput.value = "";
+          selectedDate = null; // Clear selected date
+          renderCalendar(currentMonth, currentYear); // Re-render calendar to clear selection
+          validateCurrentStep(); // Re-validate after clearing form
+        });
+
+        // Toggle functionality for feature list items
+        toggleFeatureItems.forEach((item) => {
+          item.addEventListener("click", (event) => {
+            // Prevent click on the description itself from toggling the parent
+            if (event.target.classList.contains("feature-description")) {
+              return;
+            }
+            const description = item.querySelector(".feature-description");
+            if (description) {
+              description.classList.toggle("show");
+            }
+          });
+        });
+
+        // --- New Hire Checklist Generator Feature ---
+
+        // Define some sample checklists based on role/department
+        const checklists = {
+          "software engineer": [
+            "Setup development environment (IDE, Git, dependencies)",
+            "Get access to code repositories and project management tools",
+            "Meet with team lead and immediate team members",
+            "Review initial project documentation and codebase",
+            "Attend security and compliance training",
+            "Set up communication tools (Slack, email groups)",
+            "Understand sprint process and first tasks",
+          ],
+          sales: [
+            "Review product/service knowledge and sales collateral",
+            "Get access to CRM system (Salesforce, HubSpot)",
+            "Shadow experienced sales representatives on calls/demos",
+            "Understand sales targets and commission structure",
+            "Set up lead generation tools and outreach platforms",
+            "Attend sales training sessions",
+            "Meet with marketing team for lead handoff process",
+          ],
+          marketing: [
+            "Review brand guidelines and marketing strategy documents",
+            "Get access to marketing automation platforms (Mailchimp, Marketo)",
+            "Understand target audience and customer personas",
+            "Collaborate with content team on upcoming campaigns",
+            "Set up social media management tools",
+            "Attend product training sessions",
+            "Review analytics dashboards (Google Analytics, social media insights)",
+          ],
+          hr: [
+            "Review HR policies and employee handbook",
+            "Get access to HRIS (Human Resources Information System)",
+            "Understand benefits administration processes",
+            "Familiarize with recruitment and onboarding workflows",
+            "Review employee relations guidelines",
+            "Attend compliance training (e.g., labor laws)",
+            "Meet with department heads to understand their needs",
+          ],
+          default: [
+            "Complete all new hire paperwork (I-9, W-4, etc.)",
+            "Receive company ID badge and access cards",
+            "Set up company email and communication accounts",
+            "Attend general company orientation",
+            "Review company policies and procedures",
+            "Meet with direct manager for initial goals and expectations",
+            "Tour office facilities and locate essential areas (restrooms, breakroom)",
+          ],
+        };
+
+        // Function to generate the checklist
+        function generateNewHireChecklist() {
+          const role = newHireRoleInput.value.trim().toLowerCase();
+          let checklistItems = checklists[role] || checklists["default"];
+
+          let outputHtml = `<h4>Onboarding Checklist for ${
+            role ? capitalizeFirstLetter(role) : "New Hire"
+          }</h4><ul>`;
+          checklistItems.forEach((item) => {
+            outputHtml += `<li>${item}</li>`;
+          });
+          outputHtml += `</ul>`;
+
+          checklistOutput.innerHTML = outputHtml;
+          checklistOutput.classList.remove("empty-state");
+        }
+
+        // Helper function to capitalize the first letter
+        function capitalizeFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        // Show Checklist Generator Modal
+        openChecklistGeneratorBtn.addEventListener("click", () => {
+          checklistGeneratorModal.classList.add("show");
+          // Reset input and output when opening
+          newHireRoleInput.value = "";
+          checklistOutput.innerHTML = "Your checklist will appear here.";
+          checklistOutput.classList.add("empty-state");
+        });
+
+        // Hide Checklist Generator Modal
+        closeChecklistGeneratorModalBtn.addEventListener("click", () => {
+          checklistGeneratorModal.classList.remove("show");
+        });
+
+        // Hide Checklist Generator Modal if clicking outside the content
+        checklistGeneratorModal.addEventListener("click", (e) => {
+          if (e.target === checklistGeneratorModal) {
+            checklistGeneratorModal.classList.remove("show");
+          }
+        });
+
+        // Event listener for generating checklist
+        generateChecklistBtn.addEventListener(
+          "click",
+          generateNewHireChecklist
+        );
+
+        // Optional: Generate checklist on Enter key press in the input field
+        newHireRoleInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            generateNewHireChecklist();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

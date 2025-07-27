@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Management System | Pocket HRMS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for consistent styling */
+      :root {
+        --primary-blue: #002e77;
+        --light-blue: #d2edff;
+        --dark-blue: #1a237e;
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --white: #fff;
+        --border-radius: 8px;
+        --shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --modal-bg: rgba(0, 0, 0, 0.5);
+        --modal-card-bg: #fff;
+        --modal-border-radius: 12px;
+        --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Basic Reset and Body Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--white);
+        overflow-x: hidden;
+      }
+
+      /* Utility Container for content width */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Section Styling */
+      section {
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      section.light-blue-bg {
+        background-color: var(--light-blue);
+      }
+
+      section.testimonials-bg {
+        background-color: #fef8f0;
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(--primary-blue);
+      }
+
+      h1 {
+        font-size: 2.8em;
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      h3 {
+        font-size: 1.8em;
+      }
+
+      h4 {
+        font-size: 1.4em;
+      }
+
+      p {
+        margin-bottom: 15px;
+        color: #555;
+      }
+
+      .blue-text {
+        color: var(--primary-blue);
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      /* Button Styling */
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        border: 1px solid var(--primary-blue);
+      }
+
+      .btn-primary:hover {
+        background-color: #001f52;
+        border-color: #001f52;
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--primary-blue);
+        border: 1px solid var(--primary-blue);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-blue);
+      }
+
+      /* Layout Styles */
+      .flex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 40px;
+      }
+
+      .flex-row > div {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+      }
+
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+      }
+
+      /* Card Styles */
+      .card {
+        background: var(--white);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-card {
+        text-align: center;
+      }
+
+      .testimonial-card {
+        background: var(--white);
+        padding: 25px;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+      }
+
+      .resource-card {
+        background: var(--white);
+        border: 1px solid #e2e2e2;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+      }
+
+      /* Image Styles */
+      .image-mockup {
+        position: relative;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+      }
+
+      .image-mockup img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--border-radius);
+      }
+
+      /* Stats Styles */
+      .stats-container {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin: 40px 0;
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: var(--primary-blue);
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 1em;
+        color: #555;
+      }
+
+      /* Testimonial Styles */
+      .testimonial {
+        font-style: italic;
+        margin-bottom: 15px;
+      }
+
+      .testimonial-author {
+        font-weight: 600;
+        color: var(--primary-blue);
+      }
+
+      .testimonial-position {
+        font-size: 0.9em;
+        color: #777;
+      }
+
+      /* Resource Styles */
+      .resource-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .resource-content {
+        padding: 20px;
+      }
+
+      /* FAQ Styles */
+      .faq-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: start;
+      }
+
+      .faq-item {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .faq-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .faq-toggle {
+        font-size: 1.5em;
+        color: var(--primary-blue);
+      }
+
+      .faq-answer {
+        display: none;
+        margin-top: 10px;
+        color: #666;
+      }
+
+      /* Demo Modal Styles */
+      .demo-request-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .demo-request-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Update the modal styles in your CSS section */
+      .demo-request-modal-content {
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        padding: 40px;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        max-height: 600px; /* Set maximum height */
+        height: 90vh; /* Fallback for smaller screens */
+        overflow-y: auto; /* Enable vertical scrolling */
+        display: flex;
+        flex-direction: column;
+      }
+      .demo-request-modal-content::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Optional: Adjust the form container to take remaining space */
+      #demoRequestForm {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 10px; /* Prevent content from touching scrollbar */
+      }
+
+      .demo-request-modal-overlay.show .demo-request-modal-content {
+        transform: translateY(0);
+      }
+
+      .demo-request-close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2em;
+        color: #888;
+        cursor: pointer;
+        z-index: 1001;
+      }
+
+      .demo-request-close-btn:hover {
+        color: var(--primary-blue);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+      }
+
+      /* Success Message */
+      .success-message {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #38b44a;
+        color: var(--white);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .success-message.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .grid-2,
+        .grid-3,
+        .grid-4,
+        .faq-container {
+          grid-template-columns: 1fr;
+        }
+
+        .flex-row {
+          flex-direction: column;
+        }
+
+        .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        h1 {
+          font-size: 2.2em;
+        }
+
+        h2 {
+          font-size: 2em;
+        }
+      }
+
+      @media (max-width: 768px) {
+        section {
+          padding: 60px 0;
+        }
+
+        h1 {
+          font-size: 2em;
+        }
+
+        h2 {
+          font-size: 1.8em;
+        }
+      }
+      .stat-number {
+        transition: all 0.3s ease;
+      }
+      .stat-number.animated {
+        transform: scale(1.1);
+        color: #001f52;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="light-blue-bg">
+      <div class="container center">
+        <p class="blue-text" style="font-weight: 600; margin-bottom: 10px">
+          Employee Management System
+        </p>
+        <h1>Complete Employee Management with Advanced ESS Assistance</h1>
+        <p style="max-width: 700px; margin: 0 auto 30px">
+          Ease your administrative burden by automating the employee life cycle
+          for an outstanding employee experience from hire to retire.
+        </p>
+        <button class="btn btn-primary" id="openDemoModalBtn">
+          Book a Consultation
+        </button>
+        <img
+          src="https://www.pockethrms.com/wp-content/uploads/2025/04/employee-management-system-banner-2048x726.webp"
+          alt="Employee Management Dashboard"
+          style="margin-top: 50px; max-width: 100%; border-radius: 12px"
+        />
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section>
+      <div class="container flex-row">
+        <img
+          src="https://www.pockethrms.com/wp-content/uploads/elementor/thumbs/Smooth-Onboarding-facilities-r5p1r8cdezx5xeyovtbn0bzvm0f6e4yzprhwt7t69s.webp"
+          alt="Employee Management Features"
+          style="max-width: 100%; border-radius: 12px"
+        />
+        <div>
+          <h2>
+            Optimized Staff Management with Feature-rich Employee Management
+            System
+          </h2>
+          <div style="margin-top: 30px">
+            <h4>Seamless Employee Documentation</h4>
+            <p>
+              Capture and store candidate documents effectively for in-depth
+              analysis and selection.
+            </p>
+          </div>
+          <div style="margin-top: 30px">
+            <h4>Smooth Employee Verification</h4>
+            <p>
+              Quickly verify applicant details like qualifications, prior
+              experience and employment history.
+            </p>
+          </div>
+          <div style="margin-top: 30px">
+            <h4>Simplified Employee Confirmation</h4>
+            <p>
+              Increased efficiency in measuring candidate performance and
+              confirming them.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What is EMS Section -->
+    <section class="light-blue-bg">
+      <div class="container">
+        <div class="card" style="margin-bottom: 40px">
+          <h2>What is Employee Management System?</h2>
+          <p>
+            The employee management system or EMS is a robust tool that empowers
+            employers or HR professionals to navigate the entire employee
+            lifecycle. From hire to retirement, it handles various
+            employee-related issues, including maintaining secure employee
+            records, performing performance analysis, updating employee
+            policies, calculating attendance and leave, and more.
+          </p>
+          <p>
+            Besides, it provides a secure and efficient platform for managing
+            all aspects of the day-to-day employee journey, ensuring that every
+            step is well-documented, analyzed, and optimized for the benefit of
+            the business and its employees.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <h3>Integrated Biometrics & Location Tracking</h3>
+            <p>
+              Utilize smartphone cameras or any other biometrics needed to
+              capture accurate attendance records. Use GPS-enabled devices for
+              generating geo-tracking and geo-tagging.
+            </p>
+
+            <h3 style="margin-top: 30px">
+              Online Leave Applications & Approvals
+            </h3>
+            <p>
+              Enable your team members to apply for leaves from their ESS
+              portals and mobile app while their manager approves them from
+              their ESS.
+            </p>
+
+            <h3 style="margin-top: 30px">
+              Interactive Template-based Custom Reporting
+            </h3>
+            <p>
+              Generate various kinds of attendance reports like annual master
+              roll, employee leave data, etc., with a few clicks, thanks to
+              template creation option using your custom settings and real-time
+              data.
+            </p>
+          </div>
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2025/05/staff-management-system.webp"
+            alt="EMS Features"
+            style="border-radius: 12px; align-self: center; height: 400px"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Grid Section -->
+    <section>
+      <div class="container">
+        <h2 class="center">
+          Multiple Employee-centric Features for Truly Next-Gen Employee
+          Engagement
+        </h2>
+
+        <div class="grid-4">
+          <div class="card feature-card">
+            <h4>Managing Employee Database</h4>
+            <p>
+              Manage employee data efficiently with encrypted database and
+              role-based access for secure employee data management.
+            </p>
+          </div>
+          <div class="card feature-card">
+            <h4>Tracking Time and Attendance</h4>
+            <p>
+              Track employee attendance and working hours accurately, with
+              biometrics-enabled attendance, geo-fencing, geo-tracking &
+              geo-tracing.
+            </p>
+          </div>
+          <div class="card feature-card">
+            <h4>Employee Self Service</h4>
+            <p>
+              Make your employees feel valued with an intuitive ESS portal for
+              seamless 24/7 access from any internet-enabled device.
+            </p>
+          </div>
+          <div class="card feature-card">
+            <h4>Mobile Accessibility</h4>
+            <p>
+              Multi-lingual mobile app for simplified remote access, easy leave
+              and attendance approvals, along with AI-based assistant.
+            </p>
+          </div>
+        </div>
+
+        <div class="center" style="margin-top: 50px">
+          <p style="font-weight: 500">
+            Proudly Recognized by Leading Platforms
+          </p>
+          <p>
+            Pocket HRMS is a leading HRMS software solution provider, recognized
+            by top-notch review platforms for its revolutionary features.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section>
+      <div class="container">
+        <h2 class="center">
+          Ensure Complete Engagement with our Employee Management Software
+        </h2>
+
+        <div class="grid-3">
+          <div class="card">
+            <h4>Simplified HR Processes</h4>
+            <p>
+              Relieve your HR from time-consuming repetitive activities with
+              automated operations and streamlined processes.
+            </p>
+          </div>
+          <div class="card">
+            <h4>Secure Employee Database</h4>
+            <p>
+              Keep your employee data safe and secure with enterprise-grade
+              256-bit encryption and role-based access control.
+            </p>
+          </div>
+          <div class="card">
+            <h4>Automated Compliance</h4>
+            <p>
+              Manage compliance with automated end-to-end compliance support
+              that remains updated with any statutory changes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-bg">
+      <div class="container center">
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-number" id="happyClients">1,500+</div>
+            <div class="stat-label">Happy Clients</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="smartHRs">5,500+</div>
+            <div class="stat-label">Smart HRs</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="satisfiedUsers">3.5M+</div>
+            <div class="stat-label">Satisfied Users</div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 40px">
+          <div class="testimonial-card">
+            <p class="testimonial">
+              "We have been using Pocket HRMS Software for a year and are very
+              happy with our choice. Excellent service support."
+            </p>
+            <p class="testimonial-author">Niranjana Neelakantan</p>
+            <p class="testimonial-position">HR Director, TESOL</p>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial">
+              "The support team is highly admirable. Their professional and
+              polite approach to our queries is simply excellent."
+            </p>
+            <p class="testimonial-author">Nishant Mahajan</p>
+            <p class="testimonial-position">Corporate CM+HR, EvolveBook</p>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial">
+              "Data monitoring & HR analytics are made easy by Pocket HRMS, it
+              is shaping the future of the HR industry."
+            </p>
+            <p class="testimonial-author">Sonal Gangwani</p>
+            <p class="testimonial-position">HR Manager, Ignatius</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 60px">Customer Transformation Stories</h3>
+      </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section>
+      <div class="container">
+        <h2 class="center">Resources for HR and People leaders</h2>
+
+        <div class="grid-3">
+          <div class="resource-card">
+            <!-- <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/05/Employee-Engagement-Guide-1024x683.webp"
+              alt="Employee Engagement Guide"
+              class="resource-image"
+            /> -->
+            <div class="resource-content">
+              <h4>What is Employee Engagement? (Full Guide)</h4>
+              <p>
+                The right approach at the workplace improves the employees'
+                connection, leading to higher revenue, and more.
+              </p>
+              <button class="btn btn-secondary" style="margin-top: 15px">
+                Read More
+              </button>
+            </div>
+          </div>
+          <div class="resource-card">
+            <!-- <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/05/Employee-Connection-1024x683.webp"
+              alt="Employee Connection"
+              class="resource-image"
+            /> -->
+            <div class="resource-content">
+              <h4>What is Employee Connection? (Benefits + 8 Tips)</h4>
+              <p>
+                Successful businesses usually have employees connected to each
+                other as well as to the management as a whole.
+              </p>
+              <button class="btn btn-secondary" style="margin-top: 15px">
+                Read More
+              </button>
+            </div>
+          </div>
+          <div class="resource-card">
+            <!-- <img
+              src="https://www.pockethrms.com/wp-content/uploads/2025/05/Employee-Management-Guide-1024x683.webp"
+              alt="Employee Management Guide"
+              class="resource-image"
+            /> -->
+            <div class="resource-content">
+              <h4>Employee Management: Meaning, & Benefits</h4>
+              <p>
+                Employee management is the process of efficiently overseeing,
+                guiding, and supporting employees to achieve organizational
+                goals.
+              </p>
+              <button class="btn btn-secondary" style="margin-top: 15px">
+                Read More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="light-blue-bg">
+      <div class="container">
+        <h2 class="center">FAQs on Employee Management System</h2>
+
+        <div class="faq-container">
+          <div>
+            <div class="faq-item">
+              <div class="faq-question">
+                What is Employee management?
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                Employee management refers to the processes and systems used to
+                oversee and coordinate employees throughout their lifecycle
+                within an organization, from hiring to retirement.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                What is the purpose of an employee management system?
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                The purpose is to streamline HR processes, maintain accurate
+                employee records, ensure compliance, improve efficiency, and
+                enhance the employee experience through automation and
+                self-service tools.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                Does the Employee Management system accommodate Hybrid working
+                environments?
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                Yes, modern EMS solutions like Pocket HRMS are designed to
+                support hybrid work models with features like remote attendance
+                tracking, virtual collaboration tools, and mobile access.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="faq-item">
+              <div class="faq-question">
+                Can an Employee Management System manage an employee remotely?
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                Absolutely. With cloud-based EMS solutions, you can manage
+                employees remotely through mobile apps, self-service portals,
+                and online collaboration tools.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                Why Should You Use Employee Management System Software?
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                EMS software reduces administrative burden, improves accuracy,
+                ensures compliance, enhances employee engagement, and provides
+                valuable analytics for better decision-making.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                How does an Employee Management System enhance employee
+                satisfaction?
+                <span class="faq-toggle">+</span>
+              </div>
+              <div class="faq-answer">
+                By providing self-service tools, transparent processes, timely
+                communication, and easy access to information, EMS solutions
+                empower employees and improve their work experience.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Request Modal -->
+    <div id="demoRequestModal" class="demo-request-modal-overlay">
+      <div class="demo-request-modal-content">
+        <button class="demo-request-close-btn" aria-label="Close Modal">
+          &times;
+        </button>
+        <h2 style="color: var(--primary-blue)">Request a Demo</h2>
+        <p>
+          Fill out the form below to schedule a personalized demo of our
+          Employee Management System.
+        </p>
+
+        <form id="demoRequestForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" id="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name*</label>
+              <input type="text" id="lastName" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email*</label>
+              <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone*</label>
+              <input type="tel" id="phone" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="company">Company Name*</label>
+            <input type="text" id="company" required />
+          </div>
+
+          <div class="form-group">
+            <label for="employees">Number of Employees*</label>
+            <select id="employees" required>
+              <option value="">Select</option>
+              <option value="1-50">1-50</option>
+              <option value="51-200">51-200</option>
+              <option value="201-500">201-500</option>
+              <option value="501-1000">501-1000</option>
+              <option value="1000+">1000+</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message (Optional)</label>
+            <textarea
+              id="message"
+              rows="4"
+              placeholder="Tell us about your specific needs..."
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%">
+            Request Demo
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message">
+      Thank you! Your demo request has been submitted successfully.
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Demo Modal
+        const openDemoModalBtns = document.querySelectorAll(
+          "#openDemoModalBtn, #openDemoModalBtn2"
+        );
+        const demoRequestModal = document.getElementById("demoRequestModal");
+        const demoRequestCloseBtn = document.querySelector(
+          ".demo-request-close-btn"
+        );
+        const demoRequestForm = document.getElementById("demoRequestForm");
+        const successMessage = document.getElementById("successMessage");
+
+        // FAQ Toggle
+        const faqToggles = document.querySelectorAll(".faq-toggle");
+
+        // Open Demo Modal
+        openDemoModalBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            demoRequestModal.classList.add("show");
+          });
+        });
+
+        // Close Demo Modal
+        demoRequestCloseBtn.addEventListener("click", function () {
+          demoRequestModal.classList.remove("show");
+        });
+
+        // Close modal when clicking outside
+        demoRequestModal.addEventListener("click", function (e) {
+          if (e.target === demoRequestModal) {
+            demoRequestModal.classList.remove("show");
+          }
+        });
+
+        // Form Submission
+        demoRequestForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          // Here you would typically send the form data to your server
+          console.log("Form submitted", {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            company: document.getElementById("company").value,
+            employees: document.getElementById("employees").value,
+            message: document.getElementById("message").value,
+          });
+
+          // Show success message
+          successMessage.classList.add("show");
+          demoRequestModal.classList.remove("show");
+
+          // Reset form
+          demoRequestForm.reset();
+
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 5000);
+        });
+
+        // FAQ Toggle Functionality
+        faqToggles.forEach((toggle) => {
+          toggle.addEventListener("click", function () {
+            const faqItem = this.closest(".faq-item");
+            const answer = faqItem.querySelector(".faq-answer");
+
+            // Toggle answer visibility
+            if (answer.style.display === "block") {
+              answer.style.display = "none";
+              this.textContent = "+";
+            } else {
+              answer.style.display = "block";
+              this.textContent = "-";
+            }
+          });
+        });
+      });
+      function animateValue(id, start, end, duration, suffix = "+") {
+        const obj = document.getElementById(id);
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          const value = Math.floor(progress * (end - start) + start);
+
+          // Format number with commas
+          obj.innerHTML = value.toLocaleString() + suffix;
+
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+
+      // Function to check if element is in viewport
+      function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <=
+            (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <=
+            (window.innerWidth || document.documentElement.clientWidth)
+        );
+      }
+
+      // Function to handle scroll event
+      function handleScroll() {
+        const happyClients = document.getElementById("happyClients");
+        const smartHRs = document.getElementById("smartHRs");
+        const satisfiedUsers = document.getElementById("satisfiedUsers");
+
+        if (
+          isInViewport(happyClients) &&
+          !happyClients.classList.contains("animated")
+        ) {
+          happyClients.classList.add("animated");
+          animateValue("happyClients", 0, 1500, 2000);
+        }
+
+        if (
+          isInViewport(smartHRs) &&
+          !smartHRs.classList.contains("animated")
+        ) {
+          smartHRs.classList.add("animated");
+          animateValue("smartHRs", 0, 5500, 2000);
+        }
+
+        if (
+          isInViewport(satisfiedUsers) &&
+          !satisfiedUsers.classList.contains("animated")
+        ) {
+          satisfiedUsers.classList.add("animated");
+          animateValue("satisfiedUsers", 0, 3500000, 2000);
+        }
+      }
+
+      // Add scroll event listener
+      window.addEventListener("scroll", handleScroll);
+
+      // Also check on page load
+      document.addEventListener("DOMContentLoaded", handleScroll);
+      window.addEventListener("message", function (event) {
+        if (event.data.type === "setTheme") {
+          document.documentElement.setAttribute("data-theme", event.data.theme);
+        }
+      });
+
+      // Request current theme from parent when loaded
+      window.addEventListener("load", function () {
+        try {
+          window.parent.postMessage({ type: "getTheme" }, "*");
+        } catch (e) {
+          console.log("Could not communicate with parent:", e);
+        }
+      });
+    </script>
+  </body>
+</html>

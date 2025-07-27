@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trusted Companies</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        /* background-color: #e0ffff; */
+      }
+
+      .trusted-section {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 20px 20px 12px;
+        background-color: #fff;
+        overflow: hidden;
+        padding-left: 20px;
+      }
+
+      #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .trusted-section h2 {
+        font-size: 48px;
+        margin-bottom: 10px;
+        background: #7e7acf;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+
+      .trusted-section h2 i {
+        margin-right: 12px;
+        color: #2a5298;
+        transition: transform 0.3s ease;
+      }
+      .trusted-section h2::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 0%;
+        height: 3px;
+        background: #2a5298;
+        transition: width 0.3s ease;
+      }
+
+      .trusted-section p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .logo-slider {
+        overflow: hidden;
+        padding: 30px 0;
+        /* background-color: #e0ffff; */
+        z-index: 2;
+        position: relative;
+      }
+
+      .logo-track {
+        display: flex;
+        width: calc(200%);
+      }
+
+      .logo-track img {
+        width: 100px;
+        height: auto;
+        margin: 0 20px;
+        background: #fff;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+
+      .logo-track img:hover {
+        transform: scale(1.05);
+      }
+
+      @keyframes scroll-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      @keyframes scroll-right {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .scroll-left {
+        animation: scroll-left 30s linear infinite;
+      }
+
+      .scroll-right {
+        animation: scroll-right 30s linear infinite;
+      }
+
+      .cta-section {
+        text-align: center;
+        padding: 10px 20px;
+        z-index: 2;
+        position: relative;
+      }
+
+      .cta-button {
+        background-color: #1e3c72;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .cta-button:hover {
+        background-color: #2a5298;
+        border: none;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background: white;
+        margin: 10% auto;
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 500px;
+        border: 3px solid #1e3c72;
+        position: relative;
+      }
+
+      .modal-content h2 {
+        font-size: 24px;
+        border-bottom: 3px solid #1e3c72;
+        margin-bottom: 20px;
+        padding-bottom: 6px;
+      }
+
+      .modal-content input,
+      .modal-content textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 12px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+
+      .modal-content button {
+        width: 100%;
+        background: #1e3c72;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      .close {
+        position: absolute;
+        top: 14px;
+        right: 18px;
+        font-size: 22px;
+        cursor: pointer;
+        color: #888;
+      }
+
+      .close:hover {
+        color: black;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 15px;
+      }
+
+      .form-row input {
+        flex: 1;
+      }
+
+      .form-group.checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .form-group.checkbox input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+
+      .form-group.checkbox label {
+        margin: 0;
+        cursor: pointer;
+      }
+    </style>
+
+    <!-- Trusted Companies Section -->
+    <section class="trusted-section">
+      <!-- Particles Background -->
+      <div id="particles-js"></div>
+
+      <h2>
+        <!-- <i class="fas fa-globe"></i> -->
+        <span class="underline-text">Global Companies That Trust Us</span>
+      </h2>
+
+      <p>We have worked with companies big and small across the globe.</p>
+
+      <!-- Row 1 - Scrolls Left -->
+      <div class="logo-slider">
+        <div class="logo-track scroll-left">
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/jollibee.webp"
+            alt="jollibee"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/nestle.webp"
+            alt="nestle"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg"
+            alt="IBM"
+          />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvTf-IUR8rlJB9FkTZ8QWfBCxr7mMnoxqWhQ&s"
+            alt="Netflix"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png"
+            alt="Tesla"
+          />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUVjc5y7zw6hmEkBvU43h_0jThuUhOFmcfJw&s"
+            alt="Samsung"
+          />
+          <img
+            src="https://webgrid.in/assets/images/black-logo.png"
+            alt="Webgrid"
+          />
+          <!-- Duplicate for loop effect -->
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/jollibee.webp"
+            alt="jollibee"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/nestle.webp"
+            alt="nestle"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg"
+            alt="IBM"
+          />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvTf-IUR8rlJB9FkTZ8QWfBCxr7mMnoxqWhQ&s"
+            alt="Netflix"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png"
+            alt="Tesla"
+          />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUVjc5y7zw6hmEkBvU43h_0jThuUhOFmcfJw&s"
+            alt="Samsung"
+          />
+          <img
+            src="https://webgrid.in/assets/images/black-logo.png"
+            alt="Webgrid"
+          />
+        </div>
+      </div>
+
+      <!-- Row 2 - Scrolls Right -->
+      <div class="logo-slider">
+        <div class="logo-track scroll-right">
+          <img
+            src="https://webgrid.in/assets/images/partner/nutsby.png"
+            alt="Nutsby"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/mudita.webp"
+            alt="mudita"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/metrro-waste.webp"
+            alt="metrro-waste"
+          />
+          <img
+            src="https://webgrid.in/assets/images/partner/BNR-8.webp"
+            alt="BNR"
+          />
+          <img
+            src="https://webgrid.in/assets/images/partner/TROLLEY-8.webp"
+            alt="Trolley"
+          />
+          <img
+            src="https://www.astrolitetech.com/assets/images/conduent.png"
+            alt="Conduent"
+          />
+          <img
+            src="https://www.astrolitetech.com/assets/images/ust-global-logo.png"
+            alt="UST Global"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/plush-lounge.webp"
+            alt="Plush Lounge"
+          />
+          <!-- Duplicate -->
+          <img
+            src="https://webgrid.in/assets/images/partner/nutsby.png"
+            alt="Nutsby"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/mudita.webp"
+            alt="mudita"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/metrro-waste.webp"
+            alt="metrro-waste"
+          />
+          <img
+            src="https://webgrid.in/assets/images/partner/BNR-8.webp"
+            alt="BNR"
+          />
+          <img
+            src="https://webgrid.in/assets/images/partner/TROLLEY-8.webp"
+            alt="Trolley"
+          />
+          <img
+            src="https://www.astrolitetech.com/assets/images/conduent.png"
+            alt="Conduent"
+          />
+          <img
+            src="https://www.astrolitetech.com/assets/images/ust-global-logo.png"
+            alt="UST Global"
+          />
+          <img
+            src="https://www.digisme.in/contents/images/client-logo/plush-lounge.webp"
+            alt="Plush Lounge"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <h3>Let us do our job for you.</h3>
+      <button class="cta-button">
+        Try us out <i class="fas fa-arrow-right"></i>
+      </button>
+    </section>
+
+    <!-- Modal -->
+    <div id="partnerModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Schedule Now</h2>
+        <form id="partnerForm">
+          <div class="form-row">
+            <input
+              type="text"
+              name="companyName"
+              placeholder="Company Name *"
+              required
+            />
+            <input
+              type="text"
+              name="contactName"
+              placeholder="Contact Name *"
+              required
+            />
+          </div>
+          <div class="form-row">
+            <input
+              type="tel"
+              name="contactNumber"
+              placeholder="Contact Number *"
+              required
+            />
+            <input
+              type="email"
+              name="contactEmail"
+              placeholder="Contact Email *"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="number"
+              name="employeeCount"
+              placeholder="Enter No. of Employees *"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              name="message"
+              placeholder="Message (optional)"
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="form-group checkbox">
+            <input type="checkbox" id="agree" name="agree" required />
+            <label for="agree">
+              I agree to the <a href="#">Terms of Service</a> and
+              <a href="#">Privacy Policy</a>.
+            </label>
+          </div>
+
+          <button type="submit">
+            <i class="fas fa-paper-plane"></i> Submit
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="index.js"></script>
+
+    <script>
+      // Initialize particles.js with multi-color lively particles config
+      particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 60,
+            density: { enable: true, value_area: 900 },
+          },
+          color: {
+            value: [
+              "#FF4136",
+              "#FF851B",
+              "#FFDC00",
+              "#2ECC40",
+              "#0074D9",
+              "#B10DC9",
+            ],
+          },
+          shape: {
+            type: "circle",
+          },
+          opacity: {
+            value: 0.6,
+            random: true,
+            anim: {
+              enable: true,
+              speed: 1,
+              opacity_min: 0.1,
+              sync: false,
+            },
+          },
+          size: {
+            value: 5,
+            random: true,
+            anim: {
+              enable: true,
+              speed: 3,
+              size_min: 2,
+              sync: false,
+            },
+          },
+          move: {
+            enable: true,
+            speed: 1,
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: false },
+            onclick: { enable: false },
+          },
+        },
+        retina_detect: true,
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        const logos = document.querySelectorAll(".logo-track img");
+        console.log(`Loaded ${logos.length} company logos.`);
+
+        const modal = document.getElementById("partnerModal");
+        const ctaBtn = document.querySelector(".cta-button");
+        const closeBtn = document.querySelector(".close");
+        const partnerForm = document.getElementById("partnerForm");
+
+        ctaBtn.addEventListener("click", () => {
+          modal.style.display = "block";
+        });
+
+        closeBtn.addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (event) => {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+
+        partnerForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(partnerForm);
+          const data = {
+            companyName: formData.get("companyName"),
+            contactName: formData.get("contactName"),
+            contactNumber: formData.get("contactNumber"),
+            contactEmail: formData.get("contactEmail"),
+            employeeCount: formData.get("employeeCount"),
+            preferences: formData.getAll("preference"),
+          };
+
+          console.log("Form submitted:", data);
+
+          alert("Thank you for reaching out! We'll get in touch shortly.");
+
+          partnerForm.reset();
+          modal.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>

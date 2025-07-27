@@ -1,0 +1,1544 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHq6e0EJNj1OFLc0E0FqdfZsx0zGkRZt9jXxFZT+YO2DZU6JZV2qv0uW2YPvI+FZ2VjEVtQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; 
+        }
+        /* Custom styles for responsive grid alignment */
+        .pricing-cards-container, .add-ons-container {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column (vertical) on small screens */
+            gap: 2rem; /* Gap between cards */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .pricing-cards-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+            }
+            .add-ons-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for add-ons on medium screens */
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .pricing-cards-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on large screens */
+            }
+            .add-ons-container {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns for add-ons on large screens */
+            }
+        }
+
+        /* Hero Section Animation */
+        @keyframes heroGlow {
+          0% { opacity: 0.8; }
+          50% { opacity: 0.85; }
+          100% { opacity: 0.8; }
+        }
+        .animate-hero-glow {
+          animation: heroGlow 4s ease-in-out infinite;
+        }
+
+        /* Canvas for particles in Hero Section */
+        #hero-particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind other content */
+        }
+
+        /* Card Flip Styles */
+        .pricing-card-wrapper, .add-on-card-wrapper {
+            perspective: 1500px; /* For 3D effect */
+            height: 100%; /* Ensure container has height for inner elements */
+            /* Hover animations for the entire card wrapper */
+            transform-origin: center center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            opacity: 0; /* Initial state for entry animation */
+            transform: translateY(20px); /* Initial state for entry animation */
+            animation: cardEntry 0.5s ease-out forwards; /* Entry animation */
+        }
+
+        /* Delay for sequential card entry animation */
+        .pricing-card-wrapper:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card-wrapper:nth-child(2) { animation-delay: 0.2s; }
+        .pricing-card-wrapper:nth-child(3) { animation-delay: 0.3s; }
+        .add-on-card-wrapper:nth-child(1) { animation-delay: 0.1s; }
+        .add-on-card-wrapper:nth-child(2) { animation-delay: 0.2s; }
+        .add-on-card-wrapper:nth-child(3) { animation-delay: 0.3s; }
+        .add-on-card-wrapper:nth-child(4) { animation-delay: 0.4s; }
+
+
+        @keyframes cardEntry {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+      
+        .pricing-card-wrapper:hover, .add-on-card-wrapper:hover {
+            transform: scale(1.05) translateY(-8px); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-2xl */
+        }
+
+        .pricing-card, .add-on-card {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s; /* Slower transition for flip */
+            height: 100%;
+            min-height: 490px; /* Adjusted height for more content */
+            cursor: pointer; /* Indicate clickable */
+            border-radius: 0.75rem; /* rounded-xl */
+            border: 2px solid; /* border-4 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* default shadow */
+        }
+
+        .add-on-card {
+            min-height: 280px; /* Smaller height for add-on cards */
+        }
+
+        /* Highlight for recommended card */
+        .pricing-card.recommended {
+            border-color: #0454ff; /* blue-600 */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-2xl */
+        }
+
+        .pricing-card.flipped, .add-on-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back of the element when facing away */
+            -webkit-backface-visibility: hidden; /* Safari */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 2rem; /* p-8 */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            transition: background-color 0.3s ease-in-out; /* Smooth background color transition */
+        }
+
+        /* Default background for card front */
+        .card-front {
+            background-color: #eff6fc; /* Tailwind blue-100 equivalent */
+            z-index: 2;
+        }
+
+        /* Default background for card back */
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #3d64d2; /* Tailwind blue-800 equivalent for back */
+            color: white; /* White text for readability on dark blue */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            text-align: center;
+        }
+
+      
+
+        /* Modal specific styles */
+        .modal-overlay {
+            padding-top: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75%;
+            background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #e5f0fc;
+            padding: 2.5rem; /* p-10 */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* Larger shadow */
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-50px) scale(0.95); /* Initial state for animation */
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: translateY(0) scale(1); /* Final state for animation */
+            opacity: 1;
+        }
+        /* Input focus styles */
+        .modal-content input:focus, .modal-content textarea:focus {
+            outline: none;
+            border-color: #3b82f6; /* blue-500 */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* ring-blue-500 with opacity */
+        }
+        /* Add subtle hover/focus effects for form elements */
+        .modal-content input, .modal-content textarea, .modal-content button[type="submit"] {
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #c3dafc; /* Light blue border */
+        }
+        .modal-content input:hover, .modal-content textarea:hover {
+            border-color: #60a5fa; /* blue-400 */
+        }
+        .modal-content button[type="submit"] {
+            background-color: #3b82f6; /* blue-600 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .modal-content button[type="submit"]:hover {
+            background-color: #2563eb; /* blue-700 */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Feature Comparison Table */
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: #fff;
+            border-radius: 0.75rem;
+            overflow: hidden; /* Ensures rounded corners apply to content */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .feature-table th, .feature-table td {
+            padding: 1rem;
+            border: 1px solid #bfdbfe; /* blue-200 */
+            text-align: left;
+        }
+        .feature-table th {
+            background-color: #042c60; /* blue-100 */
+            font-weight: 600;
+            color: #fafbfd; /* blue-900 */
+        }
+        .feature-table tbody tr:nth-child(odd) {
+            background-color: #bdd8fa; /* blue-50 */
+        }
+        .feature-table tbody tr:hover {
+            background-color: #bfdbfe; /* blue-200 */
+            transition: background-color 0.3s ease;
+        }
+        .feature-table .icon-check {
+            color: #22c55e; /* green-500 */
+        }
+        .feature-table .icon-times {
+            color: #ef4444; /* red-500 */
+        }
+        .feature-table .hidden-feature-row {
+            display: none;
+        }
+        .feature-table.show-all .hidden-feature-row {
+            display: table-row;
+        }
+
+        /* FAQ styles */
+        .faq-item {
+            background-color: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 1rem;
+            border: 1px solid #bfdbfe; /* blue-200 */
+        }
+        .faq-question {
+            padding: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #1e3a8a; /* blue-900 */
+            background-color: #e0f2fe; /* blue-100 */
+            transition: background-color 0.3s ease;
+        }
+        .faq-question:hover {
+            background-color: #bfdbfe; /* blue-200 */
+        }
+        .faq-answer {
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            background-color: #eff6ff; /* blue-50 */
+            color: #334155; /* slate-700 */
+        }
+        .faq-answer.open {
+            max-height: 200px; /* Adjust as needed for content */
+            padding: 1.25rem;
+        }
+        .faq-question .icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-question.open .icon {
+            transform: rotate(180deg);
+        }
+
+        /* Banner Slider Styles */
+        .banner-slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+          margin-left: 20px;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 2px solid #60a5fa; /* blue-400 */
+        }
+
+        .banner-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .banner-slide {
+    position: relative; /* keep relative for ::before */
+    min-width: 100%;
+    box-sizing: border-box;
+    height: 300px; /* Fixed height for banners */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(252, 250, 250);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    /* Remove opacity from here */
+    /* opacity: 0.5;  <-- remove this */
+}
+
+/* Blue overlay */
+.banner-slide::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(2, 40, 81, 0.9); /* stronger blue with 40% opacity */
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+/* Make sure the text is above the overlay */
+.banner-slide > * {
+    position: relative;
+    z-index: 2;
+}
+
+        /* Canvas for particles in each banner slide */
+        .banner-slide .banner-particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind other content */
+        }
+
+        .banner-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+            z-index: 1; /* Ensure overlay is above canvas but below content */
+        }
+        .banner-slide-content {
+            position: relative;
+            z-index: 2; /* Ensure content is above overlay and canvas */
+            text-align: center;
+            padding: 1rem;
+        }
+        .banner-slide h3 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .banner-slide p {
+            font-size: 1.25rem;
+        }
+
+        .slider-nav-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #93c5fd; /* blue-300 */ /* Changed dot color */
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dot.active {
+            background-color: #1d4ed8; /* blue-700 */ /* Changed active dot color */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-blue-50 font-sans text-blue-900">
+
+    <!-- Hero Section -->
+    <div
+        class="relative h-[450px] bg-cover bg-center flex flex-col items-center justify-center text-white p-1 rounded-b-lg shadow-lg"
+        style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"
+    >
+        <canvas id="hero-particles-canvas"></canvas>
+
+        
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900 to-blue-700 opacity-80 rounded-b-lg animate-hero-glow z-10"></div>
+        <div class="relative z-20 text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-2xl">
+                Unlock Your Team's Full Potential
+            </h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto drop-shadow-lg">
+                Choose from our flexible plans designed to empower your HR, recruiting, and employee self-service needs.
+            </p>
+        </div>
+
+        <!-- Currency and Billing Cycle Toggles within Hero Section -->
+        <div class="relative z-20 flex flex-col md:flex-row justify-center items-center gap-6">
+            <!-- Currency Toggle -->
+            <div class="flex bg-blue-900/20 backdrop-blur-sm p-1 rounded-full shadow-lg border border-blue-700/30">
+                <button id="currency-inr" class="px-6 py-2 rounded-full text-lg font-medium transition-all duration-300 bg-blue-50 text-blue-700 shadow-md">
+                    INR
+                </button>
+                <button id="currency-usd" class="px-6 py-2 rounded-full text-blue-100 hover:bg-blue-800/10">
+                    USD
+                </button>
+            </div>
+
+            <!-- Billing Cycle Toggle -->
+            <div class="flex bg-blue-900/20 backdrop-blur-sm p-1 rounded-full shadow-lg border border-blue-700/30">
+                <button id="billing-monthly" class="px-6 py-2 rounded-full text-lg font-medium transition-all duration-300 bg-blue-50 text-blue-700 shadow-md">
+                    Monthly
+                </button>
+                <button id="billing-yearly" class="px-6 py-2 rounded-full text-lg font-medium transition-all duration-300 text-blue-100 hover:bg-blue-800/10">
+                    Yearly
+                    <span class="ml-2 bg-blue-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                        Save 15%
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-12">
+        <!-- Tabs Navigation -->
+        <div class="flex justify-center mb-12 overflow-x-auto">
+            <div class="flex bg-blue-50 p-2 rounded-xl shadow-lg border border-blue-200">
+                <button id="tab-hrms" class="px-6 py-3 text-lg font-semibold rounded-lg transition-all duration-300 whitespace-nowrap bg-blue-600 text-white shadow-md">
+                    HRMS
+                </button>
+                <button id="tab-recruiting" class="px-6 py-3 text-blue-700 hover:bg-blue-100 font-semibold rounded-lg">
+                    Recruiting
+                </button>
+                <button id="tab-self-service" class="px-6 py-3 text-blue-700 hover:bg-blue-100 font-semibold rounded-lg">
+                    Self-Service
+                </button>
+            </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div id="pricing-cards-container" class="pricing-cards-container"></div>
+
+        <!-- Feature Comparison Table Section -->
+        <section class="py-12">
+            <h2 class="text-4xl font-bold text-center text-blue-900 mb-8">Detailed Feature Comparison</h2>
+            <div id="feature-comparison-table-container" class="overflow-x-auto">
+                <!-- Table will be rendered here by JavaScript -->
+            </div>
+            <div class="text-center mt-8">
+                <button id="view-more-features-btn" class="bg-blue-600 text-white py-3 px-8 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-md">
+                    View More Features
+                </button>
+            </div>
+        </section>
+
+        <!-- Sliding Banners Section -->
+        <section class="py-8 mt-0">
+            <h2 class="text-4xl font-bold text-center text-blue-900 mb-8">Special Offers!</h2>
+            <div id="banner-slider-container" class="banner-slider-container">
+                <div id="banner-slider" class="banner-slider">
+                    <!-- Banners will be dynamically loaded here -->
+                </div>
+                <div id="slider-nav-dots" class="slider-nav-dots"></div>
+            </div>
+        </section>
+
+        <!-- Add-ons Section -->
+        <section class="py-12 bg-blue-50 rounded-xl shadow-lg border border-blue-200 mt-12">
+            <h2 class="text-4xl font-bold text-center text-blue-900 mb-8">Enhance Your Solution with Add-ons</h2>
+            <div id="add-ons-container" class="add-ons-container px-4">
+                <!-- Add-on cards will be rendered here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- FAQs Section -->
+        <section class="py-12 mt-12">
+            <h2 class="text-4xl font-bold text-center text-blue-900 mb-8">Frequently Asked Questions</h2>
+            <div id="faq-container" class="max-w-3xl mx-auto">
+                <!-- FAQs will be rendered here by JavaScript -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Contact Form Modal -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 text-center">Get in Touch</h2>
+          <form id="contact-form" class="space-y-4">
+  <div>
+    <label for="form-name" class="block text-sm font-medium text-gray-700 mb-1">
+      <i class="fas fa-user mr-2 text-blue-500"></i>Name
+    </label>
+    <input type="text" id="form-name" name="name" class="w-full px-4 py-2 border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Your Name" required>
+  </div>
+
+  <div>
+    <label for="form-email" class="block text-sm font-medium text-gray-700 mb-1">
+      <i class="fas fa-envelope mr-2 text-blue-500"></i>Email
+    </label>
+    <input type="email" id="form-email" name="email" class="w-full px-4 py-2 border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="your.email@example.com" required>
+  </div>
+
+  <div>
+    <label for="form-company" class="block text-sm font-medium text-gray-700 mb-1">
+      <i class="fas fa-building mr-2 text-blue-500"></i>Company (Optional)
+    </label>
+    <input type="text" id="form-company" name="company" class="w-full px-4 py-2 border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Your Company Name">
+  </div>
+
+  <div>
+    <label for="form-message" class="block text-sm font-medium text-gray-700 mb-1">
+      <i class="fas fa-comment-dots mr-2 text-blue-500"></i>Message
+    </label>
+    <textarea id="form-message" name="message" rows="2" class="w-full px-4 py-2 border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Tell us about your needs..." required></textarea>
+  </div>
+
+  <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
+    Submit Request
+  </button>
+</form>
+
+        </div>
+    </div>
+
+    <script>
+        const pricingData = {
+            HRMS: [
+                {
+                    name: "Basic HRMS",
+                    description: "Ideal for small businesses and startups.",
+                    features: ["Employee Database", "Attendance Tracking", "Leave Management", "Basic Reporting", "Up to 50 Employees", "Limited Integrations", "Email Support"],
+                    backContent: {
+                        title: "Key Benefits of Basic HRMS",
+                        details: "Streamline your core HR operations with essential tools. Focus on efficiency and compliance from day one.",
+                        list: ["Centralized employee data", "Automated leave approvals", "Basic payroll integration", "Essential reporting for compliance"]
+                    },
+                    price: { monthly: { INR: "₹999", USD: "$15" }, yearly: { INR: "₹9999", USD: "$150" } },
+                },
+                {
+                    name: "Professional HRMS",
+                    description: "Advanced features for growing teams.",
+                    features: [
+                        "Employee Database", "Attendance Tracking", "Leave Management", "Basic Reporting", "Performance Management",
+                        "Payroll Integration", "Advanced Reporting", "Custom Workflows", "Up to 200 Employees", "Standard Integrations",
+                        "Phone & Email Support", "Training & Development Tracking", "Expense Submission", "Document Access & Upload",
+                        "Announcements & Notifications", "Customizable Dashboards", "Feedback & Grievance Module", "Mobile App Access",
+                        "Business Intelligence & Analytics", "Talent Management Suite", "Employee Surveys", "Benefits Overview",
+                       // Total 40 features
+                    ],
+                    backContent: {
+                        title: "Why Professional HRMS?",
+                        details: "Scale your HR capabilities with robust features designed for expanding teams. Drive performance and gain deeper insights.",
+                        list: ["Comprehensive performance cycles", "Advanced analytics & dashboards", "Customizable workflows for efficiency", "Seamless payroll processing", "Integrated training modules"]
+                    },
+                    price: { monthly: { INR: "₹2499", USD: "$35" }, yearly: { INR: "₹24999", USD: "$350" } },
+                },
+                {
+                    name: "Enterprise HRMS",
+                    description: "For large enterprises and custom needs.",
+                    features: [
+                        "Employee Database", "Attendance Tracking", "Leave Management", "Basic Reporting", "Performance Management",
+                        "Payroll Integration", "Advanced Reporting", "Custom Workflows", "SSO & Security", "Multi-Company Support",
+                        "API Access", "Unlimited Employees", "24/7 Support", "Custom Integrations", "Dedicated Account Manager",
+                        "On-site Training", "Global Compliance", "Business Intelligence & Analytics", "Talent Management Suite",
+                        "Succession Planning", "Employee Surveys", "Employee Profile Access", "Payslip Download", "Expense Submission",
+                       "Standard Integrations" // Total 55 features
+                    ],
+                    backContent: {
+                        title: "Enterprise Power for Large Teams",
+                        details: "Unleash the full potential of your workforce with an all-encompassing HR platform. Tailored for complex organizational needs.",
+                        list: ["Seamless integration with existing systems", "Dedicated support and strategic guidance", "Robust security and compliance features", "Tailored solutions for complex structures", "Comprehensive talent management"]
+                    },
+                    price: { monthly: { INR: "₹4999", USD: "$70" }, yearly: { INR: "₹49999", USD: "$700" } },
+                }
+            ],
+            Recruiting: [
+                {
+                    name: "Starter Recruiting",
+                    description: "For teams starting out.",
+                    features: ["5 Job Posts", "Candidate DB", "Basic ATS", "Email Templates", "Interview Scheduling", "Limited User Access", "Basic Analytics"],
+                    backContent: {
+                        title: "Kickstart Your Hiring",
+                        details: "Efficiently manage your initial hiring needs with intuitive tools. Find and engage candidates faster.",
+                        list: ["Easy job creation and publishing", "Centralized candidate communication", "Streamlined interview process", "Simple candidate tracking"]
+                    },
+                    price: { monthly: { INR: "₹799", USD: "$12" }, yearly: { INR: "₹7999", USD: "$120" } },
+                },
+                {
+                    name: "Pro Recruiting",
+                    description: "For high-growth teams.",
+                    features: [
+                        "Unlimited Posts", "Candidate DB", "Basic ATS", "Email Templates", "Interview Scheduling",
+                        "Workflows", "Team Collaboration", "Analytics", "HRMS Integration", "Customizable Forms",
+                        "Advanced Reporting", "Job Board Integrations", "Candidate Sourcing Tools", "Onboarding Automation",
+                        "Multi-location Support", "Custom Branding", "Talent Pool Management", "Vendor Management",
+                        "Global Recruitment", "Compliance Tracking",  // Total 40 features
+                    ],
+                    backContent: {
+                        title: "Accelerate Your Recruitment",
+                        details: "Optimize your recruitment process with advanced features and collaboration tools. Build a strong talent pipeline.",
+                        list: ["Collaborative hiring workflows", "In-depth recruitment analytics", "Seamless data sync with HRMS", "Automated candidate communication", "Enhanced sourcing capabilities"]
+                    },
+                    price: { monthly: { INR: "₹1999", USD: "$30" }, yearly: { INR: "₹19999", USD: "$300" } },
+                },
+                {
+                    name: "Enterprise Recruiting",
+                    description: "Best for scaling organizations.",
+                    features: [
+                        "Unlimited Posts", "Candidate DB", "Basic ATS", "Email Templates", "Interview Scheduling",
+                        "Workflows", "Team Collaboration", "Analytics", "HRMS Integration", "Customizable Forms",
+                        "Advanced Reporting", "AI-Powered Candidate Matching", "Onboarding Automation", "Multi-location",
+                        "Custom Branding", "Support Manager", "API Access", "Talent Pool Management", "Vendor Management",
+                        "Global Recruitment", "Compliance Tracking", "Recruiter CRM", "Employee Database", "Attendance Tracking",
+                        "Leave Management", "Performance Management", "Payroll Integration", "Business Intelligence & Analytics",
+                         "Phone & Email Support", "Standard Integrations" // Total 55 features
+                    ],
+                    backContent: {
+                        title: "Recruitment Excellence for Enterprises",
+                        details: "Transform your talent acquisition strategy with AI-driven insights and comprehensive automation. Attract and retain top talent globally.",
+                        list: ["AI-powered candidate sourcing", "Automated onboarding sequences", "Global recruitment support", "Robust talent pipeline management", "Full compliance management"]
+                    },
+                    price: { monthly: { INR: "₹3999", USD: "$60" }, yearly: { INR: "₹39999", USD: "$600" } },
+                }
+            ],
+            "Self-Service": [
+                {
+                    name: "Basic Self-Service",
+                    description: "Empower your team with essentials.",
+                    features: ["Profile Access", "Payslip Download", "Leave Requests", "Directory Access", "Basic Announcements", "Mobile Access"],
+                    backContent: {
+                        title: "Empower Your Employees",
+                        details: "Give your employees direct access to essential HR information and processes, reducing administrative burden.",
+                        list: ["Instant access to personal data", "Self-service leave applications", "Digital payslip retrieval", "Easy access on mobile devices"]
+                    },
+                    price: { monthly: { INR: "₹499", USD: "$8" }, yearly: { INR: "₹4999", USD: "$80" } },
+                },
+                {
+                    name: "Enhanced Self-Service",
+                    description: "For greater flexibility.",
+                    features: [
+                        "Profile Access", "Payslip Download", "Leave Requests", "Directory Access", "Basic Announcements",
+                        "Mobile Access", "Expense Submission", "Document Access & Upload", "Announcements & Notifications",
+                        "Training & Development Tracking", "Performance Review Access", "Benefits Overview", "Customizable Dashboards",
+                        "Feedback & Grievance Module", "Integration with Wellness Apps", "Employee Recognition", "Employee Database",
+                        "Customizable Forms" // Total 29 features
+                    ],
+                    backContent: {
+                        title: "Boost Employee Engagement",
+                        details: "Provide a richer self-service experience that fosters independence and keeps employees informed and engaged.",
+                        list: ["Easy expense reporting", "Secure document management", "Personalized training tracking", "Transparent benefits information", "Customizable views"]
+                    },
+                    price: { monthly: { INR: "₹1299", USD: "$20" }, yearly: { INR: "₹12999", USD: "$200" } },
+                },
+                {
+                    name: "Premium Self-Service",
+                    description: "Full experience portal.",
+                    features: [
+                        "Profile Access", "Payslip Download", "Leave Requests", "Directory Access", "Basic Announcements",
+                        "Mobile Access", "Expense Submission", "Document Access & Upload", "Announcements & Notifications",
+                        "Training & Development Tracking", "Performance Review Access", "Benefits Overview", "Customizable Dashboards",
+                        "Feedback & Grievance Module", "Integration with Wellness Apps", "Single Sign-On (SSO)", "Advanced Security Features",
+                        "Employee Recognition", "Employee Database", "Attendance Tracking", "Leave Management", "Basic Reporting",
+                        "Performance Management", "Payroll Integration", "Advanced Reporting", "Custom Workflows",
+                        "Multi-Company Support", "API Access", "Unlimited Employees", "24/7 Support", "Custom Integrations",
+                        "Dedicated Account Manager", "On-site Training", "Global Compliance", "Business Intelligence & Analytics",
+                       
+                    ],
+                    backContent: {
+                        title: "The Ultimate Employee Portal",
+                        details: "Deliver a truly comprehensive and personalized employee experience. Foster a culture of transparency and growth.",
+                        list: ["Access to performance reviews", "Streamlined benefits enrollment", "Direct feedback channels", "Personalized dashboards", "Robust security and recognition tools"]
+                    },
+                    price: { monthly: { INR: "₹2499", USD: "$40" }, yearly: { INR: "₹24999", USD: "$400" } },
+                }
+            ]
+        };
+
+        const allFeaturesList = [
+            "Employee Database", "Attendance Tracking", "Leave Management", "Basic Reporting",
+            "Performance Management", "Payroll Integration", "Advanced Reporting", "Custom Workflows",
+            "SSO & Security", "Multi-Company Support", "API Access", "Unlimited Employees",
+            "24/7 Support", "Job Posting", "Candidate Database", "Applicant Tracking",
+            "Interview Scheduling", "Email Templates", "AI-Powered Candidate Matching", "Onboarding Automation",
+            "Multi-location Support", "Custom Branding", "Dedicated Account Manager", "Employee Profile Access",
+           "Standard Integrations", "Custom Integrations", "Email Support",
+             "Employee Recognition"
+        ];
+
+        const addOnsData = [
+            {
+                name: "Advanced Analytics",
+                description: "Deep dive into your HR data with custom dashboards.",
+                icon: "fas fa-chart-line",
+                backContent: {
+                    title: "Unlock Data Insights",
+                    details: "Gain actionable insights from your HR data to make informed decisions and drive strategic growth.",
+                    list: ["Customizable reports", "Predictive analytics", "Interactive dashboards"]
+                }
+            },
+            {
+                name: "Payroll Automation",
+                description: "Automate payroll processing and tax compliance.",
+                icon: "fas fa-dollar-sign",
+                backContent: {
+                    title: "Effortless Payroll",
+                    details: "Reduce manual effort and ensure accuracy with automated payroll processing and compliance features.",
+                    list: ["Automated tax filings", "Direct deposit", "Time-saving integrations"]
+                }
+            },
+            {
+                name: "Learning Management",
+                description: "Develop employee skills with integrated courses.",
+                icon: "fas fa-graduation-cap",
+                backContent: {
+                    title: "Continuous Learning",
+                    details: "Foster a culture of continuous learning and development within your organization.",
+                    list: ["Course management", "Progress tracking", "Certification management"]
+                }
+            },
+            {
+                name: "Employee Wellness",
+                description: "Support well-being with health and fitness programs.",
+                icon: "fas fa-heartbeat",
+                backContent: {
+                    title: "Healthy Workforce",
+                    details: "Promote employee well-being and productivity with comprehensive wellness programs.",
+                    list: ["Fitness challenges", "Mental health resources", "Wellness tracking"]
+                }
+            }
+        ];
+
+        const bannerData = [
+         
+            {
+                title: "Boost Your Productivity!",
+                description: "Discover how our Professional plan can streamline your workflows and boost team efficiency. Try it now!",
+                image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                cta: { label: "Learn More", action: "openModal" }
+            },
+            {
+                title: "Tailored Solutions for You!",
+                description: "Our Enterprise plans are fully customizable to fit your unique business needs. Contact sales for a personalized demo.",
+                image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                cta: { label: "Contact Sales", action: "openModal" }
+            }
+        ];
+
+        const faqData = [
+            {
+                question: "What is the difference between Monthly and Yearly billing?",
+                answer: "Yearly billing offers a 15% discount compared to monthly billing, providing significant savings for long-term commitment."
+            },
+            {
+                question: "Can I switch plans later?",
+                answer: "Yes, you can upgrade or downgrade your plan at any time. Changes will be prorated based on your billing cycle."
+            },
+            {
+                question: "Is there a free trial available?",
+                answer: "We offer a 14-day free trial for our Professional HRMS plan. No credit card required to start."
+            },
+            {
+                question: "What kind of support is included?",
+                answer: "Basic plans include email support. Professional plans offer phone and email support. Enterprise plans come with 24/7 premium support and a dedicated account manager."
+            },
+            {
+                question: "Do you offer custom solutions for large enterprises?",
+                answer: "Yes, our Enterprise plans are highly customizable and can be tailored to meet the specific needs of large organizations, including custom integrations and on-site training."
+            }
+        ];
+
+
+        // DOM elements
+        const currencyInrBtn = document.getElementById('currency-inr');
+        const currencyUsdBtn = document.getElementById('currency-usd');
+        const billingMonthlyBtn = document.getElementById('billing-monthly');
+        const billingYearlyBtn = document.getElementById('billing-yearly');
+        const tabHrmsBtn = document.getElementById('tab-hrms');
+        const tabRecruitingBtn = document.getElementById('tab-recruiting');
+        const tabSelfServiceBtn = document.getElementById('tab-self-service');
+        const pricingCardsContainer = document.getElementById('pricing-cards-container');
+        const featureComparisonTableContainer = document.getElementById('feature-comparison-table-container');
+        const viewMoreFeaturesBtn = document.getElementById('view-more-features-btn');
+        const addOnsContainer = document.getElementById('add-ons-container');
+        const faqContainer = document.getElementById('faq-container');
+        const bannerSlider = document.getElementById('banner-slider');
+        const sliderNavDots = document.getElementById('slider-nav-dots');
+
+        // Modal elements
+        const contactModal = document.getElementById('contact-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const contactForm = document.getElementById('contact-form');
+
+        // State variables
+        let currentCurrency = 'INR';
+        let currentBillingCycle = 'Monthly';
+        let currentActiveTab = 'HRMS';
+        let showAllFeatures = false; // State for feature comparison table
+        let currentBannerIndex = 0;
+        let bannerInterval;
+
+        // Function to open the modal
+        function openModal() {
+            contactModal.classList.add('open');
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            contactModal.classList.remove('open');
+            contactForm.reset(); // Clear form fields on close
+        }
+
+        // Function to render pricing cards
+        function renderPricingCards() {
+            pricingCardsContainer.innerHTML = ''; // Clear existing cards
+            const plans = pricingData[currentActiveTab];
+
+            plans.forEach((plan, index) => {
+                const isRecommended = index === 1; // Highlight the middle card
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `pricing-card-wrapper ${isRecommended ? 'recommended' : ''}`; // Apply recommended class to wrapper
+
+                const pricingCard = document.createElement('div');
+                // The pricing-card itself handles its border and shadow based on 'recommended' class
+                pricingCard.className = `pricing-card ${isRecommended ? 'recommended' : ''}`;
+
+                let recommendedBanner = '';
+                if (isRecommended) {
+                    recommendedBanner = `
+                        <div class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-xl z-20">
+                            Mostly Recommended
+                        </div>
+                    `;
+                }
+
+                // Price display logic with strike-through
+                let priceDisplay = '';
+                const monthlyPriceValue = parseFloat(plan.price.monthly[currentCurrency].replace('₹', '').replace('$', ''));
+                const yearlyPriceValue = parseFloat(plan.price.yearly[currentCurrency].replace('₹', '').replace('$', ''));
+                const currencySymbol = currentCurrency === 'INR' ? '₹' : '$';
+
+                if (currentBillingCycle === 'Monthly') {
+                    priceDisplay = `
+                        <span class="text-5xl font-extrabold text-blue-600">
+                            ${currencySymbol}${monthlyPriceValue}
+                        </span>
+                        <span class="text-xl font-medium text-blue-500 ml-2">
+                            /month
+                        </span>
+                    `;
+                } else { // Yearly billing
+                    const originalAnnualPrice = monthlyPriceValue * 12;
+                    priceDisplay = `
+                        <span class="text-2xl font-medium text-gray-400 line-through mr-2">
+                            ${currencySymbol}${originalAnnualPrice}
+                        </span>
+                        <span class="text-5xl font-extrabold text-blue-600">
+                            ${currencySymbol}${yearlyPriceValue}
+                        </span>
+                        <span class="text-xl font-medium text-blue-500 ml-2">
+                            /year
+                        </span>
+                    `;
+                }
+
+
+                const frontHTML = `
+                    <div class="card-front">
+                        ${recommendedBanner}
+                        <h3 class="text-2xl font-bold text-blue-900 mb-2">${plan.name}</h3>
+                        <p class="text-blue-700 mb-4">${plan.description}</p>
+
+                        <div class="flex items-baseline mb-6">
+                            ${priceDisplay}
+                        </div>
+
+                        <ul class="flex-grow space-y-3 mb-8 text-blue-800">
+                            ${plan.features.slice(0, 5).map(feature => `
+                                <li class="flex items-center">
+                                    <svg
+                                        class="flex-shrink-0 w-6 h-6 text-green-500 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M5 13l4 4L19 7"
+                                        ></path>
+                                    </svg>
+                                    <span>${feature}</span>
+                                </li>
+                            `).join('')}
+                            ${plan.features.length > 5 ? `<li class="text-sm text-gray-500 mt-2">...and ${plan.features.length - 5} more features</li>` : ''}
+                        </ul>
+
+                        <button class="action-button w-full py-3 px-6 rounded-lg text-lg font-semibold transition-all duration-300
+                            ${isRecommended ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-200 text-blue-800 hover:bg-blue-300'}"
+                        >
+                            ${index === 2 ? 'Contact Sales' : 'Get Started'}
+                        </button>
+                    </div>
+                `;
+
+                const backHTML = `
+                    <div class="card-back">
+                        <h4 class="text-xl font-bold text-white mb-4">${plan.backContent.title}</h4>
+                        <p class="text-blue-100 text-center mb-4">
+                            ${plan.backContent.details}
+                        </p>
+                        <ul class="text-blue-100 list-disc list-inside text-left">
+                            ${plan.backContent.list.map(item => `
+                                <li>${item}</li>
+                            `).join('')}
+                        </ul>
+                        <button class="flip-back-button mt-6 bg-white text-blue-700 px-4 py-2 rounded hover:bg-blue-200 font-semibold" onclick="event.stopPropagation(); this.closest('.pricing-card').classList.remove('flipped');">Flip Back</button>
+                    </div>
+                `;
+
+                pricingCard.innerHTML = frontHTML + backHTML;
+
+                // Add click event listener to flip the card or open modal
+                pricingCard.addEventListener('click', (e) => {
+                    const targetButton = e.target.closest('button');
+
+                    if (targetButton && targetButton.classList.contains('action-button')) {
+                        // If "Get Started" or "Contact Sales" button is clicked
+                        e.stopPropagation(); // Prevent card from flipping
+                        openModal();
+                    } else if (targetButton && targetButton.classList.contains('flip-back-button')) {
+                        // If "Flip Back" button is clicked (handled by inline onclick for simplicity)
+                        // This block is mostly for clarity; the inline onclick already handles it.
+                    } else {
+                        // If any other part of the card is clicked, toggle flip
+                        pricingCard.classList.toggle('flipped');
+                    }
+                });
+
+                wrapper.appendChild(pricingCard);
+                pricingCardsContainer.appendChild(wrapper);
+            });
+        }
+
+        // Function to render the Feature Comparison Table
+        function renderFeatureComparisonTable() {
+            featureComparisonTableContainer.innerHTML = ''; // Clear existing table
+
+            const table = document.createElement('table');
+            table.className = `feature-table ${showAllFeatures ? 'show-all' : ''}`;
+
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th>Features</th>
+                <th>Basic</th>
+                <th>Professional</th>
+                <th>Enterprise</th>
+            `;
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+
+            // Determine which features to show initially
+            const featuresToShowCount = 6; // Show first 6 features initially
+
+            allFeaturesList.forEach((featureName, featureIndex) => {
+                const row = document.createElement('tr');
+                // Add a class to hide rows beyond the initial count
+                if (!showAllFeatures && featureIndex >= featuresToShowCount) {
+                    row.classList.add('hidden-feature-row');
+                }
+
+                row.innerHTML = `
+                    <td>${featureName}</td>
+                    <td>${getFeatureStatus(featureName, pricingData[currentActiveTab][0].features)}</td>
+                    <td>${getFeatureStatus(featureName, pricingData[currentActiveTab][1].features)}</td>
+                    <td>${getFeatureStatus(featureName, pricingData[currentActiveTab][2].features)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(tbody);
+            featureComparisonTableContainer.appendChild(table);
+
+            // Update button text
+            viewMoreFeaturesBtn.textContent = showAllFeatures ? 'View Less Features' : 'View More Features';
+        }
+
+        // Helper function to get feature status (check/cross icon)
+        function getFeatureStatus(featureName, planFeatures) {
+            if (planFeatures.includes(featureName)) {
+                return `<i class="fas fa-check-circle icon-check"></i>`;
+            }
+            // Some features might be implied or part of a higher tier without being explicitly listed in lower tiers
+            // For simplicity, we'll just show a cross if not explicitly included.
+            return `<i class="fas fa-times-circle icon-times"></i>`;
+        }
+
+        // Function to render Add-ons
+        function renderAddOns() {
+            addOnsContainer.innerHTML = ''; // Clear existing add-ons
+
+            addOnsData.forEach(addOn => {
+                const wrapper = document.createElement('div');
+                wrapper.className = `add-on-card-wrapper`;
+
+                const addOnCard = document.createElement('div');
+                addOnCard.className = `add-on-card bg-white rounded-xl shadow-md border-4 border-blue-200`;
+
+                const frontHTML = `
+                    <div class="card-front p-6 flex flex-col items-center text-center">
+                        <div class="text-blue-600 text-5xl mb-4">
+                            <i class="${addOn.icon}"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-900 mb-2">${addOn.name}</h3>
+                        <p class="text-blue-700 text-sm">${addOn.description}</p>
+                    </div>
+                `;
+
+                const backHTML = `
+                    <div class="card-back p-6 flex flex-col items-center justify-center">
+                        <h4 class="text-xl font-bold text-white mb-4">${addOn.backContent.title}</h4>
+                        <p class="text-blue-100 text-center text-sm mb-4">
+                            ${addOn.backContent.details}
+                        </p>
+                        <ul class="text-blue-100 list-disc list-inside text-left text-sm">
+                            ${addOn.backContent.list.map(item => `
+                                <li>${item}</li>
+                            `).join('')}
+                        </ul>
+                        <button class="flip-back-button mt-6 bg-white text-blue-700 px-4 py-2 rounded hover:bg-blue-200 font-semibold" onclick="event.stopPropagation(); this.closest('.add-on-card').classList.remove('flipped');">Flip Back</button>
+                    </div>
+                `;
+
+                addOnCard.innerHTML = frontHTML + backHTML;
+
+                addOnCard.addEventListener('click', (e) => {
+                    const targetButton = e.target.closest('button');
+                    if (!targetButton || (targetButton && targetButton.classList.contains('flip-back-button'))) {
+                        addOnCard.classList.toggle('flipped');
+                    }
+                });
+
+                wrapper.appendChild(addOnCard);
+                addOnsContainer.appendChild(wrapper);
+            });
+        }
+
+        // Function to render FAQs
+        function renderFAQs() {
+            faqContainer.innerHTML = ''; // Clear existing FAQs
+
+            faqData.forEach((faq, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-item';
+                faqItem.innerHTML = `
+                    <div class="faq-question" id="faq-q-${index}">
+                        <span>${faq.question}</span>
+                        <i class="fas fa-chevron-down icon"></i>
+                    </div>
+                    <div class="faq-answer" id="faq-a-${index}">
+                        <p>${faq.answer}</p>
+                    </div>
+                `;
+                faqContainer.appendChild(faqItem);
+
+                const questionElement = faqItem.querySelector(`#faq-q-${index}`);
+                const answerElement = faqItem.querySelector(`#faq-a-${index}`);
+
+                questionElement.addEventListener('click', () => {
+                    const isOpen = answerElement.classList.contains('open');
+
+                    // Close all other open FAQs
+                    document.querySelectorAll('.faq-answer.open').forEach(openAnswer => {
+                        if (openAnswer !== answerElement) {
+                            openAnswer.classList.remove('open');
+                            openAnswer.previousElementSibling.classList.remove('open');
+                        }
+                    });
+
+                    // Toggle current FAQ
+                    answerElement.classList.toggle('open');
+                    questionElement.classList.toggle('open');
+                });
+            });
+        }
+
+        // Function to render banners
+        function renderBanners() {
+            bannerSlider.innerHTML = ''; // Clear existing banners
+            sliderNavDots.innerHTML = ''; // Clear existing dots
+
+            bannerData.forEach((banner, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'banner-slide';
+                // Set background image directly on the slide element
+                slide.style.backgroundImage = `url('${banner.image}')`;
+                slide.innerHTML = `
+                    <canvas class="banner-particles-canvas"></canvas>
+                    <div class="banner-slide-content">
+                        <h3>${banner.title}</h3>
+                        <p>${banner.description}</p>
+                        ${banner.cta ? `<button class="banner-cta-button mt-4 bg-white text-blue-700 px-6 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors duration-300 shadow-md" data-action="${banner.cta.action}">${banner.cta.label}</button>` : ''}
+                    </div>
+                `;
+                bannerSlider.appendChild(slide);
+
+                const dot = document.createElement('span');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => {
+                    goToBanner(index);
+                });
+                sliderNavDots.appendChild(dot);
+
+                // Add event listener for CTA button
+                const ctaButton = slide.querySelector('.banner-cta-button');
+                if (ctaButton) {
+                    ctaButton.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent slider from changing on button click
+                        const action = e.target.dataset.action;
+                        if (action === 'openModal') {
+                            openModal();
+                        }
+                    });
+                }
+
+                // Initialize particles for this specific banner canvas
+                const bannerCanvas = slide.querySelector('.banner-particles-canvas');
+                setupBannerParticles(bannerCanvas);
+            });
+        }
+
+        function goToBanner(index) {
+            currentBannerIndex = index;
+            const offset = -currentBannerIndex * 100;
+            bannerSlider.style.transform = `translateX(${offset}%)`;
+
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                if (i === currentBannerIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function startBannerSlider() {
+            if (bannerInterval) {
+                clearInterval(bannerInterval);
+            }
+            bannerInterval = setInterval(() => {
+                currentBannerIndex = (currentBannerIndex + 1) % bannerData.length;
+                goToBanner(currentBannerIndex);
+            }, 5000); // Change banner every 5 seconds
+        }
+
+
+        // Function to update button styles (for global toggles in Hero)
+        function updateButtonStyles() {
+            // Currency buttons
+            [currencyInrBtn, currencyUsdBtn].forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-blue-700', 'shadow-md');
+                btn.classList.add('text-blue-100', 'hover:bg-blue-800/10');
+            });
+            if (currentCurrency === 'INR') {
+                currencyInrBtn.classList.add('bg-blue-50', 'text-blue-700', 'shadow-md');
+                currencyInrBtn.classList.remove('text-blue-100', 'hover:bg-blue-800/10');
+            } else {
+                currencyUsdBtn.classList.add('bg-blue-50', 'text-blue-700', 'shadow-md');
+                currencyUsdBtn.classList.remove('text-blue-100', 'hover:bg-blue-800/10');
+            }
+
+            // Billing cycle buttons
+            [billingMonthlyBtn, billingYearlyBtn].forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-blue-700', 'shadow-md');
+                btn.classList.add('text-blue-100', 'hover:bg-blue-800/10');
+            });
+            if (currentBillingCycle === 'Monthly') {
+                billingMonthlyBtn.classList.add('bg-blue-50', 'text-blue-700', 'shadow-md');
+                billingMonthlyBtn.classList.remove('text-blue-100', 'hover:bg-blue-800/10');
+            } else {
+                billingYearlyBtn.classList.add('bg-blue-50', 'text-blue-700', 'shadow-md');
+                billingYearlyBtn.classList.remove('text-blue-100', 'hover:bg-blue-800/10');
+            }
+
+            // Tab buttons
+            const tabButtons = [tabHrmsBtn, tabRecruitingBtn, tabSelfServiceBtn];
+            tabButtons.forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'shadow-md');
+                btn.classList.add('text-blue-700', 'hover:bg-blue-100');
+            });
+
+            if (currentActiveTab === 'HRMS') {
+                tabHrmsBtn.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+                tabHrmsBtn.classList.remove('text-blue-700', 'hover:bg-blue-100');
+            } else if (currentActiveTab === 'Recruiting') {
+                tabRecruitingBtn.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+                tabRecruitingBtn.classList.remove('text-blue-700', 'hover:bg-blue-100');
+            } else if (currentActiveTab === 'Self-Service') {
+                tabSelfServiceBtn.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+                tabSelfServiceBtn.classList.remove('text-blue-700', 'hover:bg-blue-100');
+            }
+        }
+
+        // Event Listeners for global currency/billing toggles
+        currencyInrBtn.addEventListener('click', () => {
+            currentCurrency = 'INR';
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable(); // Re-render table to reflect any currency-dependent features (though not directly priced here)
+        });
+
+        currencyUsdBtn.addEventListener('click', () => {
+            currentCurrency = 'USD';
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable();
+        });
+
+        billingMonthlyBtn.addEventListener('click', () => {
+            currentBillingCycle = 'Monthly';
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable();
+        });
+
+        billingYearlyBtn.addEventListener('click', () => {
+            currentBillingCycle = 'Yearly';
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable();
+        });
+
+        // Event Listeners for Tabs
+        tabHrmsBtn.addEventListener('click', () => {
+            currentActiveTab = 'HRMS';
+            showAllFeatures = false; // Reset table view when tab changes
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable();
+        });
+
+        tabRecruitingBtn.addEventListener('click', () => {
+            currentActiveTab = 'Recruiting';
+            showAllFeatures = false; // Reset table view when tab changes
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable();
+        });
+
+        tabSelfServiceBtn.addEventListener('click', () => {
+            currentActiveTab = 'Self-Service';
+            showAllFeatures = false; // Reset table view when tab changes
+            updateButtonStyles();
+            renderPricingCards();
+            renderFeatureComparisonTable();
+        });
+
+        // Event listener for "View More Features" button
+        viewMoreFeaturesBtn.addEventListener('click', () => {
+            console.log('View More Features button clicked!'); // Debugging line
+            showAllFeatures = !showAllFeatures; // Toggle state
+            renderFeatureComparisonTable(); // Re-render table
+        });
+
+        // Modal event listeners
+        closeModalBtn.addEventListener('click', closeModal);
+        contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) { // Close only if clicking on the overlay, not the content
+                closeModal();
+            }
+        });
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent default form submission
+            // In a real application, you would send this data to a server
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+            console.log('Form Submitted:', data);
+            // You might want to show a success message here
+            closeModal();
+        });
+
+        // Particle constructor (re-usable for both hero and banners)
+        function Particle(x, y, radius, color, velocityX, velocityY, fadeSpeed) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.color = color;
+            this.velocity = { x: velocityX, y: velocityY };
+            this.alpha = 0.5 + Math.random() * 0.5; // Random initial transparency
+            this.fadeSpeed = fadeSpeed;
+        }
+
+        Particle.prototype.draw = function(ctx) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        };
+
+        Particle.prototype.update = function(canvas, ctx) {
+            this.x += this.velocity.x;
+            this.y += this.velocity.y;
+
+            // Fade in and out
+            this.alpha -= this.fadeSpeed;
+            if (this.alpha <= 0.1 || this.alpha >= 1) {
+                this.fadeSpeed *= -1; // Reverse fade direction
+            }
+            this.color = `rgba(255, 255, 255, ${this.alpha})`;
+
+            // Wrap particles around the screen
+            if (this.x - this.radius > canvas.width) {
+                this.x = -this.radius;
+            } else if (this.x + this.radius < 0) {
+                this.x = canvas.width + this.radius;
+            }
+            if (this.y - this.radius > canvas.height) {
+                this.y = -this.radius;
+            } else if (this.y + this.radius < 0) {
+                this.y = canvas.height + this.radius;
+            }
+
+            this.draw(ctx);
+        };
+
+        // Initialize particles for hero - now takes canvas and ctx as arguments
+        function initHeroParticles(canvas, ctx, heroNumParticles, heroParticleColor, heroParticleRadius, heroParticleVelocity, heroParticleFadeSpeed) {
+            const particles = []; // Make particles array local to this function
+            for (let i = 0; i < heroNumParticles; i++) {
+                const radius = Math.random() * (heroParticleRadius.max - heroParticleRadius.min) + heroParticleRadius.min;
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const velocityX = (Math.random() - 0.5) * (heroParticleVelocity.max - heroParticleVelocity.min) + heroParticleVelocity.min;
+                const velocityY = (Math.random() - 0.5) * (heroParticleVelocity.max - heroParticleVelocity.min) + heroParticleVelocity.min;
+                const fadeSpeed = Math.random() * (heroParticleFadeSpeed.max - heroParticleFadeSpeed.min) + heroParticleFadeSpeed.min;
+                particles.push(new Particle(x, y, radius, heroParticleColor, velocityX, velocityY, fadeSpeed));
+            }
+            return particles; // Return the particles array
+        }
+
+        // Animation loop for hero - now takes canvas, ctx, and particles as arguments
+        function animateHeroParticles(canvas, ctx, particles, heroLineColor, heroDistanceThreshold) {
+            requestAnimationFrame(() => animateHeroParticles(canvas, ctx, particles, heroLineColor, heroDistanceThreshold)); // Pass arguments recursively
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas for redraw
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(canvas, ctx);
+
+                // Draw lines between close particles
+                for (let j = i; j < particles.length; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    const distance = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+
+                    if (distance < heroDistanceThreshold) { // Connect particles within threshold
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = heroLineColor;
+                        ctx.lineWidth = 0.8; // Reduced line width
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        // Particle Animation for Banners
+        const bannerParticleConfigs = {
+            numParticles: 80, // Fewer particles for banners
+            particleColor: 'rgba(255, 255, 255, 0.6)', // Slightly less opaque
+            lineColor: 'rgba(255, 255, 255, 0.2)', // Fainter lines
+            radius: { min: 0.5, max: 2 }, // Smaller particles
+            velocity: { min: -0.5, max: 0.5 }, // Slower movement
+            fadeSpeed: { min: 0.001, max: 0.005 }, // Slower fade
+            distanceThreshold: 100 // Smaller distance for lines
+        };
+
+        // Store active banner particle animations to stop them on resize/tab change
+        let activeBannerAnimations = new Map(); // Map<canvasElement, animationFrameId>
+
+        function setupBannerParticles(canvasElement) {
+            const ctx = canvasElement.getContext('2d');
+            let particles = [];
+
+            function resizeBannerCanvas() {
+                canvasElement.width = canvasElement.parentElement.clientWidth;
+                canvasElement.height = canvasElement.parentElement.clientHeight;
+            }
+
+            function initBannerParticles() {
+                particles = [];
+                for (let i = 0; i < bannerParticleConfigs.numParticles; i++) {
+                    const radius = Math.random() * (bannerParticleConfigs.radius.max - bannerParticleConfigs.radius.min) + bannerParticleConfigs.radius.min;
+                    const x = Math.random() * canvasElement.width;
+                    const y = Math.random() * canvasElement.height;
+                    const velocityX = (Math.random() - 0.5) * (bannerParticleConfigs.velocity.max - bannerParticleConfigs.velocity.min) + bannerParticleConfigs.velocity.min;
+                    const velocityY = (Math.random() - 0.5) * (bannerParticleConfigs.velocity.max - bannerParticleConfigs.velocity.min) + bannerParticleConfigs.velocity.min;
+                    const fadeSpeed = Math.random() * (bannerParticleConfigs.fadeSpeed.max - bannerParticleConfigs.fadeSpeed.min) + bannerParticleConfigs.fadeSpeed.min;
+                    particles.push(new Particle(x, y, radius, bannerParticleConfigs.particleColor, velocityX, velocityY, fadeSpeed));
+                }
+            }
+
+            function animateBannerParticles() {
+                ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update(canvasElement, ctx);
+
+                    for (let j = i; j < particles.length; j++) {
+                        const p1 = particles[i];
+                        const p2 = particles[j];
+                        const distance = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+
+                        if (distance < bannerParticleConfigs.distanceThreshold) {
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = bannerParticleConfigs.lineColor;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                            ctx.closePath();
+                        }
+                    }
+                }
+                activeBannerAnimations.set(canvasElement, requestAnimationFrame(animateBannerParticles));
+            }
+
+            // Initial setup for this banner's canvas
+            resizeBannerCanvas();
+            initBannerParticles();
+            animateBannerParticles();
+
+            // Add resize listener for this specific canvas
+            window.addEventListener('resize', () => {
+                resizeBannerCanvas();
+                initBannerParticles(); // Re-initialize particles on resize
+            });
+        }
+
+
+        // Initial setup and start animation for Hero
+        window.addEventListener('resize', () => {
+            // Check if heroCanvas is initialized before accessing its properties
+            const heroCanvas = document.getElementById('hero-particles-canvas');
+            if (heroCanvas) { 
+                heroCanvas.width = heroCanvas.parentElement.clientWidth;
+                heroCanvas.height = heroCanvas.parentElement.clientHeight;
+                const heroCtx = heroCanvas.getContext('2d');
+                
+                // Re-initialize particles on resize with the defined constants
+                const heroNumParticles = 100; 
+                const heroParticleColor = 'rgba(255, 255, 255, 0.7)'; 
+                const heroLineColor = 'rgba(255, 255, 255, 0.2)'; 
+                const heroParticleRadius = { min: 0.8, max: 3 }; 
+                const heroParticleVelocity = { min: -0.8, max: 0.8 }; 
+                const heroParticleFadeSpeed = { min: 0.002, max: 0.007 }; 
+                const heroDistanceThreshold = 120; 
+
+                const heroParticlesInstance = initHeroParticles(heroCanvas, heroCtx, heroNumParticles, heroParticleColor, heroParticleRadius, heroParticleVelocity, heroParticleFadeSpeed); 
+                animateHeroParticles(heroCanvas, heroCtx, heroParticlesInstance, heroLineColor, heroDistanceThreshold);
+            }
+        });
+
+        window.onload = () => {
+            // Hero particles
+            const heroCanvas = document.getElementById('hero-particles-canvas'); // Declared with const here
+            const heroCtx = heroCanvas.getContext('2d'); // Declared with const here
+            heroCanvas.width = heroCanvas.parentElement.clientWidth;
+            heroCanvas.height = heroCanvas.parentElement.clientHeight;
+            
+            // Define hero particle constants within this scope
+            const heroNumParticles = 100; // Reduced number of particles for hero
+            const heroParticleColor = 'rgba(255, 255, 255, 0.7)'; // Reduced opacity
+            const heroLineColor = 'rgba(255, 255, 255, 0.2)'; // Reduced opacity
+            const heroParticleRadius = { min: 0.8, max: 3 }; // Reduced max radius
+            const heroParticleVelocity = { min: -0.8, max: 0.8 }; // Reduced velocity
+            const heroParticleFadeSpeed = { min: 0.002, max: 0.007 }; // Reduced fade speed
+            const heroDistanceThreshold = 120; // Reduced distance threshold
+
+            // Initialize and animate hero particles
+            const heroParticlesInstance = initHeroParticles(heroCanvas, heroCtx, heroNumParticles, heroParticleColor, heroParticleRadius, heroParticleVelocity, heroParticleFadeSpeed);
+            animateHeroParticles(heroCanvas, heroCtx, heroParticlesInstance, heroLineColor, heroDistanceThreshold);
+
+            // Render all dynamic content
+            updateButtonStyles(); // Set initial button styles for all toggles
+            renderPricingCards(); // Render initial HRMS cards
+            renderFeatureComparisonTable(); // Render initial feature comparison table
+            renderAddOns(); // Render add-on cards
+            renderBanners(); // Render banners and their particles
+            startBannerSlider(); // Start banner slider
+            renderFAQs(); // Render FAQs
+        };
+    </script>
+</body>
+</html>

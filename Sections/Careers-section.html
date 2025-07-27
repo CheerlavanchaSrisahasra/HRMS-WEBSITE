@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Careers</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f9f9f9;
+        /* padding: 30px; */
+      }
+
+      .careers-section {
+        padding: 20px 30px;
+        background: #ffffff; /* Changed from gradient to white */
+        border-radius: 20px;
+        /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); */
+      }
+
+      .careers-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .careers-header h1 {
+        font-size: 42px;
+        background: #756fe2;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+      }
+
+      .careers-header p {
+        font-size: 23px;
+        color: black;
+      }
+
+      .job-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+      }
+
+      .job-card {
+        width: 30%;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      /* Different gradient left borders */
+      .job-card:nth-child(1) {
+        border-image: linear-gradient(to bottom, #00c6ff, #0072ff) 1;
+      }
+
+      .job-card:nth-child(2) {
+        border-image: linear-gradient(to bottom, #ff6a00, #ee0979) 1;
+      }
+
+      .job-card:nth-child(3) {
+        border-image: linear-gradient(to bottom, #8e2de2, #4a00e0) 1;
+      }
+
+      .job-card:nth-child(4) {
+        border-image: linear-gradient(to bottom, #43cea2, #185a9d) 1;
+      }
+
+      .job-card:nth-child(5) {
+        border-image: linear-gradient(to bottom, #f7971e, #ffd200) 1;
+      }
+
+      .job-card:nth-child(6) {
+        border-image: linear-gradient(to bottom, #f953c6, #b91d73) 1;
+      }
+
+      .job-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .job-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0c6dfd;
+        margin-bottom: 10px;
+      }
+
+      .job-info {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 8px;
+      }
+
+      .apply-btn {
+        margin-top: 12px;
+        background: linear-gradient(to right, #0c6dfd, #00e0ff);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .apply-btn:hover {
+        background: linear-gradient(to right, #094bc4, #00c8e0);
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 30px;
+        width: 90%;
+        max-width: 500px;
+        border-radius: 12px;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-content h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #0c6dfd;
+      }
+
+      .modal-content label {
+        display: block;
+        margin-top: 15px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .modal-content label span {
+        margin-right: 8px;
+        color: #0c6dfd;
+      }
+
+      .modal-content input[type="text"],
+      .modal-content input[type="email"],
+      .modal-content input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      .modal-content button[type="submit"] {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: linear-gradient(to right, #0c6dfd, #00e0ff);
+        border: none;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .modal-content button[type="submit"]:hover {
+        background: linear-gradient(to right, #094bc4, #00c8e0);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+      }
+
+      /* Success Popup */
+      #successMessage {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4bb543;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 2000;
+        font-size: 16px;
+      }
+
+      .job-card {
+        background: var(--light);
+        color: var(--dark);
+      }
+
+      [data-theme="dark"] .job-card {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="careers-section">
+      <div class="careers-header">
+        <h1>Join Our Team</h1>
+        <p>
+          Build your future with a team that's shaping tomorrow's technology
+          today.
+        </p>
+      </div>
+
+      <div class="job-card-container">
+        <div class="job-card">
+          <div class="job-title">Frontend Developer</div>
+          <div class="job-info">Location: Remote</div>
+          <div class="job-info">Experience: 2+ years</div>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+
+        <div class="job-card">
+          <div class="job-title">Backend Developer</div>
+          <div class="job-info">Location: Bangalore</div>
+          <div class="job-info">Experience: 3+ years</div>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+
+        <div class="job-card">
+          <div class="job-title">UI/UX Designer</div>
+          <div class="job-info">Location: Hyderabad</div>
+          <div class="job-info">Experience: 2+ years</div>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+
+        <div class="job-card">
+          <div class="job-title">QA Engineer</div>
+          <div class="job-info">Location: Pune</div>
+          <div class="job-info">Experience: 1+ year</div>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+
+        <div class="job-card">
+          <div class="job-title">DevOps Engineer</div>
+          <div class="job-info">Location: Chennai</div>
+          <div class="job-info">Experience: 3+ years</div>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+
+        <div class="job-card">
+          <div class="job-title">Product Manager</div>
+          <div class="job-info">Location: Remote</div>
+          <div class="job-info">Experience: 4+ years</div>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+      </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal" id="applyModal">
+      <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">❌</button>
+        <h2>Apply Now</h2>
+        <form id="applicationForm">
+          <label
+            ><span><i class="fas fa-user"></i></span> Name</label
+          >
+          <input type="text" required />
+
+          <label
+            ><span><i class="fas fa-envelope"></i></span> Email</label
+          >
+          <input type="email" required />
+
+          <label
+            ><span><i class="fas fa-paperclip"></i></span> Resume</label
+          >
+          <input type="file" accept=".pdf,.doc,.docx" required />
+
+          <button type="submit">Submit Application</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage">✅ Application submitted successfully!</div>
+
+    <script>
+      const modal = document.getElementById("applyModal");
+      const successMessage = document.getElementById("successMessage");
+
+      // Open modal when any "Apply Now" button is clicked
+      document.querySelectorAll(".apply-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          modal.style.display = "flex";
+        });
+      });
+
+      function closeModal() {
+        modal.style.display = "none";
+      }
+
+      // Close modal on outside click
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Form submission
+      document
+        .getElementById("applicationForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          closeModal();
+
+          // Show success message
+          successMessage.style.display = "block";
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 3000);
+
+          this.reset();
+        });
+      // Sync dark mode with parent
+      window.addEventListener("message", function (event) {
+        if (event.data.theme) {
+          document.documentElement.setAttribute("data-theme", event.data.theme);
+        }
+      });
+
+      // Request current theme from parent
+      window.parent.postMessage({ type: "getTheme" }, "*");
+    </script>
+  </body>
+</html>

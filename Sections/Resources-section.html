@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HRMS Astrolite Resources</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #e6ffe6;
+        color: #333;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .resources-section {
+        /* max-width: 1200px; */ /* Removed max-width to increase card width */
+        margin: 0 auto;
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #e6ffe6;
+        border-radius: 12px;
+        /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); */ /* Removed box-shadow as requested for the main container */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .section-title {
+        font-size: 2em;
+        color: #3a941f;
+        margin-bottom: 0px; /* Decreased margin to reduce gap */
+        text-align: center;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .section-subtitle {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.5em;
+        color: #555;
+        text-align: center;
+        margin-top: 5px; /* Added a small top margin for fine-tuning */
+        margin-bottom: 30px;
+        font-weight: 400;
+      }
+
+      .blog-posts-keka {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+        justify-content: center;
+      }
+
+      .blog-card-keka {
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        overflow: hidden;
+        min-height: 280px;
+      }
+
+      .blog-card-keka:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      .blog-card-keka-category-wrapper {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 600;
+        color: #555;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .blog-card-keka-category {
+        color: #333;
+      }
+
+      .blog-card-keka-illustration-wrapper {
+        width: 100%;
+        height: 140px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+
+      .blog-card-keka-illustration {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 8px;
+      }
+
+      .blog-card-keka-description {
+        font-size: 1em;
+        color: #555;
+        margin-bottom: 15px;
+        flex-grow: 1;
+      }
+
+      .blog-card-keka-read-more {
+        display: inline-block;
+        margin-top: auto;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+        font-size: 0.95em;
+      }
+
+      .blog-card-keka-read-more:hover {
+        color: #0056b3;
+        text-decoration: underline;
+      }
+
+      .toggle-button {
+        display: block;
+        margin: 30px auto;
+        padding: 12px 25px;
+        background-color: #3a941f;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .toggle-button:hover {
+        background-color: #2e7a17;
+        transform: translateY(-2px);
+      }
+
+      .toggle-button:active {
+        transform: translateY(0);
+      }
+
+      @media (max-width: 1024px) {
+        .blog-posts-keka {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+
+        .resources-section {
+          padding: 10px;
+        }
+
+        .section-title {
+          font-size: 1.8em;
+        }
+
+        .section-subtitle {
+          font-size: 1.2em; /* Adjusted for smaller screens */
+        }
+
+        .blog-posts-keka {
+          grid-template-columns: 1fr;
+        }
+
+        .blog-card-keka {
+          padding: 15px;
+          min-height: auto;
+        }
+
+        .blog-card-keka-illustration-wrapper {
+          height: 120px;
+        }
+
+        .blog-card-keka-description {
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      const lucideIcons = {
+        FileText: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`,
+      };
+
+      const blogPosts = [
+        {
+          id: 1,
+          category: "Strategic HR",
+          shortDescription:
+            "Enhance employee experience with strategic insights",
+          illustrationUrl:
+            "https://www.questionpro.com/blog/wp-content/uploads/2023/04/5-stages-of-employee-experience.jpg",
+          backgroundColor: "#FFFDE9",
+          link: "#",
+        },
+        {
+          id: 2,
+          category: "Leave and Attendance",
+          shortDescription:
+            "Streamline leave and attendance management with expert strategies",
+          illustrationUrl:
+            "https://kissflow.com/hubfs/thumb-attendance-management-system.webp",
+          backgroundColor: "#FFF2F5",
+          link: "#",
+        },
+        {
+          id: 3,
+          category: "L&D",
+          shortDescription:
+            "Stay informed, continuously learn, and empower your team",
+          illustrationUrl:
+            "https://www.aihr.com/wp-content/uploads/employee-empowerment-example-cover.png",
+          backgroundColor: "#F8ECFE",
+          link: "#",
+        },
+        {
+          id: 4,
+          category: "PSA",
+          shortDescription:
+            "Streamline project management and service operations",
+          illustrationUrl:
+            "https://www.xcitium.com/blog/wp-content/uploads/2024/02/it-project-management-services.png",
+          backgroundColor: "#E6F8E9",
+          link: "#",
+        },
+        {
+          id: 5,
+          category: "Recruitment",
+          shortDescription: "Attract, engage, and hire top talent efficiently",
+          illustrationUrl:
+            "https://www.ismartrecruit.com/upload/blog/main_image/Banner_Designs_(5)1.webp",
+          backgroundColor: "#E8F5FF",
+          link: "#",
+        },
+        {
+          id: 6,
+          category: "Performance",
+          shortDescription:
+            "Drive employee growth with continuous feedback and goals",
+          illustrationUrl:
+            "https://www.aihr.com/wp-content/uploads/continuous-feedback-cover.png",
+          backgroundColor: "#FFF3E0",
+          link: "#",
+        },
+      ];
+
+      function renderBlogCards(container, postsArray) {
+        container.innerHTML = "";
+        postsArray.forEach((post) => {
+          const blogCard = document.createElement("div");
+          blogCard.classList.add("blog-card-keka");
+          blogCard.style.backgroundColor = post.backgroundColor;
+          blogCard.innerHTML = `
+                    <div class="blog-card-keka-category-wrapper">
+                        <span class="blog-card-keka-category">${post.category}</span>
+                    </div>
+                    <div class="blog-card-keka-illustration-wrapper">
+                        <img src="${post.illustrationUrl}" alt="${post.category}" class="blog-card-keka-illustration" onerror="this.onerror=null; this.src='https://placehold.co/100x100/E6F8E9/3a941f?text=Image';" />
+                    </div>
+                    <p class="blog-card-keka-description">${post.shortDescription}</p>
+                    <a href="${post.link}" class="blog-card-keka-read-more">Read more &gt;</a>
+                `;
+          container.appendChild(blogCard);
+        });
+      }
+
+      function renderContent() {
+        const appDiv = document.getElementById("app");
+        appDiv.innerHTML = "";
+
+        const blogsSection = document.createElement("section");
+        blogsSection.classList.add("resources-section");
+        blogsSection.innerHTML = `
+                <h2 class="section-title">Resources </h2>
+                <h3 class="section-subtitle">Latest Blogs</h3>
+                <div class="blog-posts-keka"></div>
+            `;
+        const blogPostsContainer =
+          blogsSection.querySelector(".blog-posts-keka");
+
+        renderBlogCards(blogPostsContainer, blogPosts.slice(0, 4));
+
+        if (blogPosts.length > 4) {
+          const seeMoreBlogsButton = document.createElement("button");
+          seeMoreBlogsButton.classList.add("toggle-button");
+          seeMoreBlogsButton.textContent = "See More Blogs & FAQs";
+          seeMoreBlogsButton.addEventListener("click", () => {
+            window.location.href = "resources.html?section=blogs";
+          });
+          blogsSection.appendChild(seeMoreBlogsButton);
+        }
+        appDiv.appendChild(blogsSection);
+      }
+
+      document.addEventListener("DOMContentLoaded", renderContent);
+    </script>
+  </body>
+</html>

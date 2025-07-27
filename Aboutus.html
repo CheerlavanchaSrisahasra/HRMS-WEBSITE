@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | HR Pro</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #3b82f6; /* Blue */
+        --primary-dark: #2563eb;
+        --primary-light: #93c5fd;
+        --secondary: #f97316; /* Orange */
+        --accent: #f59e0b;
+        --dark: #1e293b;
+        --darker: #0f172a;
+        --light: #f8fafc;
+        --gray: #94a3b8;
+        /* --gradient: linear-gradient(135deg, #3b82f6, #f97316); */
+        --gradient: linear-gradient(135deg, #5b80bfe6, #0c6dfdde);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --border-radius: 8px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #f1f5f9;
+        color: var(--dark);
+        line-height: 1.6;
+      }
+
+      /* Hero Section */
+      .about-hero {
+        background: var(--gradient);
+        color: white;
+        padding: 4rem 5% 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .hero-text h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+
+      .hero-text p {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-image-container {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        height: 350px;
+        transform: perspective(1000px) rotateY(-5deg);
+        transition: var(--transition);
+      }
+
+      .hero-image-container:hover {
+        transform: perspective(1000px) rotateY(0deg) scale(1.02);
+      }
+
+      .hero-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Achievements Section */
+      .achievements-section {
+        padding: 3rem 5%;
+        background: white;
+      }
+
+      .achievements-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .section-header h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--darker);
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-header h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: var(--gradient);
+        border-radius: 2px;
+      }
+
+      .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .achievement-card {
+        background: #fff;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border-top: 4px solid var(--secondary);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .achievement-card:nth-child(1):hover {
+        transform: translateY(-5px) rotate(1deg);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1),
+          0 10px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .achievement-card:nth-child(2):hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1),
+          0 10px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .achievement-card:nth-child(3):hover {
+        transform: translateY(-5px) skewY(-1deg);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1),
+          0 10px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .achievement-card:nth-child(4):hover {
+        transform: translateY(-5px) rotate(-1deg);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1),
+          0 10px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .achievement-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(249, 115, 22, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--secondary);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .achievement-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .achievement-card p {
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+
+      /* Milestones Section */
+      .milestones-section {
+        padding: 3rem 5%;
+        background: var(--primary-light);
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.05),
+          rgba(249, 115, 22, 0.05)
+        );
+      }
+
+      .milestones-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .milestones-timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 0;
+      }
+
+      .milestones-timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 100%;
+        background: var(--primary);
+      }
+
+      .milestone-item {
+        position: relative;
+        margin-bottom: 2rem;
+        width: 100%;
+      }
+
+      .milestone-item:nth-child(odd) {
+        padding-right: calc(50% + 2rem);
+        text-align: right;
+      }
+
+      .milestone-item:nth-child(even) {
+        padding-left: calc(50% + 2rem);
+        text-align: left;
+      }
+
+      .milestone-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        position: relative;
+        transition: var(--transition);
+      }
+
+      .milestone-content:hover {
+        transform: scale(1.03);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .milestone-content::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        transform: rotate(45deg);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .milestone-item:nth-child(odd) .milestone-content::before {
+        right: -10px;
+      }
+
+      .milestone-item:nth-child(even) .milestone-content::before {
+        left: -10px;
+      }
+
+      .milestone-year {
+        position: absolute;
+        top: 20px;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background: var(--secondary);
+        color: white;
+        font-weight: 700;
+        border-radius: 15px;
+        z-index: 2;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .milestone-item:nth-child(odd) .milestone-year {
+        right: calc(50% - 40px);
+      }
+
+      .milestone-item:nth-child(even) .milestone-year {
+        left: calc(50% - 40px);
+      }
+
+      .milestone-content h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--darker);
+      }
+
+      .milestone-content p {
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+
+      /* Team Section */
+      .team-section {
+        padding: 3rem 5%;
+        background: white;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .team-member {
+        background: white;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .team-member:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .team-member::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--gradient);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      .team-member:hover::after {
+        transform: scaleX(1);
+      }
+
+      .member-image {
+        height: 220px;
+        overflow: hidden;
+      }
+
+      .member-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .team-member:hover .member-image img {
+        transform: scale(1.1);
+      }
+
+      .member-info {
+        padding: 1.2rem;
+        text-align: center;
+      }
+
+      .member-info h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+
+      .member-info p {
+        color: var(--gray);
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 0.8rem;
+      }
+
+      .social-links a {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-3px);
+      }
+
+      /* Technology Section */
+      .tech-section {
+        padding: 3rem 5%;
+        background: var(--darker);
+        color: white;
+      }
+
+      .tech-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .tech-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        text-align: center;
+        transition: var(--transition);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tech-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.1),
+          rgba(249, 115, 22, 0.1)
+        );
+        opacity: 0;
+        transition: var(--transition);
+      }
+
+      .tech-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .tech-card:hover::before {
+        opacity: 1;
+      }
+
+      .tech-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-light);
+        transition: var(--transition);
+      }
+
+      .tech-card:hover .tech-icon {
+        transform: rotate(15deg) scale(1.1);
+        color: var(--secondary);
+      }
+
+      .tech-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
+      .tech-card p {
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }
+
+      /* Partnerships Section */
+      .partnerships-section {
+        padding: 3rem 5%;
+        background: white;
+      }
+
+      .partnerships-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .partners-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
+        align-items: center;
+        margin-top: 2rem;
+      }
+
+      .partner-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        padding: 1rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        filter: grayscale(100%);
+        opacity: 0.7;
+      }
+
+      .partner-logo:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.05);
+        box-shadow: var(--shadow);
+      }
+
+      .partner-logo img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        padding: 4rem 5%;
+        background: var(--gradient);
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" opacity="0.05"><circle cx="50" cy="50" r="40" stroke="white" stroke-width="0.5" fill="none"/></svg>');
+        background-size: 80px 80px;
+      }
+
+      .cta-container {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .cta-container h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+
+      .cta-container p {
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .cta-button {
+        background: white;
+        color: var(--primary);
+        padding: 0.7rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0)
+        );
+        opacity: 0;
+        transition: var(--transition);
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .cta-button:hover::after {
+        opacity: 1;
+      }
+
+      .cta-button.secondary {
+        background: transparent;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .cta-button.secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-content {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-text {
+          text-align: center;
+        }
+
+        .hero-image-container {
+          height: 250px;
+          margin-top: 1rem;
+        }
+
+        .milestones-timeline::before {
+          left: 30px;
+        }
+
+        .milestone-item:nth-child(odd),
+        .milestone-item:nth-child(even) {
+          padding-left: 4rem;
+          padding-right: 1rem;
+          text-align: left;
+        }
+
+        .milestone-item:nth-child(odd) .milestone-year,
+        .milestone-item:nth-child(even) .milestone-year {
+          left: 0;
+          right: auto;
+          transform: none;
+        }
+
+        .milestone-item:nth-child(odd) .milestone-content::before,
+        .milestone-item:nth-child(even) .milestone-content::before {
+          left: -10px;
+          right: auto;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Transforming HR Through Technology</h1>
+          <p>
+            HR Pro leads the industry with innovative workforce solutions that
+            combine artificial intelligence, data analytics, and human expertise
+            to create exceptional employee experiences.
+          </p>
+          <div class="cta-buttons">
+            <button class="cta-button">Explore Platform</button>
+            <button class="cta-button secondary">Contact Us</button>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="hero-image-container">
+            <img
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="HR Pro Team"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="achievements-section">
+      <div class="achievements-container">
+        <div class="section-header">
+          <h2>Our Achievements</h2>
+        </div>
+        <div class="achievements-grid">
+          <div class="achievement-card">
+            <div class="achievement-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h3>Industry Recognition</h3>
+            <p>
+              Winner of 2023 Best HR Tech Solution award from HR Executive
+              Magazine
+            </p>
+          </div>
+          <div class="achievement-card">
+            <div class="achievement-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Rapid Growth</h3>
+            <p>
+              300% revenue growth over past 3 years with expansion to 12 new
+              markets
+            </p>
+          </div>
+          <div class="achievement-card">
+            <div class="achievement-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Client Success</h3>
+            <p>
+              98% client retention rate with average 40% efficiency gains
+              reported
+            </p>
+          </div>
+          <div class="achievement-card">
+            <div class="achievement-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Innovation</h3>
+            <p>
+              15+ patented technologies in workforce analytics and automation
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Milestones Section -->
+    <section class="milestones-section">
+      <div class="milestones-container">
+        <div class="section-header">
+          <h2>Our Journey</h2>
+        </div>
+        <div class="milestones-timeline">
+          <div class="milestone-item">
+            <div class="milestone-year">2015</div>
+            <div class="milestone-content">
+              <h3>Company Founded</h3>
+              <p>Launched with vision to revolutionize HR technology</p>
+            </div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-year">2017</div>
+            <div class="milestone-content">
+              <h3>Series A Funding</h3>
+              <p>Secured $10M to expand product development</p>
+            </div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-year">2019</div>
+            <div class="milestone-content">
+              <h3>AI Platform Launch</h3>
+              <p>Introduced industry-first predictive analytics</p>
+            </div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-year">2022</div>
+            <div class="milestone-content">
+              <h3>Global Expansion</h3>
+              <p>Opened offices in Europe and Asia Pacific</p>
+            </div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-year">2023</div>
+            <div class="milestone-content">
+              <h3>Enterprise Adoption</h3>
+              <p>50+ Fortune 500 companies onboarded</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+      <div class="achievements-container">
+        <div class="section-header">
+          <h2>Leadership Team</h2>
+        </div>
+        <div class="team-grid">
+          <div class="team-member">
+            <div class="member-image">
+              <img
+                src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                alt="Sarah Johnson"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Sarah Johnson</h3>
+              <p>CEO & Founder</p>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="team-member">
+            <div class="member-image">
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                alt="Michael Chen"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Michael Chen</h3>
+              <p>Chief Technology Officer</p>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="team-member">
+            <div class="member-image">
+              <img
+                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                alt="Jessica Williams"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Jessica Williams</h3>
+              <p>VP of Product</p>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="team-member">
+            <div class="member-image">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                alt="David Kim"
+              />
+            </div>
+            <div class="member-info">
+              <h3>David Kim</h3>
+              <p>VP of Engineering</p>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="tech-section">
+      <div class="tech-container">
+        <div class="section-header">
+          <h2>Our Technology Edge</h2>
+          <p>Innovative capabilities powering the future of HR</p>
+        </div>
+        <div class="tech-grid">
+          <div class="tech-card">
+            <div class="tech-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3>AI-Powered Analytics</h3>
+            <p>Predictive workforce modeling and intelligent recommendations</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3>Smart Automation</h3>
+            <p>Automated HR workflows with human-in-the-loop validation</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Advanced Security</h3>
+            <p>Enterprise-grade protection with blockchain verification</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobile First</h3>
+            <p>Fully responsive design with native app capabilities</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partnerships Section -->
+    <section class="partnerships-section">
+      <div class="partnerships-container">
+        <div class="section-header">
+          <h2>Trusted By Industry Leaders</h2>
+          <p>
+            We partner with organizations across all sectors to transform their
+            HR operations
+          </p>
+        </div>
+        <div class="partners-grid">
+          <div class="partner-logo">
+            <img
+              src="https://via.placeholder.com/150x60?text=TechCorp"
+              alt="TechCorp"
+            />
+          </div>
+          <div class="partner-logo">
+            <img
+              src="https://via.placeholder.com/150x60?text=GlobalBank"
+              alt="GlobalBank"
+            />
+          </div>
+          <div class="partner-logo">
+            <img
+              src="https://via.placeholder.com/150x60?text=HealthPlus"
+              alt="HealthPlus"
+            />
+          </div>
+          <div class="partner-logo">
+            <img
+              src="https://via.placeholder.com/150x60?text=EduSystems"
+              alt="EduSystems"
+            />
+          </div>
+          <div class="partner-logo">
+            <img
+              src="https://via.placeholder.com/150x60?text=RetailGroup"
+              alt="RetailGroup"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="cta-container">
+        <h2>Ready to Transform Your HR Operations?</h2>
+        <p>
+          Join thousands of organizations using HR Pro to power their workforce
+        </p>
+        <div class="cta-buttons">
+          <button class="cta-button">Request Demo</button>
+          <button class="cta-button secondary">Contact Sales</button>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Simple animation on scroll
+      document.addEventListener("DOMContentLoaded", function () {
+        const animateElements = document.querySelectorAll(
+          ".achievement-card, .milestone-content, .team-member, .tech-card, .partner-logo"
+        );
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        animateElements.forEach((el) => {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(20px)";
+          el.style.transition = "all 0.6s ease";
+          observer.observe(el);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astrolite Expense Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for consistent styling */
+      :root {
+        --primary-green: #38b44a;
+        --light-green: #e6f6e8;
+        --dark-blue: #1a237e;
+        --light-blue: #e0f2f7;
+        --text-color: #333;
+        --light-gray: #f5f5f5;
+        --white: #fff;
+        --border-radius: 8px;
+        --shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        --astrolite-blue: #e0f2f7;
+        --astrolite-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --astrolite-text-blue: #1a237e;
+        --modal-bg: rgba(0, 0, 0, 0.5);
+        --modal-card-bg: #fff;
+        --modal-border-radius: 12px;
+        --modal-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        --calendar-border-color: #e0e0e0;
+        --calendar-day-hover: #f0f0f0;
+        --calendar-day-selected: #d0e8f2;
+        --calendar-current-day: #a0d8ed;
+      }
+
+      /* Basic Reset and Body Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--astrolite-blue);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      section {
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+        background-color: var(--astrolite-blue);
+      }
+
+      section:nth-of-type(odd) {
+        background-color: var(--astrolite-blue);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(--astrolite-text-blue);
+      }
+
+      h2 {
+        font-size: 2.5em;
+      }
+
+      h3 {
+        font-size: 1.8em;
+      }
+
+      p {
+        margin-bottom: 15px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-primary:hover {
+        background-color: #151a5c;
+        border-color: #151a5c;
+      }
+
+      .btn-primary:disabled {
+        background-color: #cccccc;
+        border-color: #cccccc;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .btn-primary:disabled:hover {
+        background-color: #cccccc;
+        border-color: #cccccc;
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--dark-blue);
+        border: 1px solid var(--dark-blue);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-blue);
+      }
+
+      .btn-success {
+        background-color: var(--primary-green);
+        color: var(--white);
+        border: 1px solid var(--primary-green);
+      }
+
+      .btn-success:hover {
+        background-color: #319d40;
+        border-color: #319d40;
+      }
+
+      .flex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 40px;
+      }
+
+      .flex-row > div {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .image-mockup {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        background-color: transparent;
+        padding: 0;
+      }
+
+      .image-mockup img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: var(--border-radius);
+      }
+
+      .section-hero .image-mockup {
+        box-shadow: none;
+      }
+
+      .content-card {
+        background-color: var(--white);
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--astrolite-card-shadow);
+      }
+
+      .section-hero {
+        background-color: var(--astrolite-blue);
+        text-align: center;
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+
+      .section-hero .flex-row {
+        justify-content: center;
+        align-items: flex-start;
+        gap: 60px;
+      }
+
+      .section-hero .content {
+        flex: 1.2;
+        max-width: 550px;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+
+      .section-hero .content h2 {
+        text-align: left;
+        font-size: 3em;
+        margin-bottom: 15px;
+      }
+
+      .section-hero .content p {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .section-hero .image-mockup {
+        flex: 1;
+        min-height: 450px;
+        box-shadow: none;
+        background-color: transparent;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .section-hero .image-mockup img {
+        width: 100%;
+        height: 450px;
+        object-fit: contain;
+      }
+
+      .section-hero .buttons {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .section-dashboard .content {
+        flex: 1.5;
+        padding-right: 40px;
+      }
+
+      .section-dashboard .image-mockup {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .section-dashboard .image-mockup img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+      }
+
+      .feature-list {
+        list-style: none;
+        margin-top: 30px;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer;
+      }
+
+      .feature-list li::before {
+        content: "+";
+        color: var(--primary-green);
+        font-weight: 700;
+        margin-right: 10px;
+        font-size: 1.2em;
+      }
+
+      .feature-list li.highlight::before {
+        content: "–";
+      }
+
+      .feature-description {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        margin-left: 20px;
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .feature-description.show {
+        display: block;
+        max-height: 100px;
+        opacity: 1;
+      }
+
+      .section-hr-management .content {
+        flex: 1.5;
+        padding-left: 40px;
+        order: 2;
+      }
+
+      .section-hr-management .image-mockup {
+        flex: 1;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .section-hr-management .image-mockup img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+      }
+
+      .section-why-choose {
+        text-align: center;
+      }
+
+      .section-why-choose h2 {
+        margin-bottom: 50px;
+      }
+
+      .reason-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .reason-card {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--astrolite-card-shadow);
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        max-width: 280px;
+        transition: transform 0.3s ease;
+      }
+
+      .reason-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .reason-card img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+
+      .reason-card h3 {
+        font-size: 1.4em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .reason-card p {
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      @media (max-width: 992px) {
+        .flex-row {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .flex-row > div {
+          min-width: unset;
+          width: 100%;
+        }
+
+        .section-dashboard .content,
+        .section-hr-management .content {
+          padding-right: 0;
+          padding-left: 0;
+          order: unset;
+        }
+
+        .section-dashboard .image-mockup,
+        .section-hr-management .image-mockup {
+          margin-top: 40px;
+        }
+
+        .reason-card {
+          max-width: 45%;
+        }
+
+        .content-card {
+          padding: 30px;
+        }
+
+        .section-hero .content {
+          padding: 0;
+          text-align: center;
+        }
+
+        .section-hero .content h2 {
+          text-align: center;
+          font-size: 2.5em;
+        }
+
+        .section-hero .buttons {
+          justify-content: center;
+        }
+
+        .section-hero .image-mockup {
+          min-height: 300px;
+        }
+
+        .section-hero .image-mockup img,
+        .section-dashboard .image-mockup img,
+        .section-hr-management .image-mockup img {
+          height: 300px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 2em;
+        }
+
+        h3 {
+          font-size: 1.5em;
+        }
+
+        section {
+          padding: 60px 0;
+        }
+
+        .reason-cards {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .reason-card {
+          max-width: 90%;
+        }
+
+        .btn {
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          width: 100%;
+        }
+      }
+
+      .consultation-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .consultation-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .consultation-modal-content {
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        display: flex;
+        max-width: 900px;
+        width: 90%;
+        overflow: hidden;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+      }
+
+      .consultation-modal-overlay.show .consultation-modal-content {
+        transform: translateY(0);
+      }
+
+      .consultation-modal-left {
+        flex: 1;
+        padding: 40px;
+        background-color: var(--white);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 350px;
+      }
+
+      .consultation-modal-right {
+        flex: 1.2;
+        padding: 40px;
+        background-color: var(--white);
+        border-left: 1px solid var(--calendar-border-color);
+        min-width: 400px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .consultation-step {
+        display: none;
+        flex-grow: 1;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .consultation-step.active {
+        display: flex;
+      }
+
+      .consultation-modal-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .consultation-modal-header img {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+      }
+
+      .consultation-modal-header h3 {
+        font-size: 1.6em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 0;
+      }
+
+      .consultation-info h4 {
+        font-size: 1.8em;
+        color: var(--astrolite-text-blue);
+        margin-bottom: 15px;
+      }
+
+      .consultation-info p {
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 0.95em;
+      }
+
+      .consultation-info .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #555;
+      }
+
+      .consultation-info .detail-item svg {
+        margin-right: 10px;
+        color: var(--primary-green);
+        font-size: 1.2em;
+      }
+
+      .consultation-info .description {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+      }
+
+      .consultation-info .description strong {
+        color: var(--astrolite-text-blue);
+      }
+
+      .consultation-links {
+        margin-top: 30px;
+        font-size: 0.85em;
+      }
+
+      .consultation-links a {
+        color: var(--dark-blue);
+        text-decoration: none;
+        margin-right: 20px;
+        transition: color 0.2s ease;
+      }
+
+      .consultation-links a:hover {
+        color: var(--primary-green);
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        color: var(--astrolite-text-blue);
+        font-size: 1.2em;
+        font-weight: 600;
+      }
+
+      .calendar-header button {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #888;
+        padding: 5px;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+      }
+
+      .calendar-header button:hover {
+        background-color: var(--calendar-day-hover);
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+      }
+
+      .calendar-day-name {
+        font-weight: 600;
+        color: #888;
+        padding: 10px 0;
+        font-size: 0.9em;
+      }
+
+      .calendar-day {
+        padding: 12px 0;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        font-size: 0.95em;
+        color: #444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .calendar-day:hover:not(.empty):not(.selected):not(.current-day) {
+        background-color: var(--calendar-day-hover);
+      }
+
+      .calendar-day.empty {
+        cursor: not-allowed;
+        opacity: 0.5;
+        color: #999;
+      }
+
+      .calendar-day.selected {
+        background-color: var(--calendar-day-selected);
+        color: var(--dark-blue);
+        font-weight: 600;
+      }
+
+      .calendar-day.current-day {
+        background-color: var(--calendar-current-day);
+        color: var(--white);
+        font-weight: 600;
+      }
+
+      .calendar-day.current-day.selected {
+        background-color: var(--dark-blue);
+        color: var(--white);
+      }
+
+      .calendar-day .dot {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        background-color: var(--primary-green);
+        border-radius: 50%;
+      }
+
+      .timezone-selector {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        font-size: 0.9em;
+        color: #555;
+        border-top: 1px solid var(--calendar-border-color);
+        padding-top: 20px;
+      }
+
+      .timezone-selector svg {
+        margin-right: 10px;
+        color: #888;
+      }
+
+      .close-modal-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2em;
+        color: #888;
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s ease;
+      }
+
+      .close-modal-btn:hover {
+        color: var(--dark-blue);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--astrolite-text-blue);
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95em;
+      }
+
+      .form-group input[type="text"]:focus,
+      .form-group input[type="email"]:focus,
+      .form-group input[type="number"]:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 2px rgba(56, 180, 74, 0.2);
+      }
+
+      #nextStepBtn,
+      #confirmBookingBtn,
+      #lookupTermBtn {
+        width: 100%;
+        padding: 15px;
+        margin-top: auto;
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      @media (max-width: 850px) {
+        .consultation-modal-content {
+          flex-direction: column;
+          width: 95%;
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+
+        .consultation-modal-left,
+        .consultation-modal-right {
+          min-width: unset;
+          width: 100%;
+          padding: 30px;
+        }
+
+        .consultation-modal-right {
+          border-left: none;
+          border-top: 1px solid var(--calendar-border-color);
+        }
+
+        .close-modal-btn {
+          top: 10px;
+          right: 10px;
+          font-size: 1.8em;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .consultation-modal-left,
+        .consultation-modal-right {
+          padding: 20px;
+        }
+
+        .consultation-modal-header h3 {
+          font-size: 1.4em;
+        }
+
+        .consultation-info h4 {
+          font-size: 1.5em;
+        }
+
+        .calendar-day {
+          padding: 8px 0;
+          font-size: 0.85em;
+        }
+
+        .calendar-day-name {
+          font-size: 0.8em;
+        }
+      }
+
+      .success-message {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary-green);
+        color: var(--white);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+      }
+
+      .success-message.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .success-message svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .payroll-glossary-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .payroll-glossary-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .payroll-glossary-modal-content {
+        background-color: var(--modal-card-bg);
+        border-radius: var(--modal-border-radius);
+        box-shadow: var(--modal-shadow);
+        padding: 40px;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .payroll-glossary-modal-overlay.show .payroll-glossary-modal-content {
+        transform: translateY(0);
+      }
+
+      .payroll-glossary-modal-content h3 {
+        color: var(--astrolite-text-blue);
+        margin-bottom: 10px;
+      }
+
+      .payroll-glossary-modal-content .form-group input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95em;
+      }
+
+      .payroll-glossary-modal-content .btn-lookup {
+        background-color: var(--dark-blue);
+        color: var(--white);
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .payroll-glossary-modal-content .btn-lookup:hover {
+        background-color: #151a5c;
+      }
+
+      .payroll-glossary-modal-content .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid var(--primary-green);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
+
+      .payroll-glossary-modal-content .loading-spinner.show {
+        display: block;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .glossary-output {
+        background-color: var(--light-gray);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        min-height: 50px;
+        font-size: 0.95em;
+        color: #444;
+        text-align: left;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .glossary-output.empty-state {
+        color: #888;
+        font-style: italic;
+        font-weight: normal;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section: Expense Management with Automated Tracking and Approval -->
+    <section class="section-hero">
+      <div class="container flex-row">
+        <div class="content">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Expense Management System
+          </p>
+          <h2>Streamline Expense Tracking, Approval, and Reimbursement</h2>
+          <p>
+            Simplify expense reporting, automate approvals, and ensure timely
+            reimbursements with Astrolite's comprehensive expense management
+            solution. Gain real-time visibility into company spending.
+          </p>
+          <div class="buttons">
+            <a href="#" id="bookConsultationBtn" class="btn btn-primary"
+              >Request an Expense Demo</a
+            >
+          </div>
+        </div>
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2024/07/Expense-Management-software-banner-1024x783.webp"
+            alt="Expense Dashboard Mockup"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Automated Expense Reporting -->
+    <section class="section-hr-management">
+      <div class="container flex-row">
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2024/07/Robust-expense-management-software.webp"
+            alt="Mobile Expense Tracking"
+          />
+        </div>
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Expense Automation
+          </p>
+          <h2>Automated Expense Reporting and Policy Enforcement</h2>
+          <p>
+            Capture expenses effortlessly with mobile apps, automate report
+            creation, and enforce company policies automatically. Reduce errors
+            and save time with intelligent expense management.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Mobile Expense Capture
+              <div class="feature-description">
+                Employees can snap photos of receipts and submit expenses
+                on-the-go with our mobile app. Automatic data extraction
+                eliminates manual entry.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Smart Policy Enforcement
+              <div class="feature-description">
+                Configure your expense policies once and let the system
+                automatically flag violations for approvers, ensuring compliance
+                without manual checks.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Automated Report Generation
+              <div class="feature-description">
+                Expenses are automatically categorized and compiled into
+                comprehensive reports, ready for approval with just a few
+                clicks.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Approval Workflows & Analytics -->
+    <section class="section-dashboard">
+      <div class="container flex-row">
+        <div class="content content-card">
+          <p
+            style="
+              color: var(--primary-green);
+              font-weight: 600;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            "
+          >
+            Approval & Analytics
+          </p>
+          <h2>Custom Approval Workflows and Spending Analytics</h2>
+          <p>
+            Configure multi-level approval chains tailored to your organization
+            and gain powerful insights into spending patterns with real-time
+            analytics and reporting.
+          </p>
+          <ul class="feature-list">
+            <li class="toggle-feature">
+              Flexible Approval Hierarchies
+              <div class="feature-description">
+                Set up approval workflows based on amount, department, or
+                expense type. Approvers receive notifications and can review on
+                any device.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Real-time Budget Monitoring
+              <div class="feature-description">
+                Track spending against budgets in real-time with visual
+                dashboards. Get alerts when departments or projects approach
+                budget limits.
+              </div>
+            </li>
+            <li class="toggle-feature">
+              Advanced Analytics
+              <div class="feature-description">
+                Identify spending trends, policy violations, and cost-saving
+                opportunities with powerful analytics and customizable reports.
+              </div>
+            </li>
+          </ul>
+          <div class="buttons" style="margin-top: 30px">
+            <button id="openPayrollGlossaryBtn" class="btn btn-secondary">
+              Expense Terminology Lookup 📚
+            </button>
+          </div>
+        </div>
+        <div class="image-mockup">
+          <img
+            src="https://www.pockethrms.com/wp-content/uploads/2024/07/Streamlined-Expense-Management-Software-1024x807.webp"
+            alt="Expense Analytics Dashboard"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Why choose Astrolite for Expenses -->
+    <section class="section-why-choose">
+      <div class="container">
+        <h2>Key Advantages of Astrolite Expense Management</h2>
+        <div class="reason-cards">
+          <div class="reason-card">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
+              alt="Mobile Capture Icon"
+            />
+            <h3>Mobile Receipt Capture</h3>
+            <p>
+              Employees can submit expenses anytime, anywhere with our intuitive
+              mobile app that extracts data from receipt photos automatically.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1570/1570887.png"
+              alt="Policy Compliance Icon"
+            />
+            <h3>Policy Compliance</h3>
+            <p>
+              Automatically enforce spending policies and flag violations before
+              submission, reducing reimbursement disputes.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3594/3594461.png"
+              alt="Integration Icon"
+            />
+            <h3>Seamless Integration</h3>
+            <p>
+              Connect with accounting software, corporate cards, and travel
+              booking tools for end-to-end expense automation.
+            </p>
+          </div>
+          <div class="reason-card">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1598/1598160.png"
+              alt="Analytics Icon"
+            />
+            <h3>Powerful Analytics</h3>
+            <p>
+              Gain actionable insights into company spending with customizable
+              dashboards and reports.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultation Modal -->
+    <div id="consultationModal" class="consultation-modal-overlay">
+      <div class="consultation-modal-content">
+        <button class="close-modal-btn" aria-label="Close Modal">
+          &times;
+        </button>
+
+        <div class="consultation-modal-left">
+          <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+            Personalized Expense Solution Demo
+          </h3>
+          <div>
+            <div class="consultation-info">
+              <div class="detail-item">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-clock"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span>30 min</span>
+              </div>
+              <div class="detail-item">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-phone"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2H7c.45 0 .9.06 1.3.18a2 2 0 0 1 1.62 1.62 16.07 16.07 0 0 0 4.38 4.38 2 2 0 0 1 1.62 1.62A16.07 16.07 0 0 0 21.82 15.7a2 2 0 0 1 .18 1.3z"
+                  />
+                </svg>
+                <span>Phone call</span>
+              </div>
+              <p class="description">
+                Discover how Astrolite's
+                <strong>expense management solution</strong> can streamline your
+                expense reporting, improve policy compliance, and provide better
+                visibility into company spending. Schedule a brief demo.
+              </p>
+            </div>
+          </div>
+          <div class="consultation-links">
+            <a href="#">Cookie settings</a>
+            <a href="#">Report abuse</a>
+          </div>
+        </div>
+
+        <div class="consultation-modal-right">
+          <!-- Step 1: Enter Details -->
+          <div id="detailsStep" class="consultation-step active">
+            <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+              Enter Your Details
+            </h3>
+            <div class="form-group">
+              <label for="clientName">Full Name</label>
+              <input
+                type="text"
+                id="clientName"
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="clientEmail">Email Address</label>
+              <input
+                type="email"
+                id="clientEmail"
+                placeholder="your.email@example.com"
+              />
+            </div>
+            <button id="nextStepBtn" class="btn btn-primary" disabled>
+              Next
+            </button>
+          </div>
+
+          <!-- Step 2: Select Date & Time -->
+          <div id="calendarStep" class="consultation-step">
+            <h3 style="color: var(--astrolite-text-blue); margin-bottom: 25px">
+              Select a Date & Time
+            </h3>
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <button id="prevMonthBtn">&lt;</button>
+                <span id="currentMonthYear"></span>
+                <button id="nextMonthBtn">&gt;</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-day-name">MON</div>
+                <div class="calendar-day-name">TUE</div>
+                <div class="calendar-day-name">WED</div>
+                <div class="calendar-day-name">THU</div>
+                <div class="calendar-day-name">FRI</div>
+                <div class="calendar-day-name">SAT</div>
+                <div class="calendar-day-name">SUN</div>
+                <!-- Days will be populated by JavaScript -->
+              </div>
+            </div>
+            <div class="timezone-selector">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-globe"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                <path d="M2 12h20" />
+              </svg>
+              <span>Time zone</span>
+              <span style="margin-left: auto; font-weight: 500"
+                >India Standard Time (4:05pm)</span
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-chevron-down"
+                style="margin-left: 5px; color: #888"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+            <button id="confirmBookingBtn" class="btn btn-primary" disabled>
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expense Terminology Lookup Modal -->
+    <div id="payrollGlossaryModal" class="payroll-glossary-modal-overlay">
+      <div class="payroll-glossary-modal-content">
+        <button
+          class="close-modal-btn"
+          aria-label="Close Modal"
+          id="closePayrollGlossaryModalBtn"
+        >
+          &times;
+        </button>
+        <h3>Expense Terminology Lookup</h3>
+        <p>
+          Enter an expense management term (e.g., "Per Diem", "T&E", "Expense
+          Report") to get its definition.
+        </p>
+
+        <div class="form-group">
+          <label for="payrollTermInput">Term</label>
+          <input
+            type="text"
+            id="payrollTermInput"
+            placeholder="Enter an expense term"
+          />
+        </div>
+
+        <button id="lookupTermBtn" class="btn-lookup">Lookup Term</button>
+        <div id="glossaryOutput" class="glossary-output empty-state">
+          Definition will appear here.
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message Container -->
+    <div id="successMessage" class="success-message">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-check-circle"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-8.1" />
+        <path d="m3 12 2 2 7-7" />
+      </svg>
+      <span>Booked a demo successfully!</span>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const bookConsultationBtn = document.getElementById(
+          "bookConsultationBtn"
+        );
+        const consultationModal = document.getElementById("consultationModal");
+        const closeModalBtn = document.querySelector(".close-modal-btn");
+        const calendarGrid = document.querySelector(".calendar-grid");
+        const currentMonthYearSpan =
+          document.getElementById("currentMonthYear");
+        const prevMonthBtn = document.getElementById("prevMonthBtn");
+        const nextMonthBtn = document.getElementById("nextMonthBtn");
+        const successMessage = document.getElementById("successMessage");
+        const toggleFeatureItems = document.querySelectorAll(".toggle-feature");
+
+        // Elements for Expense Terminology Lookup feature
+        const openPayrollGlossaryBtn = document.getElementById(
+          "openPayrollGlossaryBtn"
+        );
+        const payrollGlossaryModal = document.getElementById(
+          "payrollGlossaryModal"
+        );
+        const closePayrollGlossaryModalBtn = document.getElementById(
+          "closePayrollGlossaryModalBtn"
+        );
+        const payrollTermInput = document.getElementById("payrollTermInput");
+        const lookupTermBtn = document.getElementById("lookupTermBtn");
+        const glossaryOutput = document.getElementById("glossaryOutput");
+
+        // New elements for consultation booking steps
+        const detailsStep = document.getElementById("detailsStep");
+        const calendarStep = document.getElementById("calendarStep");
+        const clientNameInput = document.getElementById("clientName");
+        const clientEmailInput = document.getElementById("clientEmail");
+        const nextStepBtn = document.getElementById("nextStepBtn");
+        const confirmBookingBtn = document.getElementById("confirmBookingBtn");
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        const today = new Date();
+        let selectedDate = null;
+
+        // Function to validate the current step of the booking form
+        function validateCurrentStep() {
+          if (detailsStep.classList.contains("active")) {
+            const nameFilled = clientNameInput.value.trim() !== "";
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+              clientEmailInput.value.trim()
+            );
+            nextStepBtn.disabled = !(nameFilled && emailValid);
+          } else if (calendarStep.classList.contains("active")) {
+            confirmBookingBtn.disabled = selectedDate === null;
+          }
+        }
+
+        // Function to render the calendar days
+        function renderCalendar(month, year) {
+          calendarGrid.innerHTML = `
+                    <div class="calendar-day-name">MON</div>
+                    <div class="calendar-day-name">TUE</div>
+                    <div class="calendar-day-name">WED</div>
+                    <div class="calendar-day-name">THU</div>
+                    <div class="calendar-day-name">FRI</div>
+                    <div class="calendar-day-name">SAT</div>
+                    <div class="calendar-day-name">SUN</div>
+                `;
+
+          const firstDayOfMonth = new Date(year, month, 1);
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+          const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
+
+          let startDayOfWeek = firstDayOfMonth.getDay();
+          if (startDayOfWeek === 0) startDayOfWeek = 7;
+          startDayOfWeek--;
+
+          currentMonthYearSpan.textContent = new Date(
+            year,
+            month
+          ).toLocaleString("en-US", { month: "long", year: "numeric" });
+
+          for (let i = startDayOfWeek - 1; i >= 0; i--) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day", "empty");
+            dayDiv.textContent = lastDayOfPrevMonth - i;
+            calendarGrid.appendChild(dayDiv);
+          }
+
+          for (let i = 1; i <= daysInMonth; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day");
+            dayDiv.textContent = i;
+            dayDiv.dataset.date = `${year}-${month + 1}-${i}`;
+
+            const date = new Date(year, month, i);
+
+            if (
+              date <
+              new Date(today.getFullYear(), today.getMonth(), today.getDate())
+            ) {
+              dayDiv.classList.add("empty");
+              dayDiv.style.cursor = "not-allowed";
+              dayDiv.style.opacity = "0.5";
+            } else {
+              if (
+                date.getDate() === today.getDate() &&
+                date.getMonth() === today.getMonth() &&
+                date.getFullYear() === today.getFullYear()
+              ) {
+                dayDiv.classList.add("current-day");
+              }
+
+              if (
+                selectedDate &&
+                date.getDate() === selectedDate.getDate() &&
+                date.getMonth() === selectedDate.getMonth() &&
+                date.getFullYear() === selectedDate.getFullYear()
+              ) {
+                dayDiv.classList.add("selected");
+              }
+
+              dayDiv.addEventListener("click", () => {
+                if (!dayDiv.classList.contains("empty")) {
+                  const previouslySelected = calendarGrid.querySelector(
+                    ".calendar-day.selected"
+                  );
+                  if (previouslySelected) {
+                    previouslySelected.classList.remove("selected");
+                  }
+                  dayDiv.classList.add("selected");
+                  selectedDate = date;
+                  console.log("Selected date:", selectedDate.toDateString());
+                  validateCurrentStep();
+                }
+              });
+            }
+            calendarGrid.appendChild(dayDiv);
+          }
+
+          const totalCells = calendarGrid.children.length - 7;
+          const remainingCells = 42 - totalCells;
+
+          for (let i = 1; i <= remainingCells; i++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.classList.add("calendar-day", "empty");
+            dayDiv.textContent = i;
+            calendarGrid.appendChild(dayDiv);
+          }
+        }
+
+        // Function to show the success message
+        function showSuccessMessage() {
+          successMessage.classList.add("show");
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 3000);
+        }
+
+        // Initial render
+        renderCalendar(currentMonth, currentYear);
+        validateCurrentStep();
+
+        // Event listeners for month navigation
+        prevMonthBtn.addEventListener("click", () => {
+          currentMonth--;
+          if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+          }
+          selectedDate = null;
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep();
+        });
+
+        nextMonthBtn.addEventListener("click", () => {
+          currentMonth++;
+          if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+          }
+          selectedDate = null;
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep();
+        });
+
+        // Show consultation modal
+        bookConsultationBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          consultationModal.classList.add("show");
+          detailsStep.classList.add("active");
+          calendarStep.classList.remove("active");
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep();
+        });
+
+        // Hide consultation modal
+        closeModalBtn.addEventListener("click", () => {
+          consultationModal.classList.remove("show");
+          clientNameInput.value = "";
+          clientEmailInput.value = "";
+          selectedDate = null;
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep();
+        });
+
+        // Hide consultation modal if clicking outside the content
+        consultationModal.addEventListener("click", (e) => {
+          if (e.target === consultationModal) {
+            consultationModal.classList.remove("show");
+            clientNameInput.value = "";
+            clientEmailInput.value = "";
+            selectedDate = null;
+            renderCalendar(currentMonth, currentYear);
+            validateCurrentStep();
+          }
+        });
+
+        // Event listeners for input fields to trigger validation
+        clientNameInput.addEventListener("input", validateCurrentStep);
+        clientEmailInput.addEventListener("input", validateCurrentStep);
+
+        // Logic for "Next" button
+        nextStepBtn.addEventListener("click", () => {
+          if (!nextStepBtn.disabled) {
+            detailsStep.classList.remove("active");
+            calendarStep.classList.add("active");
+            validateCurrentStep();
+          }
+        });
+
+        // Logic for "Confirm Booking" button
+        confirmBookingBtn.addEventListener("click", () => {
+          const clientName = clientNameInput.value.trim();
+          const clientEmail = clientEmailInput.value.trim();
+
+          console.log("Booking details:", {
+            name: clientName,
+            email: clientEmail,
+            date: selectedDate.toDateString(),
+          });
+
+          showSuccessMessage();
+          consultationModal.classList.remove("show");
+          clientNameInput.value = "";
+          clientEmailInput.value = "";
+          selectedDate = null;
+          renderCalendar(currentMonth, currentYear);
+          validateCurrentStep();
+        });
+
+        // Toggle functionality for feature list items
+        toggleFeatureItems.forEach((item) => {
+          item.addEventListener("click", (event) => {
+            if (event.target.classList.contains("feature-description")) {
+              return;
+            }
+            const description = item.querySelector(".feature-description");
+            if (description) {
+              description.classList.toggle("show");
+            }
+          });
+        });
+
+        // --- Expense Terminology Lookup Feature ---
+
+        // Define a simple expense glossary
+        const expenseGlossary = {
+          "per diem":
+            "A daily allowance given to employees to cover business travel expenses like meals and incidental costs. Rates often vary by location.",
+          "t&e":
+            "Travel & Entertainment expenses. Costs incurred by employees while traveling for business or entertaining clients.",
+          "expense report":
+            "A form or digital submission where employees document and request reimbursement for business expenses they've paid personally.",
+          "corporate card":
+            "A company-issued credit card used by employees for business expenses, helping centralize spending and simplify reconciliation.",
+          "receipt capture":
+            "The process of collecting and storing receipts, often digitally via mobile apps that can extract key details automatically.",
+          "mileage reimbursement":
+            "Payment to employees for using their personal vehicles for business purposes, typically calculated at a standard rate per mile/km.",
+          "approval workflow":
+            "The predefined process that expense reports must follow, often involving multiple approvers based on amount or department.",
+          "expense policy":
+            "A company's rules about what expenses are reimbursable, spending limits, and documentation requirements.",
+          "cost center":
+            "A department or project to which expenses are allocated for accounting and budgeting purposes.",
+          "audit trail":
+            "A complete record of all actions taken on an expense report, useful for compliance and investigations.",
+          reimbursement:
+            "Payment made to employees to cover out-of-pocket business expenses, typically processed through payroll.",
+          advance:
+            "Funds provided to employees before expected expenses, reducing their need to use personal funds for business purposes.",
+          concur:
+            "A popular expense management software platform (often used generically to refer to expense systems).",
+          "non-reimbursable":
+            "Expenses that don't qualify for repayment under company policy, often personal in nature.",
+          "billable expenses":
+            "Costs that can be passed on to clients as part of service agreements, common in consulting and professional services.",
+        };
+
+        // Function to lookup an expense term
+        function lookupExpenseTerm() {
+          const term = payrollTermInput.value.trim().toLowerCase();
+          if (term === "") {
+            glossaryOutput.textContent = "Please enter a term to look up.";
+            glossaryOutput.classList.add("empty-state");
+            return;
+          }
+
+          const definition = expenseGlossary[term];
+
+          if (definition) {
+            glossaryOutput.textContent = definition;
+            glossaryOutput.classList.remove("empty-state");
+          } else {
+            glossaryOutput.textContent = `Sorry, no definition found for "${term}". Please try another term.`;
+            glossaryOutput.classList.add("empty-state");
+          }
+        }
+
+        // Show Expense Glossary Modal
+        openPayrollGlossaryBtn.addEventListener("click", () => {
+          payrollGlossaryModal.classList.add("show");
+          payrollTermInput.value = "";
+          glossaryOutput.textContent = "Definition will appear here.";
+          glossaryOutput.classList.add("empty-state");
+        });
+
+        // Hide Expense Glossary Modal
+        closePayrollGlossaryModalBtn.addEventListener("click", () => {
+          payrollGlossaryModal.classList.remove("show");
+        });
+
+        // Hide Expense Glossary Modal if clicking outside the content
+        payrollGlossaryModal.addEventListener("click", (e) => {
+          if (e.target === payrollGlossaryModal) {
+            payrollGlossaryModal.classList.remove("show");
+          }
+        });
+
+        // Event listener for looking up term
+        lookupTermBtn.addEventListener("click", lookupExpenseTerm);
+
+        // Optional: Lookup on Enter key press in the input field
+        payrollTermInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            lookupExpenseTerm();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
