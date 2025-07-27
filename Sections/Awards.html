@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>#1 HR Software Award</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
     <style>
       * {
         margin: 0;
@@ -15,77 +12,118 @@
         font-family: "Segoe UI", sans-serif;
       }
 
-      body {
-        background-color: #fff;
-        padding: 40px;
-      }
-
-      .award-section {
+      .awards-container {
+        max-width: 615px;
+        margin: 0 auto;
+        padding: 20px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 40px;
-        flex-wrap: wrap;
+        gap: 20px; /* Reduced gap */
       }
 
-      .left-content {
+      .award-text {
         flex: 1;
-        max-width: 45%;
+        min-width: 250px;
       }
 
-      .left-content h2 {
-        font-size: 2rem;
+      .award-text h2 {
+        font-size: 1.8rem;
         color: #111;
-        margin-bottom: 20px;
+        margin-bottom: 10px; /* Reduced margin */
+        line-height: 1.3;
       }
 
-      .left-content h2 span {
+      .award-text h2 span {
         color: #ef4d91;
         font-weight: bold;
       }
 
       .trophy-image {
         width: 100%;
-        max-width: 400px;
+        max-width: 220px; /* Smaller image */
+        display: block;
       }
 
-      .right-content {
+      .badges-container {
         flex: 1;
-        max-width: 50%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Reduced gap */
       }
 
-      .badge-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+      .badge-row {
+        display: flex;
+        justify-content: flex-start; /* Align badges to the left */
+        gap: 10px; /* Reduced gap */
       }
 
-      .badge-grid img {
-        width: 100%;
-        max-width: 120px;
+      .badge {
+        width: 100px; /* Smaller badges */
+        height: 100px;
         object-fit: contain;
+        transition: transform 0.3s ease;
+      }
+
+      .badge:hover {
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
+        .awards-container {
+          flex-direction: column;
+          text-align: center;
+          gap: 15px; /* Adjusted for mobile */
+        }
+
+        .trophy-image {
+          margin: 0 auto;
+          max-width: 180px;
+        }
+
+        .badge-row {
+          justify-content: center;
+        }
+
+        .badge {
+          width: 90px;
+          height: 90px;
+        }
       }
     </style>
-    <section class="award-section">
-      <div class="left-content">
-        <h2>Awarded as India’s <br /><span>#1 HR Software.</span></h2>
+  </head>
+  <body>
+    <div class="awards-container">
+      <div class="award-text">
+        <h2>Awarded as India's <span>#1 HR Software</span></h2>
         <img
           src="../Assests/awards.png"
-          alt="Man holding trophy"
+          alt="Trophy award"
           class="trophy-image"
         />
       </div>
 
-      <div class="right-content">
-        <div class="badge-grid">
-          <img src="../Assests/Quality choice.png" alt="Quality Choice" />
-          <img src="../Assests/Leader.png" alt="Leader 2024" />
-          <img src="../Assests/Front Runner.png" alt="Front Runners 2023" />
-          <img src="../Assests/Capterra.png" alt="Capterra Shortlist 2023" />
-          <!-- <img src="" alt="Top 50 HR Products 2024" />
-          <img src="assets/badge6.png" alt="High Performer Winter 2023" /> -->
+      <div class="badges-container">
+        <div class="badge-row">
+          <img
+            src="../Assests/Quality choice.png"
+            alt="Quality Choice"
+            class="badge"
+          />
+          <img src="../Assests/Leader.png" alt="Leader 2024" class="badge" />
+        </div>
+        <div class="badge-row">
+          <img
+            src="../Assests/Front Runner.png"
+            alt="Front Runners 2023"
+            class="badge"
+          />
+          <img
+            src="../Assests/Capterra.png"
+            alt="Capterra Shortlist 2023"
+            class="badge"
+          />
         </div>
       </div>
-    </section>
+    </div>
   </body>
 </html>

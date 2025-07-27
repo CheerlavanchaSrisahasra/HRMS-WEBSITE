@@ -276,6 +276,101 @@
         text-align: center;
       }
 
+      /* Modal specific styles */
+      .video-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      }
+
+      .video-modal.open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .video-modal-content {
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        position: relative;
+        width: 90%;
+        max-width: 700px;
+        transform: translateY(20px);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .video-modal.open .video-modal-content {
+        transform: translateY(0);
+      }
+
+      .video-modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.2s ease-in-out;
+      }
+
+      .video-modal-close:hover {
+        color: #333;
+      }
+
+      .video-placeholder-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        background-color: #e0e0e0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .video-placeholder-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .video-play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .video-play-icon {
+        width: 60px;
+        height: 60px;
+        color: white;
+        opacity: 0.9;
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -439,7 +534,11 @@
               Learn strategies for effective communication, productivity in a
               remote work environment.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Mastering Remote Team Management in 2025"
+              data-video-image="https://media.istockphoto.com/id/1209904658/vector/worker-using-computer.jpg?s=612x612&w=0&k=20&c=-1nWOpS2Qc7PhY9Ba-LE0mBXJFlgaFImqwLUkEh4T-Y="
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -470,7 +569,11 @@
               Discover how to implement effective feedback loops to drive
               employee growth.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Boosting Employee Performance"
+              data-video-image="https://static.vecteezy.com/system/resources/previews/003/512/528/non_2x/business-webinar-concept-isolated-professional-development-coaching-and-training-people-scene-in-flat-cartoon-design-illustration-for-blogging-website-mobile-app-promotional-materials-vector.jpg"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +605,11 @@
             <p class="resource-description">
               Stay compliant with the latest HR regulations.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="HR Compliance Updates for the New Fiscal Year"
+              data-video-image="https://www.shutterstock.com/image-vector/compliance-rules-standard-regulation-balance-600nw-2060543345.jpg"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -532,7 +639,11 @@
             <p class="resource-description">
               Learn approaches to attract, engage, and hire the best candidates.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Modern Recruitment Strategies"
+              data-video-image="https://cdn-blog.novoresume.com/articles/resume-statistics/bg.webp"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -565,7 +676,11 @@
               Strategies to support mental and physical health for your hybrid
               workforce.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Employee Wellbeing in the Hybrid Workplace"
+              data-video-image="https://c-assets.papillon.io/image/fetch/s--YnOMApIW--/f_auto/https://dkf1ato8y5dsg.cloudfront.net/uploads/8/62/640x360-gettyimages-1302746025.jpg"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -598,7 +713,11 @@
               Explore the latest technological advancements transforming human
               resources.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Top HR Tech Trends to Watch in 2025"
+              data-video-image="https://static.vecteezy.com/system/resources/thumbnails/023/803/057/small_2x/hr-department-human-resources-management-employer-hiring-candidates-recruitment-agency-employment-headhunting-business-modern-flat-cartoon-style-illustration-on-white-background-vector.jpg"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -631,7 +750,11 @@
               Best practices for fostering diversity, equity in your
               organization.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Building a Diverse and Inclusive Workplace"
+              data-video-image="https://snacknation.com/wp-content/uploads/2022/03/diversity-inclusion-activities.png"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -661,7 +784,11 @@
             <p class="resource-description">
               Understand how to leverage data to make informed HR decisions.
             </p>
-            <button class="resource-action-button">
+            <button
+              class="resource-action-button"
+              data-video-title="Introduction to HR Analytics"
+              data-video-image="https://blog.advantageclub.co/wp-content/uploads/2024/10/HR-analytics.webp"
+            >
               Watch Now
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -681,56 +808,84 @@
       </div>
     </div>
 
+    <!-- Video Modal Structure -->
+    <div id="videoModal" class="video-modal">
+      <div class="video-modal-content">
+        <button id="closeModal" class="video-modal-close">&times;</button>
+        <h2
+          id="modalVideoTitle"
+          class="text-2xl font-bold mb-4 text-center text-gray-800"
+        ></h2>
+        <div class="video-placeholder-container">
+          <img
+            id="modalVideoImage"
+            src=""
+            alt="Video Placeholder"
+            class="video-placeholder-image"
+          />
+          <div class="video-play-overlay">
+            <svg
+              class="video-play-icon"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <p
+              class="absolute bottom-4 text-white text-sm bg-black bg-opacity-60 px-3 py-1 rounded"
+            >
+              Video content would play here
+            </p>
+          </div>
+        </div>
+        <p class="text-gray-700 text-center mt-4">
+          This is a placeholder for the webinar video. In a real application,
+          the video would play here.
+        </p>
+      </div>
+    </div>
+
     <script>
-      function alert(message) {
-        const alertBox = document.createElement("div");
-        alertBox.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-                max-width: 300px;
-                text-align: center;
-                animation: fadeIn 0.3s ease-out;
-            `;
-        alertBox.innerHTML = `
-                <p class="text-gray-800 text-lg">${message}</p>
-                <button class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 ease-in-out">OK</button>
-            `;
-
-        document.body.appendChild(alertBox);
-
-        alertBox.querySelector("button").addEventListener("click", () => {
-          alertBox.style.animation = "fadeOut 0.3s ease-out forwards";
-          alertBox.addEventListener(
-            "animationend",
-            () => {
-              document.body.removeChild(alertBox);
-            },
-            { once: true }
-          );
-        });
-      }
-
       document.addEventListener("DOMContentLoaded", () => {
         console.log("Webinar Resources page loaded successfully.");
 
+        const videoModal = document.getElementById("videoModal");
+        const closeModalButton = document.getElementById("closeModal");
+        const modalVideoTitle = document.getElementById("modalVideoTitle");
+        const modalVideoImage = document.getElementById("modalVideoImage");
         const resourceActionButtons = document.querySelectorAll(
           ".resource-action-button"
         );
+
+        // Function to open the video modal
+        function openVideoModal(title, imageUrl) {
+          modalVideoTitle.textContent = title;
+          modalVideoImage.src = imageUrl;
+          videoModal.classList.add("open");
+        }
+
+        // Function to close the video modal
+        function closeVideoModal() {
+          videoModal.classList.remove("open");
+        }
+
+        // Add event listeners to all "Watch Now" buttons
         resourceActionButtons.forEach((button) => {
           button.addEventListener("click", () => {
-            alert(`You clicked "${button.textContent.trim()}"!`);
+            const videoTitle = button.dataset.videoTitle;
+            const videoImage = button.dataset.videoImage;
+            openVideoModal(videoTitle, videoImage);
           });
+        });
+
+        // Add event listener to the close button
+        closeModalButton.addEventListener("click", closeVideoModal);
+
+        // Close modal when clicking outside the content
+        videoModal.addEventListener("click", (event) => {
+          if (event.target === videoModal) {
+            closeVideoModal();
+          }
         });
       });
     </script>

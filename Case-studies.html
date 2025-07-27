@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Case Studies - Digital Innovation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS Variables for easier theme management */
+      :root {
+        --primary-color: #0a3d62; /* Dark Blue */
+        --secondary-color: #007bff; /* Bright Blue */
+        --background-light: #e6f2ff; /* Very Light Blue/White for main background */
+        --text-dark: #2c3e50; /* Darker Grey Blue */
+        --text-medium: #34495e; /* Medium Grey Blue */
+        --card-shadow: rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
+        --card-shadow-hover: rgba(
+          0,
+          0,
+          0,
+          0.2
+        ); /* More pronounced shadow on hover */
+        --tag-bg: #d0e7ff; /* Lighter Blue for tags */
+        --card-border-color: #a7d9ff; /* Light blue border for cards */
+        --header-height: 70px; /* Example header height if you add one later */
+        --testimonial-cards-count: 5; /* Default, will be set by JS */
+        --achievement-items-count: 3; /* Default, will be set by JS */
+      }
+
+      /* Universal Box-Sizing and Reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Body Styles */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+        overflow-x: hidden; /* Prevent horizontal scroll from animations */
+      }
+
+      /* --- Hero Section Styles & Animations --- */
+      @keyframes fadeInSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Optional subtle glass shift for hero::before */
+      @keyframes subtleGlassShift {
+        0% {
+          transform: translateX(0) translateY(0);
+        }
+        50% {
+          transform: translateX(5px) translateY(3px);
+        }
+        100% {
+          transform: translateX(0) translateY(0);
+        }
+      }
+
+      /* Particle animation for hero background */
+      @keyframes particleMove {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        25% {
+          transform: translate(10vw, 5vh) scale(1.1);
+        }
+        50% {
+          transform: translate(20vw, 0) scale(0.9);
+        }
+        75% {
+          transform: translate(10vw, -5vh) scale(1.2);
+        }
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+      }
+
+      .hero {
+        background-image: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          #0056b3 100%
+        ); /* Deeper blue gradient */
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+        position: relative; /* Needed for pseudo-element positioning */
+        overflow: hidden; /* Ensure pseudo-element stays within bounds */
+        isolation: isolate; /* Creates a new stacking context for children z-index */
+      }
+
+      /* Glass Effect Pseudo-element */
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -10%; /* Start slightly off-screen for animation */
+        left: -10%;
+        width: 120%; /* Larger to ensure full coverage during animation */
+        height: 120%;
+        background: rgba(
+          255,
+          255,
+          255,
+          0.07
+        ); /* Slightly translucent white for glass */
+        backdrop-filter: blur(8px); /* Frosted glass effect */
+        -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
+        z-index: 0; /* Behind content */
+        animation: subtleGlassShift 15s infinite alternate ease-in-out; /* Slow, subtle animation */
+        border-radius: 50% 30% 60% 40% / 40% 60% 30% 50%; /* Organic, blob-like shape */
+        will-change: transform; /* Optimize animation performance */
+      }
+
+      /* Particle Effect - Multiple pseudo-elements */
+      .hero::after,
+      .hero div.particle1,
+      .hero div.particle2,
+      .hero div.particle3 {
+        content: "";
+        position: absolute;
+        background: rgba(
+          255,
+          255,
+          255,
+          0.15
+        ); /* White, slightly transparent particles */
+        border-radius: 50%;
+        pointer-events: none; /* Allows clicks to pass through */
+        z-index: 0; /* Behind content, above glass effect */
+      }
+
+      .hero::after {
+        /* Main large particle */
+        width: 150px;
+        height: 150px;
+        top: 20%;
+        left: 10%;
+        animation: particleMove 20s infinite alternate ease-in-out;
+        opacity: 0.8;
+        filter: blur(5px);
+      }
+      .hero div.particle1 {
+        width: 80px;
+        height: 80px;
+        top: 60%;
+        left: 80%;
+        animation: particleMove 18s reverse infinite ease-in-out;
+        opacity: 0.7;
+        filter: blur(3px);
+      }
+      .hero div.particle2 {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 50%;
+        animation: particleMove 22s infinite ease-in-out;
+        opacity: 0.6;
+        filter: blur(4px);
+      }
+      .hero div.particle3 {
+        width: 60px;
+        height: 60px;
+        top: 80%;
+        left: 20%;
+        animation: particleMove 16s reverse infinite ease-in-out;
+        opacity: 0.9;
+        filter: blur(2px);
+      }
+
+      .hero h1,
+      .hero p {
+        position: relative; /* Ensure text is above the glass and particles */
+        z-index: 1;
+        opacity: 0; /* Start hidden for animation */
+        animation: fadeInSlideUp 1s ease-out forwards;
+      }
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 15px;
+        animation-delay: 0.2s; /* Staggered animation */
+      }
+      .hero p {
+        font-size: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        animation-delay: 0.4s; /* Staggered animation */
+      }
+
+      /* --- Main Container & Grid Layout --- */
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(300px, 1fr)
+        ); /* Adjusted minmax for better fit */
+        gap: 30px;
+      }
+
+      /* --- Filter Controls --- */
+      .filter-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 40px;
+        animation: fadeIn 1s ease-out forwards;
+        animation-delay: 0.6s;
+        opacity: 0; /* Start hidden for animation */
+      }
+      .filter-controls button {
+        background-color: white;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+      }
+      .filter-controls button:hover,
+      .filter-controls button.active {
+        background-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* More pronounced shadow on active/hover */
+        transform: translateY(-2px); /* Slight lift */
+      }
+      .filter-controls button:focus {
+        outline: 3px solid var(--secondary-color);
+        outline-offset: 2px;
+      }
+
+      /* --- Card Styles & Animations --- */
+      @keyframes cardFadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card {
+        background: rgb(254, 241, 241);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px var(--card-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+        opacity: 0; /* Start hidden for initial animation */
+        animation: cardFadeInUp 0.8s ease-out forwards; /* Apply entrance animation */
+        border: 2px solid var(--card-border-color); /* Added border */
+      }
+
+      /* Staggered animation for cards (adjust delays as needed) */
+      .card:nth-child(1) {
+        animation-delay: 0.8s;
+      }
+      .card:nth-child(2) {
+        animation-delay: 1s;
+      }
+      .card:nth-child(3) {
+        animation-delay: 1.2s;
+      }
+      .card:nth-child(4) {
+        animation-delay: 1.4s;
+      }
+      .card:nth-child(5) {
+        animation-delay: 1.6s;
+      }
+      .card:nth-child(6) {
+        animation-delay: 1.8s;
+      }
+      /* Add more :nth-child rules if you have more cards */
+
+      .card:hover {
+        transform: translateY(-10px) scale(1.02); /* More pronounced lift and slight scale */
+        box-shadow: 0 15px 35px var(--card-shadow-hover); /* Stronger shadow on hover */
+        border-color: var(--secondary-color); /* Highlight border on hover */
+      }
+      .card a {
+        text-decoration: none;
+        color: inherit;
+        display: block; /* Make the whole card clickable */
+        outline: none; /* Remove default link outline */
+      }
+      .card a:focus {
+        /* Focus state for keyboard navigation */
+        outline: 3px solid var(--secondary-color);
+        outline-offset: 4px;
+        border-radius: 12px;
+      }
+
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.5s ease; /* Smooth transition for image zoom */
+      }
+      .card:hover img {
+        transform: scale(1.05); /* Zoom in effect on image inside card */
+      }
+
+      .card-content {
+        padding: 20px;
+      }
+      .card-content h2 {
+        font-size: 22px;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        transition: color 0.3s ease; /* Smooth transition for title color */
+      }
+      .card:hover .card-content h2 {
+        color: var(--secondary-color); /* Change title color on hover */
+      }
+      .card-content p {
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--text-medium);
+      }
+      .card-content .tag {
+        display: inline-block;
+        background-color: var(--tag-bg);
+        color: var(--secondary-color);
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+
+      /* --- Testimonials Section --- */
+      .testimonials-section {
+        background-color: white; /* Match card background */
+        padding: 30px 20px;
+        text-align: center;
+        margin-top: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px var(--card-shadow);
+      }
+
+      .testimonials-section h2 {
+        font-size: 36px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        animation: fadeInSlideUp 1s ease-out forwards;
+        animation-delay: 0.8s;
+        opacity: 0;
+      }
+
+      .testimonials-slider-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden; /* Hide cards outside the view */
+        padding: 20px 0; /* Add some vertical padding */
+      }
+
+      .testimonials-grid {
+        display: flex; /* Use flexbox for horizontal layout */
+        gap: 30px; /* Gap between cards */
+        padding-bottom: 20px; /* Space for potential scrollbar on non-looping scroll */
+        animation: scrollTestimonials 50s linear infinite; /* Auto-scroll animation */
+        width: max-content; /* Allows content to define width */
+      }
+
+      /* Pause animation on hover for a better user experience */
+      .testimonials-grid:hover {
+        animation-play-state: paused;
+      }
+
+      .testimonial-card {
+        flex: 0 0 auto; /* Prevent cards from shrinking or growing, maintain natural width */
+        width: 320px; /* Fixed width for each card in the carousel */
+        background-color: var(--background-light);
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        text-align: center; /* Center content within each card */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid var(--tag-bg);
+        opacity: 0; /* Still start hidden for entrance animation */
+        animation: fadeInSlideUp 0.8s ease-out forwards;
+      }
+
+      /* Stagger animation delays for initial fade-in */
+      .testimonial-card:nth-child(1) {
+        animation-delay: 1s;
+      }
+      .testimonial-card:nth-child(2) {
+        animation-delay: 1.2s;
+      }
+      .testimonial-card:nth-child(3) {
+        animation-delay: 1.4s;
+      }
+      .testimonial-card:nth-child(4) {
+        animation-delay: 1.6s;
+      }
+      .testimonial-card:nth-child(5) {
+        animation-delay: 1.8s;
+      }
+
+      .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .client-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 3px solid var(--secondary-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .testimonial-card .quote {
+        font-size: 17px;
+        font-style: italic;
+        color: var(--text-dark);
+        margin-bottom: 15px;
+      }
+
+      .testimonial-card .author {
+        font-weight: 700; /* Bolder for prominence */
+        color: var(--primary-color);
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+
+      .testimonial-card .stars {
+        color: #ffc107; /* Gold color for stars */
+        font-size: 18px;
+      }
+
+      /* Animation for auto-scrolling testimonials */
+      @keyframes scrollTestimonials {
+        0% {
+          transform: translateX(0);
+        }
+        /* Adjust this value based on your card width and gap, and the number of ORIGINAL cards */
+        /* It should scroll by the width of ONE full set of testimonials */
+        100% {
+          transform: translateX(
+            calc((320px + 30px) * -1 * var(--testimonial-cards-count))
+          );
+        }
+      }
+
+      /* --- Achievements Section (with Progress Bars) --- */
+      .achievements-section {
+        background-color: var(--background-light);
+        padding: 20px 20px;
+        text-align: center;
+        margin-top: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px var(--card-shadow);
+      }
+
+      .achievements-section h2 {
+        font-size: 36px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        animation: fadeInSlideUp 1s ease-out forwards;
+        animation-delay: 1.6s; /* Stagger after testimonials */
+        opacity: 0;
+      }
+
+      .achievements-slider-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 20px 0;
+      }
+
+      .achievements-grid {
+        display: flex; /* Use flexbox for horizontal layout */
+        gap: 30px; /* Gap between items */
+        padding-bottom: 20px;
+        animation: scrollAchievements 120s linear infinite; /* Auto-scroll animation */
+        width: max-content; /* Allows content to define width */
+      }
+
+      /* Pause animation on hover */
+      .achievements-grid:hover {
+        animation-play-state: paused;
+      }
+
+      .achievement-item {
+        flex: 0 0 auto; /* Prevent items from shrinking or growing */
+        width: 320px; /* Fixed width for consistency */
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--card-border-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        opacity: 0;
+        animation: fadeInSlideUp 0.8s ease-out forwards;
+      }
+
+      .achievement-item:nth-child(1) {
+        animation-delay: 1.8s;
+      }
+      .achievement-item:nth-child(2) {
+        animation-delay: 2s;
+      }
+      .achievement-item:nth-child(3) {
+        animation-delay: 2.2s;
+      }
+      .achievement-item:nth-child(4) {
+        animation-delay: 2.4s;
+      }
+      .achievement-item:nth-child(5) {
+        animation-delay: 2.6s;
+      }
+
+      .achievement-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .achievement-item h3 {
+        font-size: 24px;
+        color: var(--secondary-color);
+        margin-bottom: 20px;
+      }
+
+      .progress-bar-container {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        height: 20px;
+        margin-bottom: 10px;
+        overflow: hidden; /* Ensure rounded corners */
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-image: linear-gradient(
+          to right,
+          var(--secondary-color),
+          var(--primary-color)
+        );
+        width: 0%; /* Start at 0 for animation */
+        border-radius: 10px;
+        transition: width 1.5s ease-out; /* Smooth animation for width change */
+      }
+
+      .progress-text {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 15px;
+      }
+
+      .achievement-item p {
+        font-size: 16px;
+        color: var(--text-medium);
+      }
+
+      /* Animation for auto-scrolling achievements */
+      @keyframes scrollAchievements {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(
+            calc((320px + 30px) * -1 * var(--achievement-items-count))
+          );
+        }
+      }
+
+      /* --- Media Queries for Responsiveness --- */
+      @media (max-width: 768px) {
+        .hero {
+          padding: 60px 20px;
+        }
+        .hero h1 {
+          font-size: 38px;
+        }
+        .hero p {
+          font-size: 18px;
+        }
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .filter-controls {
+          margin-bottom: 30px;
+          justify-content: flex-start; /* Align filters left on small screens */
+          overflow-x: auto; /* Allow horizontal scrolling if many filters */
+          padding-bottom: 10px; /* Space for scrollbar */
+          -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+        .filter-controls button {
+          flex-shrink: 0; /* Prevent buttons from shrinking */
+        }
+        .testimonials-section h2,
+        .achievements-section h2 {
+          font-size: 30px;
+        }
+        .testimonial-card,
+        .achievement-item {
+          width: calc(
+            100% - 20px
+          ); /* Adjust width to fit better with padding/margin */
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h1 {
+          font-size: 32px;
+        }
+        .hero p {
+          font-size: 15px;
+        }
+        .card-content h2 {
+          font-size: 20px;
+        }
+        .card-content p {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <h1>Our Case Studies</h1>
+      <p>Digital innovation across industries — real impact, real results.</p>
+      <div class="particle1"></div>
+      <div class="particle2"></div>
+      <div class="particle3"></div>
+    </section>
+
+    <div class="container">
+      <div class="filter-controls">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="Logistics">Logistics</button>
+        <button class="filter-btn" data-filter="Agriculture">
+          Agriculture
+        </button>
+        <button class="filter-btn" data-filter="Retail">Retail</button>
+        <button class="filter-btn" data-filter="Urban Planning">
+          Urban Planning
+        </button>
+        <button class="filter-btn" data-filter="Finance">Finance</button>
+        <button class="filter-btn" data-filter="Education">Education</button>
+      </div>
+
+      <div class="grid" id="case-study-grid">
+        <div class="card" data-category="Logistics">
+          <a href="index1.html">
+            <img
+              src="./Assests/Techimage.jpg"
+              alt="Overhead view of a modern textile warehouse, showing neatly stacked fabric rolls and automated systems."
+            />
+            <div class="card-content">
+              <div class="tag">Logistics</div>
+              <h2>APMC Textiles</h2>
+              <p>
+                Digitizing textile logistics and inventory systems to enhance
+                efficiency and reduce waste.
+              </p>
+            </div>
+          </a>
+        </div>
+
+        <div class="card" data-category="Agriculture">
+          <a href="index6.html">
+            <img
+              src="./Assests/techimage1.jpeg.jpeg"
+              alt="A lush green field with smart sensors protruding from the soil, under a clear sky with a drone flying overhead."
+            />
+            <div class="card-content">
+              <div class="tag">Agriculture</div>
+              <h2>AgroTech Solutions</h2>
+              <p>
+                Satellite-driven crop insights transforming farming strategies
+                in real time.
+              </p>
+            </div>
+          </a>
+        </div>
+
+        <div class="card" data-category="Retail">
+          <a href="index2.html">
+            <img
+              src="./Assests/techimage2.webp"
+              alt="A dynamic dashboard displaying sales figures and customer behavior analytics on a tablet, with a blurred retail store in the background."
+            />
+            <div class="card-content">
+              <div class="tag">Retail</div>
+              <h2>Retail Revamp</h2>
+              <p>
+                Customer experience transformation powered by real-time
+                analytics and personalization.
+              </p>
+            </div>
+          </a>
+        </div>
+
+        <div class="card" data-category="Urban Planning">
+          <a href="index3.html">
+            <img
+              src="./Assests/techimage3.jpg"
+              alt="A futuristic city skyline at dusk, with glowing data lines connecting buildings and a holographic interface showing urban statistics."
+            />
+            <div class="card-content">
+              <div class="tag">Urban Planning</div>
+              <h2>Smart City Project</h2>
+              <p>
+                Unified urban data and citizen services for smarter, more
+                connected cities.
+              </p>
+            </div>
+          </a>
+        </div>
+
+        <div class="card" data-category="Finance">
+          <a href="index4.html">
+            <img
+              src="./Assests/techimage4.jpg"
+              alt="A network of interconnected data centers represented by glowing server racks, symbolizing cloud infrastructure, with financial charts overlaid."
+            />
+            <div class="card-content">
+              <div class="tag">Finance</div>
+              <h2>FinTech Cloud Migration</h2>
+              <p>
+                Cloud-first transition for scalable operations and tighter
+                compliance.
+              </p>
+            </div>
+          </a>
+        </div>
+
+        <div class="card" data-category="Education">
+          <a href="index5.html">
+            <img
+              src="./Assests/techimage5.webp"
+              alt="A diverse group of students in a modern classroom, interacting with augmented reality elements projected by an AI assistant on their desks."
+            />
+            <div class="card-content">
+              <div class="tag">Education</div>
+              <h2>AI in Education</h2>
+              <p>
+                Using AI-powered learning tools to improve student engagement
+                and performance.
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <section class="achievements-section">
+        <h2>Our Impact in Numbers</h2>
+        <div class="achievements-slider-container">
+          <div class="achievements-grid" id="achievements-carousel">
+            <div class="achievement-item">
+              <h3>Efficiency Boost</h3>
+              <div class="progress-bar-container">
+                <div class="progress-bar" data-progress="90"></div>
+              </div>
+              <span class="progress-text">90%</span>
+              <p>Average efficiency improvement for our logistics clients.</p>
+            </div>
+            <div class="achievement-item">
+              <h3>Revenue Growth</h3>
+              <div class="progress-bar-container">
+                <div class="progress-bar" data-progress="75"></div>
+              </div>
+              <span class="progress-text">75%</span>
+              <p>Max revenue growth achieved for our retail partners.</p>
+            </div>
+            <div class="achievement-item">
+              <h3>Cost Reduction</h3>
+              <div class="progress-bar-container">
+                <div class="progress-bar" data-progress="85"></div>
+              </div>
+              <span class="progress-text">85%</span>
+              <p>Operational cost savings for our finance sector clients.</p>
+            </div>
+            <div class="achievement-item">
+              <h3>User Adoption</h3>
+              <div class="progress-bar-container">
+                <div class="progress-bar" data-progress="95"></div>
+              </div>
+              <span class="progress-text">95%</span>
+              <p>User adoption rate for our educational platforms.</p>
+            </div>
+            <div class="achievement-item">
+              <h3>Project Completion</h3>
+              <div class="progress-bar-container">
+                <div class="progress-bar" data-progress="98"></div>
+              </div>
+              <span class="progress-text">98%</span>
+              <p>On-time project completion rate across all sectors.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- Case Study Filter Functionality ---
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const caseStudyGrid = document.getElementById("case-study-grid");
+        const cards = caseStudyGrid.querySelectorAll(".card");
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            filterButtons.forEach((btn) => btn.classList.remove("active"));
+            this.classList.add("active");
+            const filter = this.dataset.filter;
+
+            cards.forEach((card) => {
+              const cardCategory = card.dataset.category;
+              if (filter === "all" || cardCategory === filter) {
+                card.style.display = "block";
+              } else {
+                card.style.display = "none";
+              }
+            });
+          });
+        });
+
+        // --- Intersection Observer for Progress Bars (Initial Load) ---
+        // This part ensures that only the *original* progress bars animate on page load.
+        // The duplicated ones will scroll in without re-animating.
+        const initialProgressBars = document.querySelectorAll(
+          ".achievements-grid .progress-bar"
+        );
+
+        const observerOptions = {
+          root: null, // viewport
+          rootMargin: "0px",
+          threshold: 0.5, // Trigger when 50% of the item is visible
+        };
+
+        const observerCallback = (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const progressBar = entry.target;
+              const progress = progressBar.dataset.progress;
+              progressBar.style.width = progress + "%";
+              observer.unobserve(progressBar); // Stop observing once animated
+            }
+          });
+        };
+
+        const progressBarObserver = new IntersectionObserver(
+          observerCallback,
+          observerOptions
+        );
+
+        initialProgressBars.forEach((bar) => {
+          progressBarObserver.observe(bar);
+        });
+
+        // --- Auto-Scrolling Testimonials ---
+        const testimonialsCarousel = document.getElementById(
+          "testimonials-carousel"
+        );
+        if (testimonialsCarousel) {
+          const testimonialCards =
+            testimonialsCarousel.querySelectorAll(".testimonial-card");
+          if (testimonialCards.length > 0) {
+            // Duplicate cards for infinite scroll effect
+            testimonialCards.forEach((card) => {
+              const clone = card.cloneNode(true);
+              testimonialsCarousel.appendChild(clone);
+            });
+
+            // Set CSS variable for animation based on number of cards
+            document.documentElement.style.setProperty(
+              "--testimonial-cards-count",
+              testimonialCards.length
+            );
+          }
+        }
+
+        // --- Auto-Scrolling Achievements ---
+        const achievementsCarousel = document.getElementById(
+          "achievements-carousel"
+        );
+        if (achievementsCarousel) {
+          const achievementItems =
+            achievementsCarousel.querySelectorAll(".achievement-item");
+          if (achievementItems.length > 0) {
+            // Duplicate items for infinite scroll effect
+            achievementItems.forEach((item) => {
+              const clone = item.cloneNode(true);
+              achievementsCarousel.appendChild(clone);
+            });
+
+            // Set CSS variable for animation based on number of items
+            document.documentElement.style.setProperty(
+              "--achievement-items-count",
+              achievementItems.length
+            );
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

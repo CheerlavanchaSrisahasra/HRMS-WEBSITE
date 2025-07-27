@@ -14,6 +14,9 @@
         padding: 0;
         background: #f9fafc;
       }
+      body::-webkit-scrollbar {
+        display: none;
+      }
       .container {
         max-width: 1600px;
         margin: 0 auto;
@@ -75,7 +78,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
         gap: 30px;
-        align-items: center;
+        align-items: stretch;
       }
       .whitepaper-card {
         background: white;
@@ -86,27 +89,25 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        width: 450px;
       }
       .whitepaper-card:hover {
         transform: translateY(-5px);
       }
       .card-image {
-        height: 160px;
+        height: 200px;
         background: #e0e6f0;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 15px;
+        overflow: hidden;
       }
       .card-image img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        border-radius: 4px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
       .card-content {
-        padding: 15px;
+        padding: 20px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -126,17 +127,25 @@
         display: inline-block;
         background: #3498db;
         color: white;
-        padding: 8px 12px;
+        padding: 10px 15px;
         border-radius: 4px;
         text-decoration: none;
         font-weight: 600;
         text-align: center;
-        transition: background 0.3s;
+        transition: all 0.3s;
         font-size: 0.9rem;
         margin-top: auto;
+        border: none;
+        cursor: pointer;
       }
       .download-btn:hover {
         background: #2980b9;
+      }
+      .download-btn.downloaded {
+        background: #27ae60;
+      }
+      .download-btn.downloaded::after {
+        content: " ✓";
       }
 
       /* Animation */
@@ -147,6 +156,26 @@
         to {
           opacity: 1;
         }
+      }
+
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #27ae60;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
       }
 
       /* Responsive Adjustments */
@@ -167,6 +196,9 @@
           padding: 6px 12px;
           font-size: 0.85rem;
         }
+        .card-image {
+          height: 160px;
+        }
       }
     </style>
   </head>
@@ -174,9 +206,10 @@
     <div class="container">
       <!-- Page Header -->
       <header class="page-header">
-        <h1>HR Whitepapers & Guides</h1>
+        <h1>HR Whitepapers</h1>
         <p>
-          Explore in-depth research, trends, and best practices in HR management
+          Download our collection of research papers and technical documents on
+          HR management
         </p>
       </header>
 
@@ -201,50 +234,44 @@
           <div class="card-content">
             <h3>The Future of AI in HR</h3>
             <p>
-              How artificial intelligence is transforming recruitment and
-              employee experience.
+              Technical research paper on artificial intelligence applications
+              in HR processes.
             </p>
-            <a href="whitepapers/ai-in-hr.pdf" class="download-btn" download
-              >Download PDF</a
-            >
+            <button class="download-btn" data-file="ai-in-hr.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 2 -->
         <div class="whitepaper-card">
           <div class="card-image">
             <img
-              src="https://img.freepik.com/free-vector/business-team-putting-together-jigsaw-puzzle-isolated-flat-vector-illustration-cartoon-partners-working-connection-teamwork-partnership-cooperation-concept_74855-9814.jpg"
-              alt="Remote Work"
+              src="https://img.freepik.com/free-vector/cloud-computing-isometric-concept_1284-17830.jpg"
+              alt="Cloud HRMS"
             />
           </div>
           <div class="card-content">
-            <h3>Remote Work Policy Guide</h3>
-            <p>Best practices for managing hybrid teams in 2024.</p>
-            <a
-              href="whitepapers/remote-work-guide.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>Cloud-Based HRMS Architecture</h3>
+            <p>Technical analysis of cloud-based HR management systems.</p>
+            <button class="download-btn" data-file="cloud-hrms.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 3 -->
         <div class="whitepaper-card">
           <div class="card-image">
             <img
-              src="https://img.freepik.com/free-vector/hand-drawn-flat-design-compliance-illustration_23-2149370003.jpg"
-              alt="Compliance"
+              src="https://img.freepik.com/free-vector/business-analytics-concept-illustration_114360-1556.jpg"
+              alt="HR Analytics"
             />
           </div>
           <div class="card-content">
-            <h3>HR Compliance Handbook 2024</h3>
-            <p>Updated labor laws and workplace regulations.</p>
-            <a
-              href="whitepapers/compliance-handbook.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>HR Analytics: Data Models</h3>
+            <p>Technical whitepaper on predictive analytics in HR.</p>
+            <button class="download-btn" data-file="hr-analytics.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
       </div>
@@ -255,35 +282,19 @@
         <div class="whitepaper-card">
           <div class="card-image">
             <img
-              src="https://img.freepik.com/free-vector/cloud-computing-isometric-concept_1284-17830.jpg"
-              alt="Cloud HRMS"
+              src="https://img.freepik.com/free-vector/artificial-intelligence-isometric-flowchart_1284-28653.jpg"
+              alt="AI in HR"
             />
           </div>
           <div class="card-content">
-            <h3>Cloud-Based HRMS: A Guide</h3>
-            <p>Why modern HR systems are moving to the cloud.</p>
-            <a href="whitepapers/cloud-hrms.pdf" class="download-btn" download
-              >Download PDF</a
-            >
+            <h3>AI in HR: Technical Deep Dive</h3>
+            <p>Comprehensive technical analysis of AI applications in HR.</p>
+            <button class="download-btn" data-file="ai-hr-tech.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 2 -->
-        <div class="whitepaper-card">
-          <div class="card-image">
-            <img
-              src="https://img.freepik.com/free-vector/business-analytics-concept-illustration_114360-1556.jpg"
-              alt="HR Analytics"
-            />
-          </div>
-          <div class="card-content">
-            <h3>HR Analytics for Decision Making</h3>
-            <p>Leveraging data to improve workforce planning.</p>
-            <a href="whitepapers/hr-analytics.pdf" class="download-btn" download
-              >Download PDF</a
-            >
-          </div>
-        </div>
-        <!-- Card 3 -->
         <div class="whitepaper-card">
           <div class="card-image">
             <img
@@ -292,14 +303,27 @@
             />
           </div>
           <div class="card-content">
-            <h3>Automating HR Processes</h3>
-            <p>How AI reduces manual work in payroll and onboarding.</p>
-            <a
-              href="whitepapers/hr-automation.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>HR Process Automation</h3>
+            <p>Technical specifications for automating HR workflows.</p>
+            <button class="download-btn" data-file="hr-automation.pdf">
+              Download Whitepaper
+            </button>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="whitepaper-card">
+          <div class="card-image">
+            <img
+              src="https://img.freepik.com/free-vector/digital-transformation-isometric-concept_1284-18067.jpg"
+              alt="Digital Transformation"
+            />
+          </div>
+          <div class="card-content">
+            <h3>HR Digital Transformation</h3>
+            <p>Framework for implementing digital transformation in HR.</p>
+            <button class="download-btn" data-file="digital-transformation.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
       </div>
@@ -315,14 +339,11 @@
             />
           </div>
           <div class="card-content">
-            <h3>2024 Recruitment Trends</h3>
-            <p>How to attract top talent in a competitive market.</p>
-            <a
-              href="whitepapers/recruitment-trends.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>Technical Recruitment Framework</h3>
+            <p>Research paper on modern technical hiring methodologies.</p>
+            <button class="download-btn" data-file="recruitment-framework.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 2 -->
@@ -330,18 +351,15 @@
           <div class="card-image">
             <img
               src="https://img.freepik.com/free-vector/employee-engagement-concept-illustration_114360-8436.jpg"
-              alt="Employee Retention"
+              alt="Employee Engagement"
             />
           </div>
           <div class="card-content">
-            <h3>Employee Retention Strategies</h3>
-            <p>Proven methods to reduce turnover.</p>
-            <a
-              href="whitepapers/retention-strategies.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>Employee Engagement Metrics</h3>
+            <p>Quantitative analysis of engagement measurement techniques.</p>
+            <button class="download-btn" data-file="engagement-metrics.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 3 -->
@@ -349,18 +367,15 @@
           <div class="card-image">
             <img
               src="https://img.freepik.com/free-vector/employee-training-development-concept-illustration_114360-8435.jpg"
-              alt="Upskilling"
+              alt="Learning"
             />
           </div>
           <div class="card-content">
-            <h3>Upskilling Your Workforce</h3>
-            <p>Closing the skills gap with continuous learning.</p>
-            <a
-              href="whitepapers/upskilling-guide.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>Learning & Development ROI</h3>
+            <p>Measuring return on investment in employee training programs.</p>
+            <button class="download-btn" data-file="learning-roi.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
       </div>
@@ -376,30 +391,27 @@
             />
           </div>
           <div class="card-content">
-            <h3>GDPR Compliance for HR</h3>
-            <p>Protecting employee data under EU regulations.</p>
-            <a href="whitepapers/gdpr-hr.pdf" class="download-btn" download
-              >Download PDF</a
-            >
+            <h3>GDPR Technical Compliance</h3>
+            <p>Technical requirements for HR data protection compliance.</p>
+            <button class="download-btn" data-file="gdpr-compliance.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 2 -->
         <div class="whitepaper-card">
           <div class="card-image">
             <img
-              src="https://img.freepik.com/free-vector/workplace-safety-concept-illustration_114360-10824.jpg"
+              src="https://img.freepik.com/free-vector/hand-drawn-flat-design-safety-illustration_23-2149232275.jpg"
               alt="Workplace Safety"
             />
           </div>
           <div class="card-content">
-            <h3>Workplace Safety Guidelines</h3>
-            <p>Ensuring OSHA compliance in 2024.</p>
-            <a
-              href="whitepapers/workplace-safety.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>Workplace Safety Standards</h3>
+            <p>Technical specifications for OSHA compliance documentation.</p>
+            <button class="download-btn" data-file="safety-standards.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
         <!-- Card 3 -->
@@ -411,21 +423,21 @@
             />
           </div>
           <div class="card-content">
-            <h3>Payroll Compliance Simplified</h3>
-            <p>Avoiding penalties in tax and wage reporting.</p>
-            <a
-              href="whitepapers/payroll-compliance.pdf"
-              class="download-btn"
-              download
-              >Download PDF</a
-            >
+            <h3>Payroll Compliance Framework</h3>
+            <p>Technical guidelines for payroll regulatory compliance.</p>
+            <button class="download-btn" data-file="payroll-compliance.pdf">
+              Download Whitepaper
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab Switching Script -->
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Download started successfully!</div>
+
     <script>
+      // Tab switching functionality
       document.querySelectorAll(".tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           // Remove active class from all buttons/tabs
@@ -440,6 +452,39 @@
           btn.classList.add("active");
           const tabId = btn.getAttribute("data-tab");
           document.getElementById(tabId).classList.add("active");
+        });
+      });
+
+      // Enhanced download functionality
+      document.querySelectorAll(".download-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const fileName = this.getAttribute("data-file");
+          const toast = document.getElementById("toast");
+
+          // Create a temporary anchor element to trigger download
+          const a = document.createElement("a");
+          a.href = `whitepapers/${fileName}`;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          // Visual feedback
+          this.classList.add("downloaded");
+          this.textContent = "Downloaded";
+
+          // Show toast notification
+          toast.textContent = `${fileName} download started`;
+          toast.classList.add("show");
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 3000);
+
+          // Reset button after 3 seconds
+          setTimeout(() => {
+            this.classList.remove("downloaded");
+            this.textContent = "Download Whitepaper";
+          }, 3000);
         });
       });
     </script>

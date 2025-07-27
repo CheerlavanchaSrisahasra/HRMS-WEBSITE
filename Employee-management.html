@@ -939,7 +939,55 @@
     </div>
 
     <script>
+      function rotateStats() {
+        // Current values
+        let happyClients = 1500;
+        let smartHRs = 5500;
+        let satisfiedUsers = 3500000;
+
+        // Increment factors
+        const happyIncrement = 25;
+        const smartIncrement = 50;
+        const satisfiedIncrement = 50000;
+
+        // Maximum values (for demo purposes)
+        const happyMax = 2000;
+        const smartMax = 6500;
+        const satisfiedMax = 4000000;
+
+        // Rotate values every 3 seconds
+        setInterval(() => {
+          // Update happy clients
+          happyClients += happyIncrement;
+          if (happyClients > happyMax) happyClients = 1500;
+          document.getElementById("happyClients").textContent =
+            happyClients.toLocaleString() + "+";
+
+          // Update smart HRs
+          smartHRs += smartIncrement;
+          if (smartHRs > smartMax) smartHRs = 5500;
+          document.getElementById("smartHRs").textContent =
+            smartHRs.toLocaleString() + "+";
+
+          // Update satisfied users
+          satisfiedUsers += satisfiedIncrement;
+          if (satisfiedUsers > satisfiedMax) satisfiedUsers = 3500000;
+          document.getElementById("satisfiedUsers").textContent =
+            satisfiedUsers.toLocaleString() + "+";
+
+          // Add animation class temporarily
+          const stats = document.querySelectorAll(".stat-number");
+          stats.forEach((stat) => {
+            stat.classList.add("animated");
+            setTimeout(() => stat.classList.remove("animated"), 500);
+          });
+        }, 3000);
+      }
+
+      // Call the function when page loads
       document.addEventListener("DOMContentLoaded", function () {
+        // Initialize the stat rotation
+        rotateStats();
         // Demo Modal
         const openDemoModalBtns = document.querySelectorAll(
           "#openDemoModalBtn, #openDemoModalBtn2"
