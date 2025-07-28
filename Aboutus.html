@@ -115,13 +115,13 @@
       .section-header h2 {
         font-size: 2rem;
         font-weight: 800;
-        color: var(--darker);
+        /* color: var(--darker); */
         position: relative;
         display: inline-block;
       }
 
       .section-header h2::after {
-        content: "";
+        /* content: ""; */
         position: absolute;
         bottom: -10px;
         left: 50%;
@@ -725,11 +725,18 @@
         color: white;
       }
       [data-theme="dark"] .achievement-card,
-      .milestone-content,
       .member-info,
       .partner-logo {
+        background: var(--light);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .milestone-content {
         background: black;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+      [data-theme="dark"] .milestone-content h3 {
         color: white;
       }
     </style>

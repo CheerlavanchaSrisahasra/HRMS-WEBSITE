@@ -1,251 +1,267 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact Us</title>
-  
- 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css"
-/>
-  <style>
-   body {
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f6f9fc;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
 
-.contact-section {
-  max-width: 1100px;
-  margin: auto;
-  padding: 40px 20px;
-  text-align: center;
-}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f6f9fc;
+      }
+      body::-webkit-scrollbar {
+        display: none;
+      }
 
-.contact-section h2 {
-  font-size: 38px;
-  margin-bottom: 10px;
-  background: linear-gradient(90deg, #007bff, #00c6ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
+      .contact-section {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 20px;
+        text-align: center;
+      }
 
+      .contact-section h2 {
+        font-size: 38px;
+        margin-bottom: 10px;
+        background: linear-gradient(90deg, #007bff, #00c6ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-.contact-section p {
-  font-size: 18px;
-  color: #555;
-  margin-bottom: 24px;
-  /* margin-top: 5px; */
-}
+      .contact-section p {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 24px;
+        /* margin-top: 5px; */
+      }
 
-.contact-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 20px;
-}
+      .contact-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+      }
 
-.contact-info,
-.contact-form {
-  background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  width: 52%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #007bff;
-  
-  text-align: left;
-}
+      .contact-info,
+      .contact-form {
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        width: 52%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #007bff;
 
-.contact-info h3,
-.contact-form h3 {
-  font-size: 30px;
-  margin-bottom: 20px;
-  text-align: center; 
-  color: #007bff;
-}
-.contact-info h3 i,
-.contact-form h3 i {
-  color: #007bff; 
-  margin-right: 10px;
-}
+        text-align: left;
+      }
 
-.info-item {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 10px;
-  margin-left: 40px;
-}
+      .contact-info h3,
+      .contact-form h3 {
+        font-size: 30px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #007bff;
+      }
+      .contact-info h3 i,
+      .contact-form h3 i {
+        color: #007bff;
+        margin-right: 10px;
+      }
 
-.info-item i {
-  font-size: 30px;
-  color: #007bff;
-  margin-top: 5px;
-}
+      .info-item {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+        margin-left: 40px;
+      }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  margin-left: 15px;
-}
+      .info-item i {
+        font-size: 30px;
+        color: #007bff;
+        margin-top: 5px;
+      }
 
-.form-group label {
-  margin-bottom: 5px;
-  font-weight: 600;
-  color: #000;
-}
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        margin-left: 15px;
+      }
 
-.form-group input,
-.form-group textarea {
-  width: 90%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-family: inherit;
-  color: #000;
-  resize: none;
-}
+      .form-group label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #000;
+      }
 
+      .form-group input,
+      .form-group textarea {
+        width: 90%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: inherit;
+        color: #000;
+        resize: none;
+      }
 
-button {
-  background: #007bff;
-  border: none;
-  color: #fff;
-  padding: 12px 25px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 15px;
-}
-button i {
-  margin-right: 8px;
-  font-size: 16px;
-}
+      button {
+        background: #007bff;
+        border: none;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 15px;
+      }
+      button i {
+        margin-right: 8px;
+        font-size: 16px;
+      }
 
-button:hover {
-  background: #0056b3;
-  transform: translateX(3px);
-  transition: transform 0.2s ease;
-}
+      button:hover {
+        background: #0056b3;
+        transform: translateX(3px);
+        transition: transform 0.2s ease;
+      }
 
-@media (max-width: 768px) {
-  .contact-container {
-    flex-direction: column;
-  }
+      @media (max-width: 768px) {
+        .contact-container {
+          flex-direction: column;
+        }
 
-  .contact-info,
-  .contact-form {
-    width: 100%;
-  }
-}
+        .contact-info,
+        .contact-form {
+          width: 100%;
+        }
+      }
 
-::placeholder {
-  font-size: 14px;
-  color: #000;
-  opacity: 1; 
-}
+      ::placeholder {
+        font-size: 14px;
+        color: #000;
+        opacity: 1;
+      }
 
-input::placeholder,
-textarea::placeholder {
-  color: #000;
-  opacity: 1;
-  
-}
+      input::placeholder,
+      textarea::placeholder {
+        color: #000;
+        opacity: 1;
+      }
 
-input::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-  color: #000;
-}
+      input::-webkit-input-placeholder,
+      textarea::-webkit-input-placeholder {
+        color: #000;
+      }
 
-input:-ms-input-placeholder,
-textarea:-ms-input-placeholder {
-  color: #000;
-}
+      input:-ms-input-placeholder,
+      textarea:-ms-input-placeholder {
+        color: #000;
+      }
 
-input::-ms-input-placeholder,
-textarea::-ms-input-placeholder {
-  color: #000;
-}
- </style>
-</head>
-<body>
-  <section class="contact-section">
-    <h2><i class="fas fa-headset"></i> Contact Us</h2>
+      input::-ms-input-placeholder,
+      textarea::-ms-input-placeholder {
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="contact-section">
+      <h2><i class="fas fa-headset"></i> Contact Us</h2>
 
-    <p class="paragraph">Need assistance? Reach out anytime and our team will respond promptly.</p>
-    
-    <div class="contact-container">
-      <!-- Left: Contact Information -->
-      <div class="contact-info">
-        <h3><i class="fas fa-comment-dots"></i> Contact Information</h3>
-        
-        <div class="info-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <div>
-            <strong>Our Location</strong>
-            <p>123 Tech Park, San Francisco, CA 94101</p>
+      <p class="paragraph">
+        Need assistance? Reach out anytime and our team will respond promptly.
+      </p>
+
+      <div class="contact-container">
+        <!-- Left: Contact Information -->
+        <div class="contact-info">
+          <h3><i class="fas fa-comment-dots"></i> Contact Information</h3>
+
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Our Location</strong>
+              <p>123 Tech Park, San Francisco, CA 94101</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Email Us</strong>
+              <p>support@astrolitetech.com</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <div>
+              <strong>Call Us</strong>
+              <p>Support: +919876543211</p>
+            </div>
           </div>
         </div>
-        
-        <div class="info-item">
-          <i class="fas fa-envelope"></i>
-          <div>
-            <strong>Email Us</strong>
-            <p>support@astrolitetech.com</p>
-          </div>
-        </div>
-        
-        <div class="info-item">
-          <i class="fas fa-phone"></i>
-          <div>
-            <strong>Call Us</strong>
-            <p>Support: +919876543211</p>
-          </div>
+
+        <!-- Right: Send a Message -->
+        <div class="contact-form">
+          <h3><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
+          <form id="messageForm">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input
+                type="text"
+                id="fullName"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email address"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea
+                id="message"
+                rows="3"
+                placeholder="Write your message here..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
         </div>
       </div>
+    </section>
 
-      <!-- Right: Send a Message -->
-      <div class="contact-form">
-        <h3><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
-        <form id="messageForm">
-  <div class="form-group">
-    <label for="fullName">Full Name</label>
-    <input type="text" id="fullName" placeholder="Enter your full name" required />
-  </div>
-  
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input type="email" id="email" placeholder="Enter your email address" required />
-  </div>
-  
-  
-  <div class="form-group">
-    <label for="message">Your Message</label>
-    <textarea id="message" rows="3" placeholder="Write your message here..." required></textarea>
-  </div>
-
-  <button type="submit">
-    <i class="fas fa-paper-plane"></i> Send Message
-  </button>
-</form>
-
-      </div>
-    </div>
-  </section>
-
-  <script>document.getElementById('messageForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  alert('Your message has been sent!');
-  this.reset();
-});</script>
-</body>
+    <script>
+      document
+        .getElementById("messageForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Your message has been sent!");
+          this.reset();
+        });
+    </script>
+  </body>
 </html>
-  
