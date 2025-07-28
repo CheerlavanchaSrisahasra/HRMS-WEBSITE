@@ -2111,8 +2111,24 @@
       .services-section::-webkit-scrollbar {
         display: none;
       }
+      [data-theme="dark"] body {
+        background: var(--light);
+        /* background-color: black; */
+        /* filter: invert(1) brightness(1); */
+
+        color: white;
+        /* box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); */
+      }
       [data-theme="dark"] .logo-text {
         /* background: var(--light); */
+        color: white;
+        /* box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); */
+      }
+      [data-theme="dark"] .trusted-iframe-section {
+        background: var(--light);
+        /* background-color: black; */
+        /* filter: invert(1) brightness(1); */
+
         color: white;
         /* box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); */
       }
@@ -2714,7 +2730,7 @@
           </div>
         </section>
 
-        <section class="iframe-section">
+        <section class="iframe-section trusted-iframe-section">
           <div class="dashboard-container trusted-section">
             <iframe
               src="./Sections/TrustedPartners.html"
@@ -2880,7 +2896,7 @@
             </li>
           </ul>
         </div>
-        <div class="footer-col">
+        <!-- <div class="footer-col">
           <h4>Legal</h4>
           <ul>
             <li>
@@ -2909,7 +2925,7 @@
               >
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
       <div class="footer-bottom">
         <p>
